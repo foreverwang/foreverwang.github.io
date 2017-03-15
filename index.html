@@ -353,16 +353,8 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-<h2 id="hexo-github-pages搭建博客笔记"><a href="#hexo-github-pages搭建博客笔记" class="headerlink" title="hexo+github pages搭建博客笔记"></a>hexo+github pages搭建博客笔记</h2><h3 id="hexo报错解决"><a href="#hexo报错解决" class="headerlink" title="hexo报错解决"></a>hexo报错解决</h3><ul>
+            <p><a href="https://hexo.io/" target="_blank" rel="external">Hexo官网</a></p>
+<h2 id="hexo-github-pages搭建个人博客"><a href="#hexo-github-pages搭建个人博客" class="headerlink" title="hexo + github pages搭建个人博客"></a>hexo + github pages搭建个人博客</h2><h3 id="hexo报错解决"><a href="#hexo报错解决" class="headerlink" title="hexo报错解决"></a>hexo报错解决</h3><ul>
 <li><p>hexo init  报错  </p>
    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm uninstall dtrace-provider</div></pre></td></tr></table></figure>
 </li>
@@ -398,11 +390,24 @@
   <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new page categories</div></pre></td></tr></table></figure>
 </li>
 <li><p>在 source/categories 目录的 index.md 中修改:</p>
-<pre><code class="bash">title: 分类
-date: 2015-12-02 12:44:45
-<span class="built_in">type</span>: <span class="string">"categories"</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">	title: 分类</div><div class="line">	date: 2015-12-02 12:44:45</div><div class="line">	<span class="built_in">type</span>: <span class="string">"categories"</span></div><div class="line"> ```	</div><div class="line">		</div><div class="line"> 添加别的页面类似 比如标签页面</div><div class="line"> </div><div class="line"> </div><div class="line"> </div><div class="line"><span class="comment">#### hexo 常用命令</span></div><div class="line"></div><div class="line">  </div><div class="line"> * 新建一片博客</div><div class="line">```bash		</div><div class="line">		hexo new filename</div></pre></td></tr></table></figure>
+</li>
+<li><p>起本地服务</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo s</div></pre></td></tr></table></figure>
+</li>
+<li><p>生成静态站点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo g</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>发布</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo d</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>清除本地缓存</p>
+<pre><code class="bash">hexo clean
 </code></pre>
-<p>添加别的页面类似 比如标签页面</p>
 </li>
 </ul>
 
