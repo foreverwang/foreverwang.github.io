@@ -499,7 +499,12 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure>
 </li>
 <li><p>修改 hexo的 _config.yml</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">	deploy:</div><div class="line">	  <span class="built_in">type</span>: git</div><div class="line">	  repo: https://github.com/username/username.github.io.git</div><div class="line">	  branch: master</div><div class="line">	  </div><div class="line">	  </div><div class="line"><span class="comment">#### 更换hexo主题</span></div><div class="line">* 克隆主题到themes路径下</div><div class="line"></div><div class="line"> ```bash </div><div class="line"> git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  <span class="built_in">type</span>: git</div><div class="line">  repo: https://github.com/username/username.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="更换hexo主题"><a href="#更换hexo主题" class="headerlink" title="更换hexo主题"></a>更换hexo主题</h4><ul>
+<li><p>克隆主题到themes路径下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure>
 <p>注意：主题文件夹放到themes下 文件夹命名和配置文件里保持一致</p>
 </li>
 <li><p>修改站点配置文件 _config.yml</p>
@@ -511,10 +516,12 @@
   <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new page categories</div></pre></td></tr></table></figure>
 </li>
 <li><p>在 source/categories 目录的 index.md 中修改:</p>
-<pre><code>title: 分类
+<pre><code class="bash">
+title: 分类
 date: 2015-12-02 12:44:45
-type: &quot;categories&quot;
-</code></pre><p>添加别的页面类似 比如标签页面</p>
+<span class="built_in">type</span>: <span class="string">"categories"</span>
+</code></pre>
+<p>添加别的页面类似 比如标签页面</p>
 </li>
 </ul>
 
