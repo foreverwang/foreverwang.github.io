@@ -84,16 +84,40 @@
 
 
 
-<meta name="description" content="世界你好">
+<meta name="description" content="this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。
+先看几个题目题目1 //默认绑定  严格模式 非严格模式
+function foo(){
+  console.log(this.a);
+}
+var a = &amp;apos;2&amp;apos;;
+(function(){
+  &amp;apos;use strict&amp;apos;;
+  foo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Javascript语言之蜜汁this">
 <meta property="og:url" content="https://foreverwang.github.io/2017/03/27/Javascript语言之蜜汁this/index.html">
 <meta property="og:site_name" content="瞧，这个人">
-<meta property="og:description" content="世界你好">
-<meta property="og:updated_time" content="2017-03-26T17:51:38.000Z">
+<meta property="og:description" content="this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。
+先看几个题目题目1 //默认绑定  严格模式 非严格模式
+function foo(){
+  console.log(this.a);
+}
+var a = &amp;apos;2&amp;apos;;
+(function(){
+  &amp;apos;use strict&amp;apos;;
+  foo">
+<meta property="og:updated_time" content="2017-03-26T17:53:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Javascript语言之蜜汁this">
-<meta name="twitter:description" content="世界你好">
+<meta name="twitter:description" content="this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。
+先看几个题目题目1 //默认绑定  严格模式 非严格模式
+function foo(){
+  console.log(this.a);
+}
+var a = &amp;apos;2&amp;apos;;
+(function(){
+  &amp;apos;use strict&amp;apos;;
+  foo">
 
 
 
@@ -335,7 +359,289 @@
       
 
       
-        
+        <p>this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。</p>
+<h3 id="先看几个题目"><a href="#先看几个题目" class="headerlink" title="先看几个题目"></a>先看几个题目</h3><p>题目1 //默认绑定  严格模式 非严格模式</p>
+<pre><code>function foo(){
+  console.log(this.a);
+}
+var a = &apos;2&apos;;
+(function(){
+  &apos;use strict&apos;;
+  foo(); 
+})()
+</code></pre><p>题目2 //隐式绑定</p>
+<pre><code>function foo(){
+    console.log(this.a);
+}
+var a = 1;
+var obj2 = {
+    a: 2,
+    foo:foo
+}
+var obj1 = {
+    a: 1,
+    obj2: obj2
+}
+
+obj1.obj2.foo() 
+</code></pre><p>题目3 </p>
+<pre><code>function foo(){
+    console.log(this.a);
+}
+
+var a = 2;
+var o = {a:3,foo:foo};
+var p = {a:4};
+
+(p.foo = o.foo)() 
+
+//知识点：赋值表达式的返回值
+</code></pre><p>题目4 </p>
+<pre><code>var obj1 = {
+    a: 1,
+    foo: function(){
+      console.log(this.a);
+    }
+};
+var obj2 = { a: 2 };
+var obj3 = { a: 3};
+obj1.foo.bind(obj2).call(obj3) 
+
+//知识点： bind实现
+</code></pre><p>  上面4个题目的答案都是：2 。<br><br>  如果你都答对了，那可以继续往下看了,以下是正文。本文先说什么要用this，再说怎么用this。</p>
+<h3 id="为什么要用this"><a href="#为什么要用this" class="headerlink" title="为什么要用this?"></a>为什么要用this?</h3><p>先看以下这段简单的代码</p>
+<pre><code>function speak() {
+    var greeting = &quot;Hello, I&apos;m &quot; + this.name;
+    console.log( greeting );
+}
+
+var me = {
+    name: &quot;小a&quot;
+};
+
+var you = {
+    name: &quot;小b&quot;
+};
+
+speak.call( me ); // Hello, I&apos;m 小a
+speak.call( you ); // Hello, I&apos;m 小b
+</code></pre><ul>
+<li>以上代码可以在不同上下文对象（me 和 you）中重复使用speak函数。</li>
+<li>如果不实用this,就要给 speak显示传入一个上下文对象（如下）</li>
+</ul>
+<pre><code>function speak(content) {
+    var greeting = &quot;Hello, I&apos;m &quot; + content.name;
+    console.log( greeting );
+}
+
+speak(me);  // Hello, I&apos;m 小a
+speak(you); // Hello, I&apos;m 小b
+</code></pre><p>显然，this提供了一种更优雅的方式来隐式传递一个对象的引用，因此可以使API设计得更加简洁且易于复用。<br>随着使用的模式越来越复杂，显示传递上下文对象会让代码变得越来越混乱，使用this则不会这样。</p>
+<h3 id="this是什么？"><a href="#this是什么？" class="headerlink" title="this是什么？"></a>this是什么？</h3><h4 id="this常见误区"><a href="#this常见误区" class="headerlink" title="this常见误区"></a>this常见误区</h4><ul>
+<li>this 不指向函数自身（就没必要附加例子了）</li>
+<li><p>this 任何情况下也不指向函数的词法作用域（箭头函数呢？）        </p>
+<pre><code>function foo(){
+    var a = 2;
+    this.bar();
+}
+function bar(){
+    console.log(this.a);
+}
+
+foo()//undefined
+</code></pre><p>  这段代码试图通过this联通 foo和bar的词法作用域，从而让bar可以访问foo作用域里的变量a,当然这里是不能如愿的。不能使用this来引用一个词法作用域内部的东西。</p>
+</li>
+</ul>
+<h4 id="this到底是啥"><a href="#this到底是啥" class="headerlink" title="this到底是啥"></a>this到底是啥</h4><p> this 是在运行时进行绑定的，并不是在编写时绑定，他的上下文取决于函数调用时的各种条件。<br> （this的值只和函数调用有关，和函数定义无关—这个说法是不对的，有两个例外：bind 和箭头函数，后面说）<br> 当一个函数被调用的时候，会创建一个活动记录（又叫执行期上下文）。这个记录会包含函数的调用栈，函数的调用方法，函传入的参数等信息，this就是记录的其中一个属性，会在函数执行过程中用到。</p>
+<h3 id="this绑定规则（4个）"><a href="#this绑定规则（4个）" class="headerlink" title="this绑定规则（4个）"></a>this绑定规则（4个）</h3><p>先找确定函数的调用位置，调用栈</p>
+<h4 id="1-默认绑定"><a href="#1-默认绑定" class="headerlink" title="1.默认绑定"></a>1.默认绑定</h4><p>先说结论：</p>
+<ul>
+<li>什么是默认绑定： 非严格模式下，this指向全局对象；严格模式下，this为undefined</li>
+<li>何时会走默认绑定：独立函数调用</li>
+</ul>
+<p>函数在不带任何修饰的进行调用（即独立函数调用）的时候，this会走默认绑定规则。<br><br>非严格模式下：this指向全局对象</p>
+<pre><code>function foo(){
+    console.log(this.a);
+}
+var a = 2;
+foo();//2 
+</code></pre><p>严格模式下：this为undefined</p>
+<pre><code>function foo(){
+    &apos;use strict&apos;;
+     console.log(this.a);
+}
+var a = 2;
+foo()//Cannot read property &apos;a&apos; of undefined
+</code></pre><p>这里要注意一点， 对于默认绑定，决定this绑定对象的不是调用位置是处于严格模式，而是函数体是否处于严格模式，这也是题目1中 看似是在严格模式下，this却绑定到了全局对象</p>
+<pre><code>function foo(){
+  //foo函数体处于非严格模式
+  console.log(this.a);
+}
+var a = &apos;2&apos;;
+(function(){
+  &apos;use strict&apos;;
+  //该立即执行的函数表达式内处于严格模式这里的this为undefined
+  console.log(this);//undefined
+  foo(); //2
+})()  
+</code></pre><h4 id="2-隐式绑定"><a href="#2-隐式绑定" class="headerlink" title="2.隐式绑定"></a>2.隐式绑定</h4><p>先说结论:<br><br>当函数被调用时，函数引用有上下文对象，隐式绑定规则会把函数调用中的this绑定到这个上下文对象<br>再看题目2<br></p>
+<pre><code>function foo(){
+    console.log(this.a);
+}
+var a = 1;
+var obj2 = {
+    a: 2,
+    foo:foo
+}
+var obj1 = {
+    a: 1,
+    obj2: obj2
+}
+
+obj1.obj2.foo() //2
+//对象属性引用链中只有最顶层(属性的直接调用方)会影响调用位置
+</code></pre><p><br><br>   隐式丢失（严格来说此处并没有绑定过，也没有丢失一说，只是看上去像是丢失了）</p>
+<pre><code>function foo(){
+    console.log(this.a);
+}
+var obj = {
+    a: 1,
+   foo: foo
+}
+
+var bar = obj.foo;//函数别名
+var a = 2;
+bar();
+</code></pre><p>  虽然bar是obj.foo的一个引用，实际上，他引用的是foo本身，此时的bar调用 就是一个不带任何修饰的函数调用，因此应用了默认绑定。<br><br> 其实本例有两个关键点：</p>
+<ul>
+<li>赋值表达式的返回值（犀牛书6版81页）： var bar = obj.foo;返回的是右值，右值指向foo的引用</li>
+<li>不管如何引用，只看调用时 调用是bar() —&gt; foo()</li>
+</ul>
+<p>此时再看题目3，就很清晰了</p>
+<pre><code>function foo(){
+    console.log(this.a);
+}
+
+var a = 2;
+var o = {a:3,foo:foo};
+var p = {a:4};
+
+//o.foo();//3
+(p.foo = o.foo)() //p.foo = o.foo的返回值是等号的右值--&gt;foo的引用，此处相当于直接调用foo()
+//p.foo()//4
+</code></pre><h4 id="3-显示绑定"><a href="#3-显示绑定" class="headerlink" title="3.显示绑定"></a>3.显示绑定</h4><p>先说结论：</p>
+<ul>
+<li>函数调用时通过 apply 或者 call 硬绑定this 对象(apply和call的区别这里就不赘述了)</li>
+<li>通过ES5的 Function.prototype.bind 返回一个绑定了this了的新函数</li>
+</ul>
+<p>看一个硬绑定的典型应用场景:接受不确定参数</p>
+<pre><code>function foo(sth){
+    console.log( this.a,sth );
+    return this.a + sth;
+}
+var obj = {
+    a: 1
+}
+
+var bar = function(){
+    return foo.apply(obj,arguments);
+}
+
+var b = bar(1);
+console.log(b);//  2  
+</code></pre><p>另一种方法是创建一个可复用的辅助函数（bind）</p>
+<pre><code>function foo(sth){
+    console.log( this.a,sth );
+    return this.a + sth;
+}
+
+//简单的辅助绑定函数
+function bind(fn,obj){
+    return function(){
+        return fn.apply(obj,arguments);
+    }
+}
+
+ var obj = {
+    a: 1
+}
+
+var bar = bind(foo,obj);
+var b = bar(1);
+console.log(b);//2
+</code></pre><p>   由于硬绑定是一种很常用的模式，ES5提供了内置的Function.prototype.bind方法：<br><br>   <code>bind方法</code>(犀牛书第6版190页)将返回一个新的函数，以函数调用的方式调用新的函数将会把原始函数当做bind的第一个参数的方法来调用，传入新函数的任何实参都将传入原始函数。根据定义，用ES3很容易模拟bind方法，即上面代码中我们自定义的bind函数。<br>  <br><br>此时，再看题目4应该就很清晰了：</p>
+<pre><code>var obj1 = {
+    a: 1,
+    foo: function(){
+      console.log(this.a);
+    }
+};
+var obj2 = { a: 2 };
+var obj3 = { a: 3};
+obj1.foo.bind(obj2).call(obj3)    
+</code></pre><p>  最后一行中 obj1.foo.bind(obj2)  等价于以下</p>
+<pre><code>function bar(){
+    obj1.foo.apply(obj2,arguments)
+}
+</code></pre><p>   所以foo.bind(obj2)后返回了一个新的函数，这个函数被调用的时候的this被绑定到obj2，再call(obj3) 也是改变不了这个事实。</p>
+<p>   bind方法和this的关系就是以上了，由于bind方法实在是很重要并且很好用，所以这里把bind方法说完。<br>   <br></p>
+<p>   bind方法不仅是把函数绑定至一个对象，他还附带其他功能：<br>   <br></p>
+<ul>
+<li>bind()的另一个最简单的用法是使一个函数拥有<code>预设的初始参数</code>。<br>这些参数（如果有的话）作为bind()的第二个参数开始跟在this（或其他对象）后面，之后它们会被插入到目标函数的参数列表的开始位置，调用绑定函数时传递给绑定函数的参数会跟在它们的后面。这个附带的应用即是函数式编程中的”柯里化”(currying)的一种（todo:关于柯里化以后再深入研究下）。</li>
+</ul>
+<pre><code>function foo(y,z){
+    return this.x + y + z;
+}
+
+var baz = fo.bind({x:1},2);
+baz(3);
+</code></pre><p> bind方法返回一个函数对象，这个函数对象的length属性是绑定函数的形参个数减去绑定实参个数（length值不能小于0）。</p>
+<ul>
+<li>bind返回的函数被<code>用作构造函数</code>，将忽略传入bind的this,原始函数就会以构造函数的形式调用。bind时传入的实参会原封不动的传入原始函数，调用绑定函数是传入的参数紧跟其后。      </li>
+</ul>
+<h4 id="new-绑定"><a href="#new-绑定" class="headerlink" title="new 绑定"></a>new 绑定</h4><p>先看下new 一个构造函数都发生了什么：</p>
+<ul>
+<li>新建一个新对象（继承自Constructor.prototype）</li>
+<li>将构造函数的作用域赋给新对象，因此this指向这个新对象</li>
+<li>执行构造函数内的代码（为这个对象添加属性）</li>
+<li>隐式返回这个对象（如果构造函数内没有显示return 非null对象值）</li>
+</ul>
+<p>很清晰，new 的时候 this绑定到 创建的新对象。通常是返回的哪个对象实例。<br>多说一句，起始没有构造函数一说，只有构造调用一说。   </p>
+<h4 id="绑定优先级"><a href="#绑定优先级" class="headerlink" title="绑定优先级"></a>绑定优先级</h4><p>四种绑定规则说完了，那么问题来了，如果有多重规则同时作用时，优先级是怎样的呢？<br>先回顾一下四种规则：</p>
+<ul>
+<li>默认绑定（严格模式、非严格模式）</li>
+<li>隐式绑定（对象属性调用）</li>
+<li>显示绑定（apply/call、bind）</li>
+<li>new 绑定</li>
+</ul>
+<p>直接说结论吧 <br><br>new 绑定 &gt; 显示绑定 &gt; 隐士绑定<br><br>在没有前三钟绑定规则的时候就应用默认绑定。</p>
+<p>至此，貌似事件处理函数中的 this还没说。事件处理函数又分DOM2级事件处理函数（addEventListener）;和内联事件处理函数。前者指向绑定事件的DOM可以归到显示绑定吧，只是这一步引擎帮你做了。后者this指向全局对象属于默认绑定，不再赘述。</p>
+<h3 id="绑定例外"><a href="#绑定例外" class="headerlink" title="绑定例外"></a>绑定例外</h3><p>在规则的世界里一切秩序井然，然而世事总有些例外，this绑定也不例外。</p>
+<h4 id="被忽略的this"><a href="#被忽略的this" class="headerlink" title="被忽略的this"></a>被忽略的this</h4><p>当把 null或者undefined作为this的绑定对象传入 call,apply,bind,这些值在调用时会被忽略，实际应用的是默认绑定规则。</p>
+<pre><code>function foo(){
+  console.log(this.a);
+}
+var a = 2;
+foo.call(null);//2
+</code></pre><p>既然有这个机制，通常他就应该是有用的。那什么时候我们会用到null 、nudefined值呢?<br>当你只想用来传递参数而不关心this的话，这是个不错的选择</p>
+<pre><code>//使用apply(...)来展开一个数组，并当做参数传入一个函数
+function foo(a,b){
+    console.log(&apos;a:&apos;+a,&apos;b:&apos;+b);
+}
+//当然，ES6中我们可以用 ...操作符来代替apply来展开数组了
+
+foo.apply(null,[2,3]) //a:2,b:3
+
+//使用bind(...)对参数进行柯里化（预设一些参数）
+var bar = foo.bind(null,2);
+bar(3);//a:2,b:3
+</code></pre><p>至此，this讲解就接近尾声了–还有关于this的最后一点：this词法。</p>
+<h3 id="this词法"><a href="#this词法" class="headerlink" title="this词法"></a>this词法</h3><p>已经这么晚了，就先不写了吧，收工，有空再来补全。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://github.com/getify/You-Dont-Know-JS/tree/master/this%20%26%20object%20prototypes" target="_blank" rel="external">《你不知道的javascipt》</a></li>
+<li>《javascript权威指南》</li>
+</ul>
+
       
     </div>
 
@@ -439,8 +745,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/img/s.png"
@@ -496,6 +811,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#先看几个题目"><span class="nav-number">1.</span> <span class="nav-text">先看几个题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要用this"><span class="nav-number">2.</span> <span class="nav-text">为什么要用this?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this是什么？"><span class="nav-number">3.</span> <span class="nav-text">this是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#this常见误区"><span class="nav-number">3.1.</span> <span class="nav-text">this常见误区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this到底是啥"><span class="nav-number">3.2.</span> <span class="nav-text">this到底是啥</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this绑定规则（4个）"><span class="nav-number">4.</span> <span class="nav-text">this绑定规则（4个）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-默认绑定"><span class="nav-number">4.1.</span> <span class="nav-text">1.默认绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-隐式绑定"><span class="nav-number">4.2.</span> <span class="nav-text">2.隐式绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-显示绑定"><span class="nav-number">4.3.</span> <span class="nav-text">3.显示绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#new-绑定"><span class="nav-number">4.4.</span> <span class="nav-text">new 绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绑定优先级"><span class="nav-number">4.5.</span> <span class="nav-text">绑定优先级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定例外"><span class="nav-number">5.</span> <span class="nav-text">绑定例外</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#被忽略的this"><span class="nav-number">5.1.</span> <span class="nav-text">被忽略的this</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this词法"><span class="nav-number">6.</span> <span class="nav-text">this词法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
