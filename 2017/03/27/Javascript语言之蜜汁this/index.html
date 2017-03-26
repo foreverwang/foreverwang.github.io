@@ -106,7 +106,7 @@ var a = &amp;apos;2&amp;apos;;
 (function(){
   &amp;apos;use strict&amp;apos;;
   foo">
-<meta property="og:updated_time" content="2017-03-26T17:53:53.000Z">
+<meta property="og:updated_time" content="2017-03-26T18:07:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Javascript语言之蜜汁this">
 <meta name="twitter:description" content="this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。
@@ -437,9 +437,10 @@ speak.call( you ); // Hello, I&apos;m 小b
 speak(me);  // Hello, I&apos;m 小a
 speak(you); // Hello, I&apos;m 小b
 </code></pre><p>显然，this提供了一种更优雅的方式来隐式传递一个对象的引用，因此可以使API设计得更加简洁且易于复用。<br>随着使用的模式越来越复杂，显示传递上下文对象会让代码变得越来越混乱，使用this则不会这样。</p>
-<h3 id="this是什么？"><a href="#this是什么？" class="headerlink" title="this是什么？"></a>this是什么？</h3><h4 id="this常见误区"><a href="#this常见误区" class="headerlink" title="this常见误区"></a>this常见误区</h4><ul>
+<h3 id="this是什么？"><a href="#this是什么？" class="headerlink" title="this是什么？"></a>this是什么？</h3><p>说起this,这样看作用域是什么？javascript分全局作用域和函数作用域（ES6有了块级作用域）。<br>在全局运行上下文中（在任何函数体外部）很简单，this指代全局对象，无论是否在严格模式下。以下说的都是在函数作用域中的this</p>
+<h4 id="this常见误区"><a href="#this常见误区" class="headerlink" title="this常见误区"></a>this常见误区</h4><ul>
 <li>this 不指向函数自身（就没必要附加例子了）</li>
-<li><p>this 任何情况下也不指向函数的词法作用域（箭头函数呢？）        </p>
+<li><p>this 任何情况下也不指向函数的词法作用域        </p>
 <pre><code>function foo(){
     var a = 2;
     this.bar();
