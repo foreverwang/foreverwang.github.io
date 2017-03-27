@@ -106,7 +106,7 @@ var a = &amp;apos;2&amp;apos;;
 (function(){
   &amp;apos;use strict&amp;apos;;
   foo">
-<meta property="og:updated_time" content="2017-03-26T18:12:58.000Z">
+<meta property="og:updated_time" content="2017-03-27T02:05:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Javascript语言之蜜汁this">
 <meta name="twitter:description" content="this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。
@@ -430,7 +430,7 @@ var obj3 = { a: 3};
 obj1.foo.bind(obj2).call(obj3) 
 
 //知识点： bind实现
-</code></pre><p>  上面4个题目的答案都是：2 。<br><br>  如果你都答对了，那可以继续往下看了,以下是正文。本文先说什么要用this，再说怎么用this。</p>
+</code></pre><p>  上面4个题目的答案都是：2 。<br><br>  如果你都答对了，那可以继续往下看了,以下是正文。本文先说为什么要用this，再说怎么用this。</p>
 <h3 id="为什么要用this"><a href="#为什么要用this" class="headerlink" title="为什么要用this?"></a>为什么要用this?</h3><p>先看以下这段简单的代码</p>
 <pre><code>function speak() {
     var greeting = &quot;Hello, I&apos;m &quot; + this.name;
@@ -449,7 +449,7 @@ speak.call( me ); // Hello, I&apos;m 小a
 speak.call( you ); // Hello, I&apos;m 小b
 </code></pre><ul>
 <li>以上代码可以在不同上下文对象（me 和 you）中重复使用speak函数。</li>
-<li>如果不实用this,就要给 speak显示传入一个上下文对象（如下）</li>
+<li>如果不使用this,就要给 speak显示传入一个上下文对象（如下）</li>
 </ul>
 <pre><code>function speak(content) {
     var greeting = &quot;Hello, I&apos;m &quot; + content.name;
@@ -459,7 +459,7 @@ speak.call( you ); // Hello, I&apos;m 小b
 speak(me);  // Hello, I&apos;m 小a
 speak(you); // Hello, I&apos;m 小b
 </code></pre><p>显然，this提供了一种更优雅的方式来隐式传递一个对象的引用，因此可以使API设计得更加简洁且易于复用。<br>随着使用的模式越来越复杂，显示传递上下文对象会让代码变得越来越混乱，使用this则不会这样。</p>
-<h3 id="this是什么？"><a href="#this是什么？" class="headerlink" title="this是什么？"></a>this是什么？</h3><p>说起this,这样看作用域是什么。javascript分全局作用域和函数作用域（ES6有了块级作用域）。<br>在全局运行上下文中（在任何函数体外部）很简单，this指代全局对象，无论是否在严格模式下。以下说的都是在函数作用域中的this。</p>
+<h3 id="this是什么？"><a href="#this是什么？" class="headerlink" title="this是什么？"></a>this是什么？</h3><p>说起this,这要看作用域是什么。javascript分全局作用域和函数作用域（ES6有了块级作用域）。<br>在全局运行上下文中（在任何函数体外部）很简单，this指代全局对象，无论是否在严格模式下。以下说的都是在函数作用域中的this。</p>
 <h4 id="this常见误区"><a href="#this常见误区" class="headerlink" title="this常见误区"></a>this常见误区</h4><ul>
 <li>this 不指向函数自身（就没必要附加例子了）</li>
 <li><p>this 任何情况下也不指向函数的词法作用域        </p>
@@ -495,7 +495,7 @@ foo();//2
 }
 var a = 2;
 foo()//Cannot read property &apos;a&apos; of undefined
-</code></pre><p>这里要注意一点， 对于默认绑定，决定this绑定对象的不是调用位置是处于严格模式，而是函数体是否处于严格模式，这也是题目1中 看似是在严格模式下，this却绑定到了全局对象</p>
+</code></pre><p>这里要注意一点， 对于默认绑定，决定this绑定对象的不是调用位置是否处于严格模式，而是函数体是否处于严格模式，这也是题目1中 看似是在严格模式下，this却绑定到了全局对象</p>
 <pre><code>function foo(){
   //foo函数体处于非严格模式
   console.log(this.a);
@@ -592,7 +592,7 @@ function bind(fn,obj){
 var bar = bind(foo,obj);
 var b = bar(1);
 console.log(b);//2
-</code></pre><p>   由于硬绑定是一种很常用的模式，ES5提供了内置的Function.prototype.bind方法：<br><br>   <code>bind方法</code>(犀牛书第6版190页)将返回一个新的函数，以函数调用的方式调用新的函数将会把原始函数当做bind的第一个参数的方法来调用，传入新函数的任何实参都将传入原始函数。根据定义，用ES3很容易模拟bind方法，即上面代码中我们自定义的bind函数。<br>  <br><br>此时，再看题目4应该就很清晰了：</p>
+</code></pre><p>   由于硬绑定是一种很常用的模式，ES5提供了内置的Function.prototype.bind方法：<br><br>   <code>bind方法</code>(犀牛书第6版190页)将返回一个新的函数，以函数调用的方式调用新的函数将会把原始函数当做bind的第一个参数的方法来调用，传入新函数的任何实参都将传入原始函数。根据定义，用ES3很容易模拟bind方法，即上面代码中我们自定义的bind函数（这里只是把最基本的绑定this模拟了，参数柯里化等没有模拟，可以看MDN bind的polyfill写法，这里不贴了）。<br>  <br><br>此时，再看题目4应该就很清晰了：</p>
 <pre><code>var obj1 = {
     a: 1,
     foo: function(){
@@ -629,7 +629,7 @@ baz(3);
 <li>执行构造函数内的代码（为这个对象添加属性）</li>
 <li>隐式返回这个对象（如果构造函数内没有显示return 非null对象值）</li>
 </ul>
-<p>很清晰，new 的时候 this绑定到 创建的新对象。通常是返回的哪个对象实例。<br>多说一句，起始没有构造函数一说，只有构造调用一说。   </p>
+<p>很清晰，new 的时候 this绑定到 创建的新对象。通常是返回的那个对象实例。<br>多说一句，起始在js中没有构造函数一说，只有构造调用一说。   </p>
 <h4 id="绑定优先级"><a href="#绑定优先级" class="headerlink" title="绑定优先级"></a>绑定优先级</h4><p>四种绑定规则说完了，那么问题来了，如果有多重规则同时作用时，优先级是怎样的呢？<br>先回顾一下四种规则：</p>
 <ul>
 <li>默认绑定（严格模式、非严格模式）</li>
@@ -637,7 +637,7 @@ baz(3);
 <li>显示绑定（apply/call、bind）</li>
 <li>new 绑定</li>
 </ul>
-<p>直接说结论吧 <br><br>new 绑定 &gt; 显示绑定 &gt; 隐士绑定<br><br>在没有前三钟绑定规则的时候就应用默认绑定。</p>
+<p>直接说结论吧 <br><br>new 绑定 &gt; 显示绑定 &gt; 隐士绑定<br><br>在没有前三种绑定规则的时候就应用默认绑定。</p>
 <p>至此，貌似事件处理函数中的 this还没说。事件处理函数又分DOM2级事件处理函数（addEventListener）;和内联事件处理函数。前者指向绑定事件的DOM可以归到显示绑定吧，只是这一步引擎帮你做了。后者this指向全局对象属于默认绑定，不再赘述。</p>
 <h3 id="绑定例外"><a href="#绑定例外" class="headerlink" title="绑定例外"></a>绑定例外</h3><p>在规则的世界里一切秩序井然，然而世事总有些例外，this绑定也不例外。</p>
 <h4 id="被忽略的this"><a href="#被忽略的this" class="headerlink" title="被忽略的this"></a>被忽略的this</h4><p>当把 null或者undefined作为this的绑定对象传入 call,apply,bind,这些值在调用时会被忽略，实际应用的是默认绑定规则。</p>
@@ -651,7 +651,7 @@ foo.call(null);//2
 function foo(a,b){
     console.log(&apos;a:&apos;+a,&apos;b:&apos;+b);
 }
-//当然，ES6中我们可以用 ...操作符来代替apply来展开数组了
+//当然，ES6中我们可以用 ...操作符来代替apply展开数组了
 
 foo.apply(null,[2,3]) //a:2,b:3
 
