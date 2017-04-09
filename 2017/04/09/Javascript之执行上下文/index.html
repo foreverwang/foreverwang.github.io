@@ -102,7 +102,7 @@
 活动对象（activation object简称AO）
 
 概述执行上下文是Javascript中最重要的一个概念。每一段代码的执行都与它息息相关。理解了它，才能真正理解你写的js代码是如何运行的。ECMA-262（5">
-<meta property="og:updated_time" content="2017-04-09T06:26:28.000Z">
+<meta property="og:updated_time" content="2017-04-09T06:32:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Javascript之执行上下文">
 <meta name="twitter:description" content="关键词
@@ -393,7 +393,7 @@
 <li>当控制器转入 ECMAScript的全局代码，控制器会进入一个全局上下文。</li>
 <li>当转入函数代码，控制器会进入一个函数上下文。</li>
 </ul>
-<h4 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h4><p>我们已经知道了什么时候进入一个上下文，那接下来就要说下上下文具体是个什么东西。<br><br>ES5规范里说：执行上下文包含所有用于追踪与其相关的代码的执行进度的状态。<br><br>翻译一下是说：执行上下文里有代码执行时需要用到的东西。<br><br>现在问题就具体到了：执行上下文里都有什么？那么我们来看一下：</p>
+<h3 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h3><p>我们已经知道了什么时候进入一个上下文，那接下来就要说下上下文具体是个什么东西。<br><br>ES5规范里说：执行上下文包含所有用于追踪与其相关的代码的执行进度的状态。<br><br>翻译一下是说：执行上下文里有代码执行时需要用到的东西。<br><br>现在问题就具体到了：执行上下文里都有什么？那么我们来看一下：</p>
 <p>执行上下文的组成</p>
 <table>
 <thead>
@@ -422,7 +422,7 @@
 </tbody>
 </table>
 <p>为了方便理解，一个执行上下文可以抽象为object（反正这个东西我们也摸不着嘛）。每一个执行上下文都有一系列的属性（我们称为上下文状态，即上面表格做左侧组件一列的属性）。接下来就对上面表格中的三个状态属性来一一说明。</p>
-<h5 id="变量对象-（VO）"><a href="#变量对象-（VO）" class="headerlink" title="变量对象  （VO）"></a>变量对象  （VO）</h5><p>变量对象是与执行上下文相关的数据作用域(scope of data) ,用于存储被定义在上下文中的变量声明和函数声明(注意：不包括函数表达式<a href="http://www.cnblogs.com/TomXu/archive/2011/12/29/2290308.html" target="_blank" rel="external">详见</a>) 。<br><br>定义已经很明确了，我们通过具体的栗子看下全局上下文的VO：</p>
+<h4 id="变量对象-（VO）"><a href="#变量对象-（VO）" class="headerlink" title="变量对象  （VO）"></a>变量对象  （VO）</h4><p>变量对象是与执行上下文相关的数据作用域(scope of data) ,用于存储被定义在上下文中的变量声明和函数声明(注意：不包括函数表达式<a href="http://www.cnblogs.com/TomXu/archive/2011/12/29/2290308.html" target="_blank" rel="external">详见</a>) 。<br><br>定义已经很明确了，我们通过具体的栗子看下全局上下文的VO：</p>
 <pre><code>var foo = 2;        
 function bar() {} // 函数声明
 (function baz() {}); // 函数表达式   
@@ -456,7 +456,7 @@ console.log(baz); // Uncaught ReferenceError: baz is not defined
 </table>
 <p>这是全局上下文中的变量对象，除了全局上下文还有函数上下文，那么函数上下文是否是一样的呢？既然你这么问了，那答案显然就是有点不一样的：函数内活动对象（AO）用作变量对象。<br></p>
 <p>在global全局上下文中，变量对象也是全局对象自身[global object],如浏览器中是window,此时我们可以通过全局对象的属性来指向全局变量,通过this来访问全局对象。然而在函数上下文内我们是无法直接访问这个对象的,this也不指向这个对象<br></p>
-<h5 id="函数的活动对象（AO）"><a href="#函数的活动对象（AO）" class="headerlink" title="函数的活动对象（AO）"></a>函数的活动对象（AO）</h5><p>当函数被调用者激活（即函数调用），活动对象 就被创建了。它包含普通参数即形参(formal parameters) 与特殊参数(arguments)对象(具有索引属性的参数映射表)。活动对象在函数上下文中作为变量对象使用。</p>
+<h4 id="函数的活动对象（AO）"><a href="#函数的活动对象（AO）" class="headerlink" title="函数的活动对象（AO）"></a>函数的活动对象（AO）</h4><p>当函数被调用者激活（即函数调用），活动对象 就被创建了。它包含普通参数即形参(formal parameters) 与特殊参数(arguments)对象(具有索引属性的参数映射表)。活动对象在函数上下文中作为变量对象使用。</p>
 <pre><code>还是举个栗子看下函数的活动对象
 
 function foo(x, y) {
@@ -502,7 +502,7 @@ foo(1, 2);
 <p>我们已经知道了VO和AO的内容组成了，那么他们是什么时候被创建的，又是什么时候改变的呢？<br><br>VO|AO在每次进入上下文时创建，并填入初始值;值的更新出现在代码执行阶段。<br></p>
 <p>我们通过对上例中的变量z值的分析加深下理解。<br>我们都知道（假装都知道），javascript里的声明提升（hoisting）机制(在次就不多做解释了）。那么声明提升具体发生在什么时候呢？<br><br>先说答案：声明提升发生在javascript引擎的’预编译’阶段，代码执行之前。<br><br>那你可能又要问了：什么是javascript引擎的’预编译’阶段？下面会说。</p>
 <p>上面两个例子中我们知道了，全局上下文中，我们定义的变量和声明的函数都作为全局上下文的变量对象的属性来保存，代码执行时标志符的查找也是从全局上下文的变量对象中查找。在某一个函数上下文中也类似，在当前上下文中的标志符会先在当前变量对象（函数上下文中是活动对象）中查找。但是当在当前上下文的变量对象找不到的时候会发生什么呢？答案是：完整的标志符解析是通过作用域链（scope chain）机制来完成的。（不容易啊，终于比较自然的把作用域链给引出来了）</p>
-<h5 id="作用域链（scope-chain）"><a href="#作用域链（scope-chain）" class="headerlink" title="作用域链（scope chain）"></a>作用域链（scope chain）</h5><p>作用域链是一个 对象列表(list of objects) ，用以检索上下文代码中出现的 标识符(identifiers) 。<br>依然看个栗子：</p>
+<h4 id="作用域链（scope-chain）"><a href="#作用域链（scope-chain）" class="headerlink" title="作用域链（scope chain）"></a>作用域链（scope chain）</h4><p>作用域链是一个 对象列表(list of objects) ，用以检索上下文代码中出现的 标识符(identifiers) 。<br>依然看个栗子：</p>
 <pre><code>var x = 1;
 function foo() { 
   var y = 2; 
@@ -529,7 +529,7 @@ foo()(); // 3
 </tbody>
 </table>
 <p>我们看到bar函数提内代码执行之前创建的这个AO并没有函数体中需要用到的变量x和y,那么当代码执行到console.log(x + y)时，x和y是从哪里读取的呢？这要先说下javascript中的<code>变量标志符查找机制</code>。</p>
-<h5 id="标志符解析"><a href="#标志符解析" class="headerlink" title="标志符解析"></a>标志符解析</h5><p>我们直接看规范:（ES3 10.1.4章节）</p>
+<h4 id="标志符解析"><a href="#标志符解析" class="headerlink" title="标志符解析"></a>标志符解析</h4><p>我们直接看规范:（ES3 10.1.4章节）</p>
 <p>每个执行上下文都有一个与之相关联的作用域链（scope chain）。作用域链是一个由对象组成的链表，求值标志符的时候会对它搜索。当执行流进入一个上下文时，根据当前上下文的代码类型（全局代码或函数代码）一个作用域链被创建，并用初始化对象填充（函数代码被填充为函数的[[scope]]属性值-接下来讲；全局代码初始化为空吧。当VO|AO被创建后，VO|AO被推到作用域链的前端）。一个上下文中代码执行时，其作用域链只会被 with 声明（见 12.10）和 catch 语句（见 12.14）所影响。标志符解析的具体规则：</p>
 <ol>
 <li>获取作用域链中的下一个对象。如果没有，转到步骤 5。</li>
@@ -544,7 +544,7 @@ foo()(); // 3
 <p>上面说的作用域链是一个由对象组成的链表。那我们抽象的表示作用域链组成：</p>
 <pre><code>scope chain = VO|AO + [[scope]] 
 </code></pre><p>因为全局上下文中的标志符都在全局上下文的变量对象中，标志符解析并不需要 scope chain机制，直接在变量对象中查找这一级就完了，所以接下来我们说的是函数上下文的作用域链。    </p>
-<h6 id="我们先看一个函数的执行："><a href="#我们先看一个函数的执行：" class="headerlink" title="我们先看一个函数的执行："></a>我们先看一个函数的执行：</h6><p>函数的的生命周期分为创建和激活阶段（调用时）。<br>前面我们已经知道：当执行流进入一个函数后，会大致经历两个阶段：（其实处理所有js代码都要经历这两个阶段）</p>
+<h5 id="我们先看一个函数的执行："><a href="#我们先看一个函数的执行：" class="headerlink" title="我们先看一个函数的执行："></a>我们先看一个函数的执行：</h5><p>函数的的生命周期分为创建和激活阶段（调用时）。<br>前面我们已经知道：当执行流进入一个函数后，会大致经历两个阶段：（其实处理所有js代码都要经历这两个阶段）</p>
 <ul>
 <li>预编译：执行流进入函数上下文，此时代码未执行<ul>
 <li>JavaScript引擎会创建该执行上下文的一个作用域链，并初始化为函数的[[scope]]属性的值。</li>
@@ -560,7 +560,7 @@ foo()(); // 3
 <p>到这里不得不说下  [[scope]]是什么了。</p>
 </li>
 </ul>
-<h6 id="scope"><a href="#scope" class="headerlink" title="[[scope]]"></a>[[scope]]</h6><p>[[scope]]是ECMA262规定的对象的私有属性，理论上只有JS引擎可以访问。</p>
+<h5 id="scope"><a href="#scope" class="headerlink" title="[[scope]]"></a>[[scope]]</h5><p>[[scope]]是ECMA262规定的对象的私有属性，理论上只有JS引擎可以访问。</p>
 <ul>
 <li>[[scope]]是所有父变量对象的层级链，处于当前函数上下文之上，在函数创建时存于其中。</li>
 <li>[[scope]]在函数创建时被存储－－静态（不变的），直至函数销毁。</li>
@@ -773,7 +773,7 @@ var  obj = { a: function(){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关键词"><span class="nav-number">1.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可执行代码"><span class="nav-number">2.1.</span> <span class="nav-text">可执行代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行上下文"><span class="nav-number">2.2.</span> <span class="nav-text">执行上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变量对象-（VO）"><span class="nav-number">2.2.1.</span> <span class="nav-text">变量对象  （VO）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#函数的活动对象（AO）"><span class="nav-number">2.2.2.</span> <span class="nav-text">函数的活动对象（AO）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作用域链（scope-chain）"><span class="nav-number">2.2.3.</span> <span class="nav-text">作用域链（scope chain）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#标志符解析"><span class="nav-number">2.2.4.</span> <span class="nav-text">标志符解析</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#我们先看一个函数的执行："><span class="nav-number">2.2.4.1.</span> <span class="nav-text">我们先看一个函数的执行：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#scope"><span class="nav-number">2.2.4.2.</span> <span class="nav-text">[[scope]]</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this"><span class="nav-number">2.3.</span> <span class="nav-text">this</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#相关推荐："><span class="nav-number">2.3.1.</span> <span class="nav-text">相关推荐：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结语"><span class="nav-number">2.3.2.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关键词"><span class="nav-number">1.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可执行代码"><span class="nav-number">2.1.</span> <span class="nav-text">可执行代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行上下文"><span class="nav-number">3.</span> <span class="nav-text">执行上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#变量对象-（VO）"><span class="nav-number">3.1.</span> <span class="nav-text">变量对象  （VO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数的活动对象（AO）"><span class="nav-number">3.2.</span> <span class="nav-text">函数的活动对象（AO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作用域链（scope-chain）"><span class="nav-number">3.3.</span> <span class="nav-text">作用域链（scope chain）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标志符解析"><span class="nav-number">3.4.</span> <span class="nav-text">标志符解析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#我们先看一个函数的执行："><span class="nav-number">3.4.1.</span> <span class="nav-text">我们先看一个函数的执行：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scope"><span class="nav-number">3.4.2.</span> <span class="nav-text">[[scope]]</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this"><span class="nav-number">3.5.</span> <span class="nav-text">this</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#相关推荐："><span class="nav-number">3.5.1.</span> <span class="nav-text">相关推荐：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结语"><span class="nav-number">3.5.2.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -804,7 +804,7 @@ var  obj = { a: function(){
 <!--
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
