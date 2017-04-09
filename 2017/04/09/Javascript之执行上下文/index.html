@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript核心,作用域链,执行期上下文," />
+  <meta name="keywords" content="作用域链,执行期上下文,javascript核心," />
 
 
 
@@ -84,34 +84,34 @@
 
 
 
-<meta name="description" content="javascript之执行上下文关键词
+<meta name="description" content="关键词
 执行期上下文（excution context简称EC）：简称上下文（又叫执行环境）
 作用域链 （scope chain）
 变量对象（variable object简称VO）
 活动对象（activation object简称AO）
 
-概述执行上下文是Javascript中最重要的一个概念。每一段代码的执行都与它息息相关。理解了它，才能真正理解你写的js代码是">
+概述执行上下文是Javascript中最重要的一个概念。每一段代码的执行都与它息息相关。理解了它，才能真正理解你写的js代码是如何运行的。ECMA-262（5">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Javascript之执行上下文">
-<meta property="og:url" content="https://foreverwang.github.io/2017/04/04/Javascript之执行期上下文/index.html">
+<meta property="og:title" content="Javascript之标志符查找机制（执行期上下文、作用域和作用域链）">
+<meta property="og:url" content="https://foreverwang.github.io/2017/04/09/Javascript之执行上下文/index.html">
 <meta property="og:site_name" content="瞧，这个人">
-<meta property="og:description" content="javascript之执行上下文关键词
+<meta property="og:description" content="关键词
 执行期上下文（excution context简称EC）：简称上下文（又叫执行环境）
 作用域链 （scope chain）
 变量对象（variable object简称VO）
 活动对象（activation object简称AO）
 
-概述执行上下文是Javascript中最重要的一个概念。每一段代码的执行都与它息息相关。理解了它，才能真正理解你写的js代码是">
-<meta property="og:updated_time" content="2017-04-09T06:19:23.000Z">
+概述执行上下文是Javascript中最重要的一个概念。每一段代码的执行都与它息息相关。理解了它，才能真正理解你写的js代码是如何运行的。ECMA-262（5">
+<meta property="og:updated_time" content="2017-04-09T06:21:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Javascript之执行上下文">
-<meta name="twitter:description" content="javascript之执行上下文关键词
+<meta name="twitter:title" content="Javascript之标志符查找机制（执行期上下文、作用域和作用域链）">
+<meta name="twitter:description" content="关键词
 执行期上下文（excution context简称EC）：简称上下文（又叫执行环境）
 作用域链 （scope chain）
 变量对象（variable object简称VO）
 活动对象（activation object简称AO）
 
-概述执行上下文是Javascript中最重要的一个概念。每一段代码的执行都与它息息相关。理解了它，才能真正理解你写的js代码是">
+概述执行上下文是Javascript中最重要的一个概念。每一段代码的执行都与它息息相关。理解了它，才能真正理解你写的js代码是如何运行的。ECMA-262（5">
 
 
 
@@ -139,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="https://foreverwang.github.io/2017/04/04/Javascript之执行期上下文/"/>
+  <link rel="canonical" href="https://foreverwang.github.io/2017/04/09/Javascript之执行上下文/"/>
 
 
 
 
 
-  <title> Javascript之执行上下文 | 瞧，这个人 </title>
+  <title> Javascript之标志符查找机制（执行期上下文、作用域和作用域链） | 瞧，这个人 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -268,7 +268,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://foreverwang.github.io/2017/04/04/Javascript之执行期上下文/">
+  <link itemprop="mainEntityOfPage" href="https://foreverwang.github.io/2017/04/09/Javascript之执行上下文/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="foreverwang">
@@ -292,7 +292,7 @@
             
             
               
-                Javascript之执行上下文
+                Javascript之标志符查找机制（执行期上下文、作用域和作用域链）
               
             
           </h1>
@@ -307,8 +307,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-04T12:21:50+08:00">
-                2017-04-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-09T16:21:50+08:00">
+                2017-04-09
               </time>
             
 
@@ -348,8 +348,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/04/04/Javascript之执行期上下文/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/04/Javascript之执行期上下文/" itemprop="commentCount"></span>
+                <a href="/2017/04/09/Javascript之执行上下文/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/09/Javascript之执行上下文/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -375,7 +375,7 @@
       
 
       
-        <h1 id="javascript之执行上下文"><a href="#javascript之执行上下文" class="headerlink" title="javascript之执行上下文"></a>javascript之执行上下文</h1><h3 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h3><ul>
+        <h3 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h3><ul>
 <li>执行期上下文（excution context简称EC）：简称上下文（又叫执行环境）</li>
 <li>作用域链 （scope chain）</li>
 <li>变量对象（variable object简称VO）</li>
@@ -422,14 +422,14 @@
 </tbody>
 </table>
 <p>为了方便理解，一个执行上下文可以抽象为object（反正这个东西我们也摸不着嘛）。每一个执行上下文都有一系列的属性（我们称为上下文状态，即上面表格做左侧组件一列的属性）。接下来就对上面表格中的三个状态属性来一一说明。</p>
-<h5 id="变量对象-（VO）"><a href="#变量对象-（VO）" class="headerlink" title="变量对象    （VO）"></a>变量对象    （VO）</h5><p>变量对象是与执行上下文相关的数据作用域(scope of data) ,用于存储被定义在上下文中的变量声明和函数声明(注意：不包括函数表达式<a href="http://www.cnblogs.com/TomXu/archive/2011/12/29/2290308.html" target="_blank" rel="external">详见</a>) 。<br><br>定义已经很明确了，我们通过具体的栗子看下全局上下文的VO：</p>
+<h5 id="变量对象-（VO）"><a href="#变量对象-（VO）" class="headerlink" title="变量对象  （VO）"></a>变量对象  （VO）</h5><p>变量对象是与执行上下文相关的数据作用域(scope of data) ,用于存储被定义在上下文中的变量声明和函数声明(注意：不包括函数表达式<a href="http://www.cnblogs.com/TomXu/archive/2011/12/29/2290308.html" target="_blank" rel="external">详见</a>) 。<br><br>定义已经很明确了，我们通过具体的栗子看下全局上下文的VO：</p>
 <pre><code>var foo = 2;        
 function bar() {} // 函数声明
-(function baz() {}); // 函数表达式    
+(function baz() {}); // 函数表达式   
 console.log(
   this.foo == foo, // true
   window.bar == bar // true
-);    
+);  
 console.log(baz); // Uncaught ReferenceError: baz is not defined
 </code></pre><p>该例中全局上下文中变量对象会有以下属性：    </p>
 <table>
@@ -552,7 +552,7 @@ foo()(); // 3
 <li>求值this。(可先忽略)。</li>
 </ul>
 </li>
-<li><p>代码执行    </p>
+<li><p>代码执行  </p>
 <ul>
 <li>执行过程中AO内的属性值可能会发生改变：变量赋值等。</li>
 <li>执行完毕，执行流退出该函数上下文。活动对象也将被弹出作用域链。 </li>
@@ -606,11 +606,11 @@ var  obj = { a: function(){
       
         <div class="post-tags">
           
-            <a href="/tags/javascript核心/" rel="tag"># javascript核心</a>
-          
             <a href="/tags/作用域链/" rel="tag"># 作用域链</a>
           
             <a href="/tags/执行期上下文/" rel="tag"># 执行期上下文</a>
+          
+            <a href="/tags/javascript核心/" rel="tag"># javascript核心</a>
           
         </div>
       
@@ -629,10 +629,6 @@ var  obj = { a: function(){
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/04/Javascript之执行上下文/" rel="prev" title="Javascript之标志符查找机制（执行期上下文、作用域和作用域链）">
-                Javascript之标志符查找机制（执行期上下文、作用域和作用域链） <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
       
@@ -646,10 +642,10 @@ var  obj = { a: function(){
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/04/04/Javascript之执行期上下文/"
-     data-title="Javascript之执行上下文"
+        <div class="ds-share flat" data-thread-key="2017/04/09/Javascript之执行上下文/"
+     data-title="Javascript之标志符查找机制（执行期上下文、作用域和作用域链）"
      data-content=""
-     data-url="https://foreverwang.github.io/2017/04/04/Javascript之执行期上下文/">
+     data-url="https://foreverwang.github.io/2017/04/09/Javascript之执行上下文/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -676,8 +672,8 @@ var  obj = { a: function(){
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/04/04/Javascript之执行期上下文/"
-           data-title="Javascript之执行上下文" data-url="https://foreverwang.github.io/2017/04/04/Javascript之执行期上下文/">
+      <div class="ds-thread" data-thread-key="2017/04/09/Javascript之执行上下文/"
+           data-title="Javascript之标志符查找机制（执行期上下文、作用域和作用域链）" data-url="https://foreverwang.github.io/2017/04/09/Javascript之执行上下文/">
       </div>
     
   </div>
@@ -724,7 +720,7 @@ var  obj = { a: function(){
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -777,7 +773,7 @@ var  obj = { a: function(){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#javascript之执行上下文"><span class="nav-number">1.</span> <span class="nav-text">javascript之执行上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关键词"><span class="nav-number">1.0.1.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.0.2.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可执行代码"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">可执行代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行上下文"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">执行上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变量对象-（VO）"><span class="nav-number">1.0.2.2.1.</span> <span class="nav-text">变量对象    （VO）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#函数的活动对象（AO）"><span class="nav-number">1.0.2.2.2.</span> <span class="nav-text">函数的活动对象（AO）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作用域链（scope-chain）"><span class="nav-number">1.0.2.2.3.</span> <span class="nav-text">作用域链（scope chain）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#标志符解析"><span class="nav-number">1.0.2.2.4.</span> <span class="nav-text">标志符解析</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#我们先看一个函数的执行："><span class="nav-number">1.0.2.2.4.1.</span> <span class="nav-text">我们先看一个函数的执行：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#scope"><span class="nav-number">1.0.2.2.4.2.</span> <span class="nav-text">[[scope]]</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">this</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#相关推荐："><span class="nav-number">1.0.2.3.1.</span> <span class="nav-text">相关推荐：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结语"><span class="nav-number">1.0.2.3.2.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关键词"><span class="nav-number">1.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可执行代码"><span class="nav-number">2.1.</span> <span class="nav-text">可执行代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行上下文"><span class="nav-number">2.2.</span> <span class="nav-text">执行上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变量对象-（VO）"><span class="nav-number">2.2.1.</span> <span class="nav-text">变量对象  （VO）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#函数的活动对象（AO）"><span class="nav-number">2.2.2.</span> <span class="nav-text">函数的活动对象（AO）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作用域链（scope-chain）"><span class="nav-number">2.2.3.</span> <span class="nav-text">作用域链（scope chain）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#标志符解析"><span class="nav-number">2.2.4.</span> <span class="nav-text">标志符解析</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#我们先看一个函数的执行："><span class="nav-number">2.2.4.1.</span> <span class="nav-text">我们先看一个函数的执行：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#scope"><span class="nav-number">2.2.4.2.</span> <span class="nav-text">[[scope]]</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this"><span class="nav-number">2.3.</span> <span class="nav-text">this</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#相关推荐："><span class="nav-number">2.3.1.</span> <span class="nav-text">相关推荐：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结语"><span class="nav-number">2.3.2.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
