@@ -106,7 +106,7 @@ var a = &amp;apos;2&amp;apos;;
 (function(){
   &amp;apos;use strict&amp;apos;;
   foo">
-<meta property="og:updated_time" content="2017-04-09T06:26:53.000Z">
+<meta property="og:updated_time" content="2017-04-10T16:22:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Javascript语言之蜜汁this">
 <meta name="twitter:description" content="this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。
@@ -660,7 +660,31 @@ foo.apply(null,[2,3]) //a:2,b:3
 var bar = foo.bind(null,2);
 bar(3);//a:2,b:3
 </code></pre><p>至此，this讲解就接近尾声了–还有关于this的最后一点：this词法。</p>
-<h3 id="this词法"><a href="#this词法" class="headerlink" title="this词法"></a>this词法</h3><p>已经这么晚了，就先不写了吧，收工，有空再来补全。</p>
+<h3 id="this词法"><a href="#this词法" class="headerlink" title="this词法"></a>this词法</h3><p> 我们知道javascript使用了词法作用域，但javascript的this机制某种程度上很像动态作用域，因为this的值通常跟函数调用有关，而跟词法作用域无关。<br><br> 事情一直到ES6之前是这样的。ES6箭头函数使得this的值和词法作用域联系起来。</p>
+<ul>
+<li>箭头函数里this值不实用前面的任何规则，而是定义该箭头函数式执行上下文里this的值。</li>
+<li><p>箭头函数的this绑定无法被修改 (new 也不行)</p>
+<p>又到了举个栗子的时候了：</p>
+<p> function foo(){</p>
+<pre><code>return (a) =&gt; {
+    //this继承自foo
+    console.log(this.a);
+}
+</code></pre><p> }</p>
+<p> var obj1 = {a:2};<br> var obj3 = {a:3};<br> var bar = foo.call(obj1);<br> bar.call(obj2);//2</p>
+</li>
+</ul>
+<p>感觉这个箭头函数里的this值似曾相识？是的，在ES6之前，我们就经常使用一种和箭头函数一样的模式。</p>
+<pre><code>function foo(){
+    var self = this; 
+    setTimeout(function(){
+        console.log(self.a);
+    },100);
+}    
+
+var obj = {a:2};
+foo.call(obj);//2
+</code></pre><p>（完）</p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
 <li><a href="https://github.com/getify/You-Dont-Know-JS/tree/master/this%20%26%20object%20prototypes" target="_blank" rel="external">《你不知道的javascipt》</a></li>
 <li>《javascript权威指南》</li>
@@ -888,11 +912,11 @@ bar(3);//a:2,b:3
 <!--
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
-  Theme -
+  Thème -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Mist
   </a>
