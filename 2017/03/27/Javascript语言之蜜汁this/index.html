@@ -106,7 +106,7 @@ var a = &amp;apos;2&amp;apos;;
 (function(){
   &amp;apos;use strict&amp;apos;;
   foo">
-<meta property="og:updated_time" content="2017-04-10T16:22:54.000Z">
+<meta property="og:updated_time" content="2017-04-10T16:26:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Javascript语言之蜜汁this">
 <meta name="twitter:description" content="this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。
@@ -623,7 +623,7 @@ baz(3);
 <ul>
 <li>bind返回的函数被<code>用作构造函数</code>，将忽略传入bind的this,原始函数就会以构造函数的形式调用。bind时传入的实参会原封不动的传入原始函数，调用绑定函数是传入的参数紧跟其后。      </li>
 </ul>
-<h4 id="new-绑定"><a href="#new-绑定" class="headerlink" title="new 绑定"></a>new 绑定</h4><p>先看下new 一个构造函数都发生了什么：</p>
+<h4 id="4-new-绑定"><a href="#4-new-绑定" class="headerlink" title="4.new 绑定"></a>4.new 绑定</h4><p>先看下new 一个构造函数都发生了什么：</p>
 <ul>
 <li>新建一个新对象（继承自Constructor.prototype）</li>
 <li>将构造函数的作用域赋给新对象，因此this指向这个新对象</li>
@@ -663,18 +663,21 @@ bar(3);//a:2,b:3
 <h3 id="this词法"><a href="#this词法" class="headerlink" title="this词法"></a>this词法</h3><p> 我们知道javascript使用了词法作用域，但javascript的this机制某种程度上很像动态作用域，因为this的值通常跟函数调用有关，而跟词法作用域无关。<br><br> 事情一直到ES6之前是这样的。ES6箭头函数使得this的值和词法作用域联系起来。</p>
 <ul>
 <li>箭头函数里this值不实用前面的任何规则，而是定义该箭头函数式执行上下文里this的值。</li>
-<li><p>箭头函数的this绑定无法被修改 (new 也不行)</p>
-<p>又到了举个栗子的时候了：</p>
-<p> function foo(){</p>
-<pre><code>return (a) =&gt; {
-    //this继承自foo
-    console.log(this.a);
-}
-</code></pre><p> }</p>
-<p> var obj1 = {a:2};<br> var obj3 = {a:3};<br> var bar = foo.call(obj1);<br> bar.call(obj2);//2</p>
-</li>
+<li>箭头函数的this绑定无法被修改 (new 也不行)</li>
 </ul>
-<p>感觉这个箭头函数里的this值似曾相识？是的，在ES6之前，我们就经常使用一种和箭头函数一样的模式。</p>
+<p>又到了举个栗子的时候了：</p>
+<pre><code> function foo(){
+     return (a) =&gt; {
+         //this继承自foo
+         console.log(this.a);
+     }
+ }
+
+ var obj1 = {a:2};
+ var obj3 = {a:3};
+ var bar = foo.call(obj1);
+bar.call(obj2);//2
+</code></pre><p>感觉这个箭头函数里的this值似曾相识？是的，在ES6之前，我们就经常使用一种和箭头函数一样的模式。</p>
 <pre><code>function foo(){
     var self = this; 
     setTimeout(function(){
@@ -881,7 +884,7 @@ foo.call(obj);//2
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#先看几个题目"><span class="nav-number">1.</span> <span class="nav-text">先看几个题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要用this"><span class="nav-number">2.</span> <span class="nav-text">为什么要用this?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this是什么？"><span class="nav-number">3.</span> <span class="nav-text">this是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#this常见误区"><span class="nav-number">3.1.</span> <span class="nav-text">this常见误区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this到底是啥"><span class="nav-number">3.2.</span> <span class="nav-text">this到底是啥</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this绑定规则（4个）"><span class="nav-number">4.</span> <span class="nav-text">this绑定规则（4个）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-默认绑定"><span class="nav-number">4.1.</span> <span class="nav-text">1.默认绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-隐式绑定"><span class="nav-number">4.2.</span> <span class="nav-text">2.隐式绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-显示绑定"><span class="nav-number">4.3.</span> <span class="nav-text">3.显示绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#new-绑定"><span class="nav-number">4.4.</span> <span class="nav-text">new 绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绑定优先级"><span class="nav-number">4.5.</span> <span class="nav-text">绑定优先级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定例外"><span class="nav-number">5.</span> <span class="nav-text">绑定例外</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#被忽略的this"><span class="nav-number">5.1.</span> <span class="nav-text">被忽略的this</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this词法"><span class="nav-number">6.</span> <span class="nav-text">this词法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#先看几个题目"><span class="nav-number">1.</span> <span class="nav-text">先看几个题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要用this"><span class="nav-number">2.</span> <span class="nav-text">为什么要用this?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this是什么？"><span class="nav-number">3.</span> <span class="nav-text">this是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#this常见误区"><span class="nav-number">3.1.</span> <span class="nav-text">this常见误区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#this到底是啥"><span class="nav-number">3.2.</span> <span class="nav-text">this到底是啥</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this绑定规则（4个）"><span class="nav-number">4.</span> <span class="nav-text">this绑定规则（4个）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-默认绑定"><span class="nav-number">4.1.</span> <span class="nav-text">1.默认绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-隐式绑定"><span class="nav-number">4.2.</span> <span class="nav-text">2.隐式绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-显示绑定"><span class="nav-number">4.3.</span> <span class="nav-text">3.显示绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-new-绑定"><span class="nav-number">4.4.</span> <span class="nav-text">4.new 绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绑定优先级"><span class="nav-number">4.5.</span> <span class="nav-text">绑定优先级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定例外"><span class="nav-number">5.</span> <span class="nav-text">绑定例外</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#被忽略的this"><span class="nav-number">5.1.</span> <span class="nav-text">被忽略的this</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this词法"><span class="nav-number">6.</span> <span class="nav-text">this词法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
