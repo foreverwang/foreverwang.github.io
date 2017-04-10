@@ -106,7 +106,7 @@ var a = &amp;apos;2&amp;apos;;
 (function(){
   &amp;apos;use strict&amp;apos;;
   foo">
-<meta property="og:updated_time" content="2017-04-10T16:26:22.000Z">
+<meta property="og:updated_time" content="2017-04-10T17:04:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Javascript语言之蜜汁this">
 <meta name="twitter:description" content="this关键字是Javascript中最重要的机制之一。关于介绍他的文章也比比皆是，而大多都浅尝辄止，浮于表面。故整理此篇。
@@ -460,7 +460,7 @@ speak.call( you ); // Hello, I&apos;m 小b
 speak(me);  // Hello, I&apos;m 小a
 speak(you); // Hello, I&apos;m 小b
 </code></pre><p>显然，this提供了一种更优雅的方式来隐式传递一个对象的引用，因此可以使API设计得更加简洁且易于复用。<br>随着使用的模式越来越复杂，显示传递上下文对象会让代码变得越来越混乱，使用this则不会这样。</p>
-<h3 id="this是什么？"><a href="#this是什么？" class="headerlink" title="this是什么？"></a>this是什么？</h3><p>说起this,这要看作用域是什么。javascript分全局作用域和函数作用域（ES6有了块级作用域）。<br>在全局运行上下文中（在任何函数体外部）很简单，this指代全局对象，无论是否在严格模式下。以下说的都是在函数作用域中的this。</p>
+<h3 id="this是什么？"><a href="#this是什么？" class="headerlink" title="this是什么？"></a>this是什么？</h3><p>说起this,这要看执行上下文是什么。javascript中根据可执行的种类分全局执行上下文和函数执行上下文（ES6有了块级上下文）。（关于执行上下文见另一篇<a href="https://foreverwang.github.io/2017/04/09/Javascript%E4%B9%8B%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/">博文</a>）<br>在全局执行上下文中（在任何函数体外部）很简单，this指代全局对象，无论是否在严格模式下。以下说的都是在函数上下文中的this。</p>
 <h4 id="this常见误区"><a href="#this常见误区" class="headerlink" title="this常见误区"></a>this常见误区</h4><ul>
 <li>this 不指向函数自身（就没必要附加例子了）</li>
 <li><p>this 任何情况下也不指向函数的词法作用域        </p>
@@ -476,7 +476,7 @@ foo()//undefined
 </code></pre><p>  这段代码试图通过this联通 foo和bar的词法作用域，从而让bar可以访问foo作用域里的变量a,当然这里是不能如愿的。不能使用this来引用一个词法作用域内部的东西。</p>
 </li>
 </ul>
-<h4 id="this到底是啥"><a href="#this到底是啥" class="headerlink" title="this到底是啥"></a>this到底是啥</h4><p> this 是在运行时进行绑定的，并不是在编写时绑定，他的上下文取决于函数调用时的各种条件。<br> （this的值只和函数调用有关，和函数定义无关—这个说法是不对的，有两个例外：bind 和箭头函数，后面说）<br> 当一个函数被调用的时候，会创建一个活动记录（又叫执行期上下文）。这个记录会包含函数的调用栈，函数的调用方法，函传入的参数等信息，this就是记录的其中一个属性，会在函数执行过程中用到。</p>
+<h4 id="this到底是啥"><a href="#this到底是啥" class="headerlink" title="this到底是啥"></a>this到底是啥</h4><p> this 是在运行时进行绑定的，并不是在编写时绑定，他的上下文取决于函数调用时的各种条件。<br> （this的值只和函数调用有关，和函数定义无关—这个说法是不对的，有两个例外：bind 和箭头函数，后面说）<br> 当一个函数被调用的时候，进入这个函数的执行上下文。执行上下文里包含：函数的活动对象（函数传入的参数等）；作用域链 （函数调用栈等）；this就是上下文的其中一个属性，会在函数执行过程中用到。</p>
 <h3 id="this绑定规则（4个）"><a href="#this绑定规则（4个）" class="headerlink" title="this绑定规则（4个）"></a>this绑定规则（4个）</h3><p>先找确定函数的调用位置，调用栈</p>
 <h4 id="1-默认绑定"><a href="#1-默认绑定" class="headerlink" title="1.默认绑定"></a>1.默认绑定</h4><p>先说结论：</p>
 <ul>
@@ -688,6 +688,7 @@ bar.call(obj2);//2
 var obj = {a:2};
 foo.call(obj);//2
 </code></pre><p>（完）</p>
+<p>关于this的细节就讲完了。this作为执行上下文的一个属性，由于他的规则比较多所以单独拿出来说。关于执行上下文的其他内容甚至更为重要，<br>接下来建议拓展阅读另一篇博文<a href="https://foreverwang.github.io/2017/04/09/Javascript%E4%B9%8B%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/">javascript之执行上下文</a>。<br>私以为搞透执行上下文，是真正理解javascript这门语言的必要条件。</p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
 <li><a href="https://github.com/getify/You-Dont-Know-JS/tree/master/this%20%26%20object%20prototypes" target="_blank" rel="external">《你不知道的javascipt》</a></li>
 <li>《javascript权威指南》</li>
