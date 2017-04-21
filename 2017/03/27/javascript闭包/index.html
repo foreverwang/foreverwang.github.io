@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="博客,hexo," />
+  <meta name="keywords" content="javascript核心,闭包," />
 
 
 
@@ -84,21 +84,28 @@
 
 
 
-<meta name="description" content="Hexo官网
-hexo报错解决">
+<meta name="description" content="javascript蜜汁闭包说起闭包，对很多人大概是一个这样的状态：我知道这是一个闭包，但却说不出一个闭包是什么。犹如一个欲拒还迎半遮半掩的姑娘。
+看定义，真是含糊不清；看各种文章又总是片面浅显。 这里我试图一层一层剥开闭包的外衣，还原一个赤裸裸的闭包。本文结束后你会发现，闭包无处不在；我们根本不需知道闭包的具体定义是什么。
+什么是闭包？先看下定义：
+
+闭包是指可以包含自由（未绑定到特定对象）变量">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo + github pages搭建个人博客">
-<meta property="og:url" content="https://foreverwang.github.io/2017/01/23/hello-hexo/index.html">
+<meta property="og:title" content="Javascript闭包">
+<meta property="og:url" content="https://foreverwang.github.io/2017/03/27/javascript闭包/index.html">
 <meta property="og:site_name" content="瞧，这个人">
-<meta property="og:description" content="Hexo官网
-hexo报错解决">
-<meta property="og:image" content="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg">
-<meta property="og:updated_time" content="2017-04-09T06:29:31.000Z">
+<meta property="og:description" content="javascript蜜汁闭包说起闭包，对很多人大概是一个这样的状态：我知道这是一个闭包，但却说不出一个闭包是什么。犹如一个欲拒还迎半遮半掩的姑娘。
+看定义，真是含糊不清；看各种文章又总是片面浅显。 这里我试图一层一层剥开闭包的外衣，还原一个赤裸裸的闭包。本文结束后你会发现，闭包无处不在；我们根本不需知道闭包的具体定义是什么。
+什么是闭包？先看下定义：
+
+闭包是指可以包含自由（未绑定到特定对象）变量">
+<meta property="og:updated_time" content="2017-04-11T16:19:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo + github pages搭建个人博客">
-<meta name="twitter:description" content="Hexo官网
-hexo报错解决">
-<meta name="twitter:image" content="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg">
+<meta name="twitter:title" content="Javascript闭包">
+<meta name="twitter:description" content="javascript蜜汁闭包说起闭包，对很多人大概是一个这样的状态：我知道这是一个闭包，但却说不出一个闭包是什么。犹如一个欲拒还迎半遮半掩的姑娘。
+看定义，真是含糊不清；看各种文章又总是片面浅显。 这里我试图一层一层剥开闭包的外衣，还原一个赤裸裸的闭包。本文结束后你会发现，闭包无处不在；我们根本不需知道闭包的具体定义是什么。
+什么是闭包？先看下定义：
+
+闭包是指可以包含自由（未绑定到特定对象）变量">
 
 
 
@@ -126,13 +133,13 @@ hexo报错解决">
 
 
 
-  <link rel="canonical" href="https://foreverwang.github.io/2017/01/23/hello-hexo/"/>
+  <link rel="canonical" href="https://foreverwang.github.io/2017/03/27/javascript闭包/"/>
 
 
 
 
 
-  <title> hexo + github pages搭建个人博客 | 瞧，这个人 </title>
+  <title> Javascript闭包 | 瞧，这个人 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -255,7 +262,7 @@ hexo报错解决">
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://foreverwang.github.io/2017/01/23/hello-hexo/">
+  <link itemprop="mainEntityOfPage" href="https://foreverwang.github.io/2017/03/27/javascript闭包/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="foreverwang">
@@ -279,7 +286,7 @@ hexo报错解决">
             
             
               
-                hexo + github pages搭建个人博客
+                Javascript闭包
               
             
           </h1>
@@ -294,8 +301,8 @@ hexo报错解决">
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-23T00:36:23+08:00">
-                2017-01-23
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-27T01:51:38+08:00">
+                2017-03-27
               </time>
             
 
@@ -317,8 +324,8 @@ hexo报错解决">
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo</span>
+                  <a href="/categories/javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">javascript</span>
                   </a>
                 </span>
 
@@ -335,8 +342,8 @@ hexo报错解决">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/01/23/hello-hexo/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/23/hello-hexo/" itemprop="commentCount"></span>
+                <a href="/2017/03/27/javascript闭包/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/27/javascript闭包/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -360,92 +367,27 @@ hexo报错解决">
 
       
       
-        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-          
-          
-            <div class="post-gallery-row">
-              <a class="post-gallery-img fancybox"
-                 href="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg" rel="gallery_cj1ac9wdx000506a0x3oa4kvw"
-                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
-                <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg" itemprop="contentUrl"/>
-              </a>
-            
-          
-
-          
-          </div>
-        </div>
-      
 
       
-        <p><a href="https://hexo.io/" target="_blank" rel="external">Hexo官网</a></p>
-<h3 id="hexo报错解决"><a href="#hexo报错解决" class="headerlink" title="hexo报错解决"></a>hexo报错解决</h3><a id="more"></a>
-<ul>
-<li><p>hexo init  报错  </p>
-   <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm uninstall dtrace-provider</div></pre></td></tr></table></figure>
-</li>
-<li><p>hero server 报错</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo --no-optional</div></pre></td></tr></table></figure>
-<p>  通常这个命令能解决，（我这解决不了 就找到报错的地方，看了下这个报错没啥影响就注释掉了，不然强迫症）</p>
-</li>
-</ul>
-<h3 id="github-pages"><a href="#github-pages" class="headerlink" title="github pages"></a>github pages</h3><h4 id="在github-新建仓库"><a href="#在github-新建仓库" class="headerlink" title="在github 新建仓库"></a>在github 新建仓库</h4><p>仓库命名： username.github.io, 此时就可以访问 username.github.io了</p>
-<h4 id="github-pages-和-hexo-关联"><a href="#github-pages-和-hexo-关联" class="headerlink" title="github pages 和 hexo 关联"></a>github pages 和 hexo 关联</h4><ul>
-<li>hexo -g 会生成一个静态网站（第一次会生成一个public目录），这个静态文件可以直接访问。</li>
-<li>需要将hexo生成的静态网站，提交(git commit)到github上。</li>
-</ul>
-<h4 id="通过hexo-命令将静态站点push到github"><a href="#通过hexo-命令将静态站点push到github" class="headerlink" title="通过hexo 命令将静态站点push到github"></a>通过hexo 命令将静态站点push到github</h4><ul>
-<li><p>安装插件hexo-deployer-git</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure>
-</li>
-<li><p>修改 hexo的 _config.yml</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  <span class="built_in">type</span>: git</div><div class="line">  repo: https://github.com/username/username.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="更换hexo主题"><a href="#更换hexo主题" class="headerlink" title="更换hexo主题"></a>更换hexo主题</h4><ul>
-<li><p>克隆主题到themes路径下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure>
-<p>注意：主题文件夹放到themes下 文件夹命名和配置文件里保持一致</p>
-</li>
-<li><p>修改站点配置文件 _config.yml</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: next</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="hexo添加分类页面"><a href="#hexo添加分类页面" class="headerlink" title="hexo添加分类页面"></a>hexo添加分类页面</h4><ul>
-<li><p>新建分类页</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new page categories</div></pre></td></tr></table></figure>
-</li>
-<li><p>在 source/categories 目录的 index.md 中修改:</p>
-<pre><code>title: 分类
-date: 2015-12-02 12:44:45
-type: &apos;categories&apos;
-</code></pre></li>
-</ul>
-<h4 id="hexo-常用命令"><a href="#hexo-常用命令" class="headerlink" title="hexo 常用命令"></a>hexo 常用命令</h4><ul>
-<li><p>新建一篇博客</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new filename</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>起本地服务</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo s</div></pre></td></tr></table></figure>
-</li>
-<li><p>生成静态站点</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo g</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>发布</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo d</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>清除本地缓存</p>
-<pre><code class="bash">hexo clean
-</code></pre>
-</li>
-</ul>
-
+        <h3 id="javascript蜜汁闭包"><a href="#javascript蜜汁闭包" class="headerlink" title="javascript蜜汁闭包"></a>javascript蜜汁闭包</h3><p>说起闭包，对很多人大概是一个这样的状态：我知道这是一个闭包，但却说不出一个闭包是什么。犹如一个欲拒还迎半遮半掩的姑娘。</p>
+<p>看定义，真是含糊不清；看各种文章又总是片面浅显。 这里我试图一层一层剥开闭包的外衣，还原一个赤裸裸的闭包。本文结束后你会发现，闭包无处不在；我们根本不需知道闭包的具体定义是什么。</p>
+<h3 id="什么是闭包？"><a href="#什么是闭包？" class="headerlink" title="什么是闭包？"></a>什么是闭包？</h3><p>先看下定义：</p>
+<blockquote>
+<p>闭包是指可以包含自由（未绑定到特定对象）变量的代码块；这些变量不是在这个代码块内或者任何全局上下文中定义的，而是在定义代码块的环境中定义（局部变量）。</p>
+</blockquote>
+<p>单看这个定义好像还是不能知道javascript中闭包是什么。<br><br>那闭包在javascript是怎么实现的呢？<br></p>
+<blockquote>
+<p>答案是：词法作用域+作用域链。</p>
+</blockquote>
+<p>如果你已经彻底搞懂了<a href="https://foreverwang.github.io/2017/04/09/Javascript%E4%B9%8B%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87/">javascript执行上下文</a>，那么你已经了解了闭包的本质了，具体闭包的定义是什么已经完全不重要了。</p>
+<p>ECMA262中规定JS使用Scope Chain来实现闭包。<br>js采用词法作用域，函数的执行依赖于变量作用域，这个作用域是在函数定义时决定的（而不是函数决定时调用的）。函数对象的内部状态不仅包含函数体内的代码逻辑，还必须引用当前的作用域链。函数体内部的变量可以保存在函数作用域内，这种特性叫做闭包。</p>
+<blockquote>
+<p>作用域链 = VO + [[scope]]</p>
+</blockquote>
+<p>[[scope]]是函数的一个内部属性，当函数定义的时候就已经确定，这个属性的值是由父执行环境的变量对象组成的一个链表。</p>
+<p>当一个函数执行的时候，函数内标志符的解析就是在作用域链里查找的，先在VO里查找，若找不到就从[[scope]]内的下一个变量对象继续查找。<br>这使得函数能记住定义它时的词法作用域，不管这个函数在那里调用。这就是闭包。</p>
+<h3 id="闭包带来了哪些改变"><a href="#闭包带来了哪些改变" class="headerlink" title="闭包带来了哪些改变"></a>闭包带来了哪些改变</h3><p>不被释放</p>
+<h3 id="这是闭包吗？"><a href="#这是闭包吗？" class="headerlink" title="这是闭包吗？"></a>这是闭包吗？</h3><h3 id="我们怎么应用闭包？"><a href="#我们怎么应用闭包？" class="headerlink" title="我们怎么应用闭包？"></a>我们怎么应用闭包？</h3>
       
     </div>
 
@@ -468,9 +410,9 @@ type: &apos;categories&apos;
       
         <div class="post-tags">
           
-            <a href="/tags/博客/" rel="tag"># 博客</a>
+            <a href="/tags/javascript核心/" rel="tag"># javascript核心</a>
           
-            <a href="/tags/hexo/" rel="tag"># hexo</a>
+            <a href="/tags/闭包/" rel="tag"># 闭包</a>
           
         </div>
       
@@ -479,14 +421,18 @@ type: &apos;categories&apos;
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/01/23/hello-hexo/" rel="next" title="hexo + github pages搭建个人博客">
+                <i class="fa fa-chevron-left"></i> hexo + github pages搭建个人博客
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/27/javascript闭包/" rel="prev" title="Javascript闭包">
-                Javascript闭包 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/27/Javascript语言之蜜汁this/" rel="prev" title="Javascript语言之蜜汁this">
+                Javascript语言之蜜汁this <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -502,10 +448,10 @@ type: &apos;categories&apos;
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/01/23/hello-hexo/"
-     data-title="hexo + github pages搭建个人博客"
+        <div class="ds-share flat" data-thread-key="2017/03/27/javascript闭包/"
+     data-title="Javascript闭包"
      data-content=""
-     data-url="https://foreverwang.github.io/2017/01/23/hello-hexo/">
+     data-url="https://foreverwang.github.io/2017/03/27/javascript闭包/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -532,8 +478,8 @@ type: &apos;categories&apos;
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/01/23/hello-hexo/"
-           data-title="hexo + github pages搭建个人博客" data-url="https://foreverwang.github.io/2017/01/23/hello-hexo/">
+      <div class="ds-thread" data-thread-key="2017/03/27/javascript闭包/"
+           data-title="Javascript闭包" data-url="https://foreverwang.github.io/2017/03/27/javascript闭包/">
       </div>
     
   </div>
@@ -633,7 +579,7 @@ type: &apos;categories&apos;
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo报错解决"><span class="nav-number">1.</span> <span class="nav-text">hexo报错解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#github-pages"><span class="nav-number">2.</span> <span class="nav-text">github pages</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在github-新建仓库"><span class="nav-number">2.1.</span> <span class="nav-text">在github 新建仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#github-pages-和-hexo-关联"><span class="nav-number">2.2.</span> <span class="nav-text">github pages 和 hexo 关联</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过hexo-命令将静态站点push到github"><span class="nav-number">2.3.</span> <span class="nav-text">通过hexo 命令将静态站点push到github</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更换hexo主题"><span class="nav-number">2.4.</span> <span class="nav-text">更换hexo主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hexo添加分类页面"><span class="nav-number">2.5.</span> <span class="nav-text">hexo添加分类页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hexo-常用命令"><span class="nav-number">2.6.</span> <span class="nav-text">hexo 常用命令</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#javascript蜜汁闭包"><span class="nav-number">1.</span> <span class="nav-text">javascript蜜汁闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是闭包？"><span class="nav-number">2.</span> <span class="nav-text">什么是闭包？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包带来了哪些改变"><span class="nav-number">3.</span> <span class="nav-text">闭包带来了哪些改变</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这是闭包吗？"><span class="nav-number">4.</span> <span class="nav-text">这是闭包吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我们怎么应用闭包？"><span class="nav-number">5.</span> <span class="nav-text">我们怎么应用闭包？</span></a></li></ol></div>
             
 
           </div>
