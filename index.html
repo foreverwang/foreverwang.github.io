@@ -355,8 +355,10 @@
           
             <h3 id="什么是flux"><a href="#什么是flux" class="headerlink" title="什么是flux"></a>什么是flux</h3><p>flux是一种架构模式，用来指导（或约束）我们的软件结构。其核心是“单向数据流模式”。同MVC架构是同样的存在。<br>(举例 ：React 说自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分)</p>
 <h3 id="单向数据流"><a href="#单向数据流" class="headerlink" title="单向数据流"></a>单向数据流</h3><p>Flux 的核心“单向数据流“的结构和流程：</p>
-<pre><code>（通常是view）Action --&gt; Dispatcher --&gt; Store --&gt; View
-</code></pre><ul>
+<blockquote>
+<p>  Action –&gt; Dispatcher –&gt; Store –&gt; View</p>
+</blockquote>
+<ul>
 <li>首先要有 action，通过定义一些 action creator方法 根据需要创建 Action。</li>
 <li>View 层通过用户交互（比如 onClick）会触发 Action</li>
 <li>Dispatcher 会分发 所触发的 Action 到所有注册的 Store 的回调函数。</li>
@@ -1561,7 +1563,7 @@ var a = &apos;2&apos;;
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg" rel="gallery_cj7ncdh8d0006daa0wu7srnz8"
+                 href="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg" rel="gallery_cj7nchgn0000672a04v9d902q"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg" itemprop="contentUrl"/>
               </a>
@@ -1722,11 +1724,11 @@ var a = &apos;2&apos;;
 <!--
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
-  Theme -
+  Thème -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Mist
   </a>
