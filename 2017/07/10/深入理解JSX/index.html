@@ -100,7 +100,7 @@ JSX的运行环境
 JSX提供了一种可以在JS里写XML的语法。
 JSX的运行环境
 没有环境可以直接直接执行JSX代码">
-<meta property="og:updated_time" content="2018-01-06T16:27:28.000Z">
+<meta property="og:updated_time" content="2018-01-06T16:47:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解JSX">
 <meta name="twitter:description" content="JSX 是啥?
@@ -404,9 +404,8 @@ JSX的运行环境
 <p>jsx的优势之一就是不需要掌握一门模板语法。如果说掌握一种模板语言并不是很大的问题，那么其实由模板带来的架构复杂性则是让框架也变得复杂的重要原因：<br><a href="http://www.infoq.com/cn/articles/react-jsx-and-component" target="_blank" rel="external">http://www.infoq.com/cn/articles/react-jsx-and-component</a></p>
 <p>React直接放弃了模板而发明了JSX。</p>
 <h3 id="JSX的语法"><a href="#JSX的语法" class="headerlink" title="JSX的语法"></a>JSX的语法</h3><p>这里不会对jsx语法详细介绍，只介绍一些注意点。<a href="https://facebook.github.io/react/docs/jsx-in-depth.html" target="_blank" rel="external">详情</a></p>
-<h4 id="一、通过-插入js表达式"><a href="#一、通过-插入js表达式" class="headerlink" title="一、通过{}插入js表达式"></a>一、通过{}插入js表达式</h4><pre><code>var person = &lt;Person name={window.isLoggedIn ? window.name : &apos;&apos;} /&gt;;
-
-这个功能就很强大了，你可以尽情的使用js的功能： 
+<h4 id="一、通过-插入js表达式"><a href="#一、通过-插入js表达式" class="headerlink" title="一、通过{}插入js表达式"></a>一、通过{}插入js表达式</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var person = <span class="tag">&lt;<span class="name">Person</span> <span class="attr">name</span>=<span class="string">&#123;window.isLoggedIn</span> ? <span class="attr">window.name</span> <span class="attr">:</span> ''&#125; /&gt;</span>;</div></pre></td></tr></table></figure>
+<pre><code>这个功能就很强大了，你可以尽情的使用js的功能： 
 </code></pre><h4 id="二、组件tag-大小写敏感"><a href="#二、组件tag-大小写敏感" class="headerlink" title="二、组件tag 大小写敏感"></a>二、组件tag 大小写敏感</h4><p>这里还不是一般的敏感，大小写是有限制的。所有对应证实节点的tag 要小写开头，所有组件节点tag 要大写开头。大小写是告诉转换工具（babel）要如何转换。我们看个例子：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">React.render(<span class="tag">&lt;<span class="name">div</span>&gt;</span>xxx<span class="tag">&lt;/<span class="name">div</span>&gt;</span>)</div><div class="line"></div><div class="line">React.render(<span class="tag">&lt;<span class="name">App</span>/&gt;</span>)</div></pre></td></tr></table></figure>
 <p> 转换后==&gt;</p>

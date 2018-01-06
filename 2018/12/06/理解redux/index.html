@@ -100,7 +100,7 @@ Redux is a predictable state container for JavaScript apps.
 
 翻译一下：redux 是javascript 应用状态容器，他提供可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单向数据流。
 我们先看一个redux">
-<meta property="og:updated_time" content="2018-01-06T16:23:19.000Z">
+<meta property="og:updated_time" content="2018-01-06T16:47:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解redux">
 <meta name="twitter:description" content="redux简单介绍前面理解了flux,本篇来理解redux。redux的官方介绍 
@@ -384,12 +384,8 @@ Redux is a predictable state container for JavaScript apps.
 <li>操作数据和响应用户操作的方法。 </li>
 </ul>
 <p>这些即对应MVC架构的view、model、controller。<br>在flux、redux里，也有这些角色，那他们和MVC架构有何不同呢？那就是 flux、redux强制单向数据流来使得数据可预测。 下面我们来看redux的概念和结构。</p>
-<h3 id="redux-结构"><a href="#redux-结构" class="headerlink" title="redux 结构"></a>redux 结构</h3><p>上面这个例子中，状态变化的数据流向是下边这样的：</p>
-<pre><code>      dispatch
-actions --&gt; store | reducers  --&gt; new state --&gt; view 
- |                                               |
- &lt;-----------------------------------------------
-</code></pre><p>首先创通过createStore(counter)建了一个store。<br>点击加号的过程：触发一个加一的action: store.dispatch({ type: ‘INCREMENT’ }),dispatch 会把这个action分发到reducer（这里是counter)里。reducer 接收当前的应用状态state,返回更改后的state。 到这里数据就完成了一次修改。 由于我们的view 事先订阅了store（store.subscribe(render)）,此时store 会通知view state 变了，view 刷新（调用render方法）。</p>
+<h3 id="redux-结构"><a href="#redux-结构" class="headerlink" title="redux 结构"></a>redux 结构</h3><p>上面这个例子中，状态变化的数据流向是下边这样的：<br>&gt;<br>           dispatch<br>     actions –&gt; store | reducers  –&gt; new state –&gt; view<br>      |                                               |<br>      &lt;———————————————–</p>
+<p>首先创通过createStore(counter)建了一个store。<br>点击加号的过程：触发一个加一的action: store.dispatch({ type: ‘INCREMENT’ }),dispatch 会把这个action分发到reducer（这里是counter)里。reducer 接收当前的应用状态state,返回更改后的state。 到这里数据就完成了一次修改。 由于我们的view 事先订阅了store（store.subscribe(render)）,此时store 会通知view state 变了，view 刷新（调用render方法）。</p>
 <h4 id="action"><a href="#action" class="headerlink" title="action"></a>action</h4><h5 id="action概念"><a href="#action概念" class="headerlink" title="action概念"></a>action概念</h5><p>和 flux里的概念一样，用来描述发生了什么。<br>是一个普通对象，包含一个type属性来描述这个动作， 和其他数据属性。<br>比如 { type: ‘INCREMENT’, num: 1},描述一个增加的动作，增加值为1。</p>
 <h5 id="action-扩展"><a href="#action-扩展" class="headerlink" title="action 扩展"></a>action 扩展</h5><ul>
 <li><p>createAction</p>
@@ -412,13 +408,8 @@ actions --&gt; store | reducers  --&gt; new state --&gt; view
 <li>提供 subscribe(listener) / unsubscribe(listener) 来注册和解绑监听者。 </li>
 </ul>
 <p>Redux 应用只有一个单一的 store，当需要拆分数据处理逻辑时，你应该使用 reducer 组合 而不是创建多个 store。</p>
-<h3 id="redux-源码解读-基于redux3-7"><a href="#redux-源码解读-基于redux3-7" class="headerlink" title="redux 源码解读(基于redux3.7)"></a>redux 源码解读(基于redux3.7)</h3><h4 id="先看下代码结构"><a href="#先看下代码结构" class="headerlink" title="先看下代码结构"></a>先看下代码结构</h4><p>redux 对外暴露五个方法，分别对应五个同名js文件：</p>
-<pre><code>createStore.js //保存应用状态 定义内部方法，输出对外暴露的方法
-combineReducers.js //将多个reducer 合并成一个
-bindActionCreators.js //把actionCreator 包了一层dispatch，使用时可以像普通函数一样调用actionCreator
-applyMiddleware.js //组合串联middleware
-compose.js //工具方法，将middleware中间件方法组合成一个调用链
-</code></pre><h4 id="createStore-js"><a href="#createStore-js" class="headerlink" title="createStore.js"></a>createStore.js</h4><p>这是redux 最核心概念的实现部分。createStore方法的作用是创建一个store,并维持state。下面我们就通过源码看下store 是如何维持state的。</p>
+<h3 id="redux-源码解读-基于redux3-7"><a href="#redux-源码解读-基于redux3-7" class="headerlink" title="redux 源码解读(基于redux3.7)"></a>redux 源码解读(基于redux3.7)</h3><h4 id="先看下代码结构"><a href="#先看下代码结构" class="headerlink" title="先看下代码结构"></a>先看下代码结构</h4><p>redux 对外暴露五个方法，分别对应五个同名js文件：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">createStore.js <span class="comment">//保存应用状态 定义内部方法，输出对外暴露的方法</span></div><div class="line">combineReducers.js <span class="comment">//将多个reducer 合并成一个</span></div><div class="line">bindActionCreators.js <span class="comment">//把actionCreator 包了一层dispatch，使用时可以像普通函数一样调用actionCreator</span></div><div class="line">applyMiddleware.js <span class="comment">//组合串联middleware</span></div><div class="line">compose.js <span class="comment">//工具方法，将middleware中间件方法组合成一个调用链</span></div></pre></td></tr></table></figure></p>
+<h4 id="createStore-js"><a href="#createStore-js" class="headerlink" title="createStore.js"></a>createStore.js</h4><p>这是redux 最核心概念的实现部分。createStore方法的作用是创建一个store,并维持state。下面我们就通过源码看下store 是如何维持state的。</p>
 <p>createStore方法接受三个参数：reducer [, preloadedState, enhancer],<br>返回一个store对象，包含4个方法：</p>
 <ul>
 <li>dispatch //触发action</li>
