@@ -88,8 +88,8 @@
 
 Redux is a predictable state container for JavaScript apps.
 
-翻译一下：redux 是javascript 应用状态容器，他提供共可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单项数据流。
-我们先看一个redu">
+翻译一下：redux 是javascript 应用状态容器，他提供可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单向数据流。
+我们先看一个redux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解redux">
 <meta property="og:url" content="https://foreverwang.github.io/2018/12/06/理解redux/index.html">
@@ -98,17 +98,17 @@ Redux is a predictable state container for JavaScript apps.
 
 Redux is a predictable state container for JavaScript apps.
 
-翻译一下：redux 是javascript 应用状态容器，他提供共可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单项数据流。
-我们先看一个redu">
-<meta property="og:updated_time" content="2018-01-06T07:44:04.000Z">
+翻译一下：redux 是javascript 应用状态容器，他提供可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单向数据流。
+我们先看一个redux">
+<meta property="og:updated_time" content="2018-01-06T08:48:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解redux">
 <meta name="twitter:description" content="redux简单介绍前面理解了flux,本篇来理解redux。redux的官方介绍 
 
 Redux is a predictable state container for JavaScript apps.
 
-翻译一下：redux 是javascript 应用状态容器，他提供共可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单项数据流。
-我们先看一个redu">
+翻译一下：redux 是javascript 应用状态容器，他提供可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单向数据流。
+我们先看一个redux">
 
 
 
@@ -366,10 +366,10 @@ Redux is a predictable state container for JavaScript apps.
 <blockquote>
 <p>Redux is a predictable state container for JavaScript apps.</p>
 </blockquote>
-<p>翻译一下：redux 是javascript 应用状态容器，他提供共可预测化的状态管理。<br>师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单项数据流。</p>
-<p>我们先看一个redux 最简单的原生使用实例。然后再胡乱解读一通redux概念；最后通过源码来看下其实现原理。</p>
+<p>翻译一下：redux 是javascript 应用状态容器，他提供可预测化的状态管理。<br>师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单向数据流。</p>
+<p>我们先看一个redux 最简单的原生使用实例；然后再胡乱解读一通redux概念；最后通过源码来看下其实现原理。</p>
 <a id="more"></a>
-<h3 id="redux如何使用-代码示例"><a href="#redux如何使用-代码示例" class="headerlink" title="redux如何使用-代码示例"></a>redux如何使用-代码示例</h3><p><a href="https://github.com/reactjs/redux/blob/master/examples/counter-vanilla/index.html" target="_blank" rel="external">Counter Vanilla</a> 这是redux 官方一个原生代码使用redux的实例，非常好动。 例子是一个计数器，点击+号 完成加一操作，点击 -号，完成减一操作。</p>
+<h3 id="redux如何使用-代码示例"><a href="#redux如何使用-代码示例" class="headerlink" title="redux如何使用-代码示例"></a>redux如何使用-代码示例</h3><p><a href="https://github.com/reactjs/redux/blob/master/examples/counter-vanilla/index.html" target="_blank" rel="external">Counter Vanilla</a> 这是redux 官方一个原生代码使用redux的实例，非常好懂。 例子是一个计数器，点击+号 完成加一操作，点击 -号，完成减一操作。</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
@@ -461,7 +461,7 @@ Redux is a predictable state container for JavaScript apps.
 actions --&gt; store | reducers  --&gt; new state --&gt; view 
  |                                               |
  &lt;-----------------------------------------------
-</code></pre><p>首先创通过createStore(counter)建了一个store。<br>点击加号的过程：触发一个加一的action: store.dispatch({ type: ‘INCREMENT’ }),dispatch 会把这个action分发到reducer（这里是counter)里。reducer 接收当前的应用状态state,返回更改后的state。 到这里数据就完成了一次修改。 由于我们的view 事先订阅了store,此时store 会通知view state 变了，view 刷新。</p>
+</code></pre><p>首先创通过createStore(counter)建了一个store。<br>点击加号的过程：触发一个加一的action: store.dispatch({ type: ‘INCREMENT’ }),dispatch 会把这个action分发到reducer（这里是counter)里。reducer 接收当前的应用状态state,返回更改后的state。 到这里数据就完成了一次修改。 由于我们的view 事先订阅了store（store.subscribe(render)）,此时store 会通知view state 变了，view 刷新（调用render方法）。</p>
 <h4 id="action"><a href="#action" class="headerlink" title="action"></a>action</h4><h5 id="action概念"><a href="#action概念" class="headerlink" title="action概念"></a>action概念</h5><p>和 flux里的概念一样，用来描述发生了什么。<br>是一个普通对象，包含一个type属性来描述这个动作， 和其他数据属性。<br>比如 { type: ‘INCREMENT’, num: 1},描述一个增加的动作，增加值为1。</p>
 <h5 id="action-扩展"><a href="#action-扩展" class="headerlink" title="action 扩展"></a>action 扩展</h5><ul>
 <li><p>createAction</p>
@@ -476,7 +476,7 @@ actions --&gt; store | reducers  --&gt; new state --&gt; view
 <h5 id="reducer扩展"><a href="#reducer扩展" class="headerlink" title="reducer扩展"></a>reducer扩展</h5><ul>
 <li>combineReducers 方法<br>实际应用中有不止一个reducer。redux里提供了一个combineReducers()方法来组织这些reducer。具体下边源码分析再说。</li>
 </ul>
-<h4 id="store"><a href="#store" class="headerlink" title="store"></a>store</h4><p>上面我们知道了，我们使用action 来描述发生了什么，使用reducer来根据action跟新state。</p>
+<h4 id="store"><a href="#store" class="headerlink" title="store"></a>store</h4><p>上面我们知道了，我们使用action 来描述发生了什么，使用reducer来根据action更新state。</p>
 <p>而store 就是把action 和reducer结合起来的对象，并持有state。store负责：</p>
 <ul>
 <li>维持应用的state,并提供getState()方法获取state</li>
@@ -541,7 +541,8 @@ export default function createStore(reducer, preloadedState, enhancer) {
   //nextListeners是currentListeners的拷贝，我们修改（subscribe）都是对nextListeners的修改
   //在flush listeners 之前 nextListeners 同步 currentListeners
   //这么做可以保证 每次dispatch listener 过程中 subscribe/unsubscribe listerens不会影响当前dispatch 队列，改变值发生在nextListeners，下一次dispatch时生效。 
-  //TODO：我只知道这里这么做很屌，具体为什么这么做，我还得研究下
+  //TODO：我只知道这里这么做有点屌，具体这么做有啥用，我还得研究下
+
   function ensureCanMutateNextListeners() {
   //nextListeners === currentListener 说明listeners已经被flush; 
   //nextListeners !== currentListener 说明subscribe(listener)后 还未被dispatch
@@ -675,7 +676,8 @@ export default function createStore(reducer, preloadedState, enhancer) {
     [$$observable]: observable
   }
 }
-</code></pre><h4 id="bindActionCreators-js"><a href="#bindActionCreators-js" class="headerlink" title="bindActionCreators.js"></a>bindActionCreators.js</h4><pre><code>//bindActionCreators 用法
+</code></pre><p>这里最值得关注的就是currentListeners 和nextListeners这两个listener队列及ensureCanMutateNextListeners方法。每次修改的是nextListeners。每次flush listeners时 将nextListeners和currentListeners同步。</p>
+<h4 id="bindActionCreators-js"><a href="#bindActionCreators-js" class="headerlink" title="bindActionCreators.js"></a>bindActionCreators.js</h4><pre><code>//bindActionCreators 用法
 bindActionCreators({ //第一个参数也可以是一个 actionCreator函数
     addCreator, //属性值是actionCreator函数
     anotherCreator,
