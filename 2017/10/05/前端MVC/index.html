@@ -98,7 +98,7 @@ MVC是开发GUI（图形用户界面）程序的一种架构模式。">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fk7cx1rbn7j30j80kkgni.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fk7e9b9vhjj30ii0b60tn.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fk7edqp1frj310u0t8jts.jpg">
-<meta property="og:updated_time" content="2017-10-05T07:55:55.000Z">
+<meta property="og:updated_time" content="2018-01-06T16:28:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端MVC">
 <meta name="twitter:description" content="前言本文是个人对前端MVC的理解。当我去查MVC资料的时候发现，一千篇文章有一千种MVC，搞的我很纠结。于是研究总结为本文。如果要先一句话介绍什么是MVC，那么：
@@ -401,89 +401,8 @@ MVC是开发GUI（图形用户界面）程序的一种架构模式。">
 <li>用户交互来源主要是view (或者输入url),view 捕获到操作后，将处理权委托给controller,controller对来自view 的数据预处理，决定调用那个model的那个接口（应用逻辑）；然后有model 执行相应的业务逻辑； model 更新后，通过观察者模式通知view ;view 接收到通知后向model请求最新数据（或者model主动传递）更新自己。</li>
 </ul>
 <h4 id="MVC实例"><a href="#MVC实例" class="headerlink" title="MVC实例"></a>MVC实例</h4><pre><code>http://jsfiddle.net/uVBvq/
-
-&lt;form action=&quot;&quot;&gt;
-    &lt;span id=&quot;num&quot;&gt;&lt;/span&gt;&lt;br /&gt;
-    &lt;button type=&quot;button&quot; id=&quot;increase&quot;&gt;+&lt;/button&gt;
-    &lt;button type=&quot;button&quot; id=&quot;decrease&quot;&gt;-&lt;/button&gt;
-&lt;/form&gt;
-
-
-var myapp = {};
-
-myapp.Model = function () {
-    var val = 0;
-    this.add = function (v) {
-        if (val &lt; 100) val += v;
-    };
-    this.sub = function (v) {
-        if (val &gt; 0) val -= v;
-    };
-    this.getVal = function () {
-        return val;
-    };
-
-    //model拥有 view 的引用？
-    var views = [];
-    this.register = function (view) {
-        views.push(view);
-    }
-
-    //model 变化时通知model更新
-    this.notify = function () {
-        for (var i = 0; i &lt; views.length; i++) {
-            views[i].render(this);
-        }
-    };
-};
-
-//view 拥有controller的引用
-myapp.View = function (controller) {
-    var $incBtn = $(&apos;#increase&apos;);
-    var $decBtn = $(&apos;#decrease&apos;);
-    var $num = $(&apos;#num&apos;);
-
-    this.render = function (model) {
-        $num.text(model.getVal() + &apos;px&apos;);
-    };
-
-    $incBtn.click(controller.increase);
-    $decBtn.click(controller.decrease);
-};
-
-
-myapp.Controller = function () {
-    var model = null;
-    var view  = null;
-
-    this.init = function () {
-        //controller初始化 model 和view
-        model = new myapp.Model();
-        view  = new myapp.View(this);
-
-       //view 向model 注册自己
-        model.register(view);
-        model.notify();
-    };
-
-    //controller 负责更新model 
-    this.increase = function () {
-        model.add(1);
-        model.notify();
-    };
-    this.decrease = function () {
-        model.sub(1);
-        model.notify();
-    };
-};
-
-
-//外界只接触到controller 
-$(function () {
-    var controller = new myapp.Controller();
-    controller.init();
-});
-</code></pre><h3 id="MVC优缺点"><a href="#MVC优缺点" class="headerlink" title="MVC优缺点"></a>MVC优缺点</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+</code></pre><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">""</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"num"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">id</span>=<span class="string">"increase"</span>&gt;</span>+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">id</span>=<span class="string">"decrease"</span>&gt;</span>-<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"><span class="keyword">var</span> myapp = &#123;&#125;;</div><div class="line"></div><div class="line">myapp.Model = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> val = <span class="number">0</span>;</div><div class="line">    <span class="keyword">this</span>.add = <span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (val &lt; <span class="number">100</span>) val += v;</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">this</span>.sub = <span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (val &gt; <span class="number">0</span>) val -= v;</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">this</span>.getVal = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> val;</div><div class="line">    &#125;;</div><div class="line">    </div><div class="line">    <span class="comment">//model拥有 view 的引用？</span></div><div class="line">    <span class="keyword">var</span> views = [];</div><div class="line">    <span class="keyword">this</span>.register = <span class="function"><span class="keyword">function</span> (<span class="params">view</span>) </span>&#123;</div><div class="line">        views.push(view);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//model 变化时通知model更新</span></div><div class="line">    <span class="keyword">this</span>.notify = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; views.length; i++) &#123;</div><div class="line">            views[i].render(<span class="keyword">this</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//view 拥有controller的引用</span></div><div class="line">myapp.View = <span class="function"><span class="keyword">function</span> (<span class="params">controller</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> $incBtn = $(<span class="string">'#increase'</span>);</div><div class="line">    <span class="keyword">var</span> $decBtn = $(<span class="string">'#decrease'</span>);</div><div class="line">    <span class="keyword">var</span> $num = $(<span class="string">'#num'</span>);</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.render = <span class="function"><span class="keyword">function</span> (<span class="params">model</span>) </span>&#123;</div><div class="line">        $num.text(model.getVal() + <span class="string">'px'</span>);</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    $incBtn.click(controller.increase);</div><div class="line">    $decBtn.click(controller.decrease);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"> </div><div class="line">myapp.Controller = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> model = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">var</span> view  = <span class="literal">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.init = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="comment">//controller初始化 model 和view</span></div><div class="line">        model = <span class="keyword">new</span> myapp.Model();</div><div class="line">        view  = <span class="keyword">new</span> myapp.View(<span class="keyword">this</span>);</div><div class="line">       </div><div class="line">       <span class="comment">//view 向model 注册自己</span></div><div class="line">        model.register(view);</div><div class="line">        model.notify();</div><div class="line">    &#125;;</div><div class="line">    </div><div class="line">    <span class="comment">//controller 负责更新model </span></div><div class="line">    <span class="keyword">this</span>.increase = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        model.add(<span class="number">1</span>);</div><div class="line">        model.notify();</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">this</span>.decrease = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        model.sub(<span class="number">1</span>);</div><div class="line">        model.notify();</div><div class="line">    &#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//外界只接触到controller </span></div><div class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> controller = <span class="keyword">new</span> myapp.Controller();</div><div class="line">    controller.init();</div><div class="line">&#125;);</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="MVC优缺点"><a href="#MVC优缺点" class="headerlink" title="MVC优缺点"></a>MVC优缺点</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
 <li>耦合性降低：视图和模型分离，利于项目工程化（分工等）。</li>
 <li>Model可复用性增强： 因为Model是独立于view的。</li>
 </ul>

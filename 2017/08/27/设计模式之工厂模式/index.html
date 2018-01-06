@@ -108,7 +108,7 @@
 单例模式
 
 本篇讲三个工厂模式： 简单工厂、工厂方法、抽象工厂。">
-<meta property="og:updated_time" content="2017-10-08T15:43:29.000Z">
+<meta property="og:updated_time" content="2018-01-06T16:31:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之工厂模式">
 <meta name="twitter:description" content="设计模式-创建型之工厂模式创建型设计模式共六种：
@@ -396,66 +396,15 @@
 <p>简单工厂的核心定义是：有一个工厂方法（也可以是工厂类）根据接收的参数 实例化具体的类，并且返回这个类的实例。</p>
 <h4 id="实例分析"><a href="#实例分析" class="headerlink" title="实例分析"></a>实例分析</h4><p>这里用一个生产宝马汽车的例子。现在有两个型号的宝马车：BMW320和BMW523。<br>假设此时没有宝马工厂。用户需要这个这两个型号的车的时候需要 自己去制造生产。代码如下：</p>
 <p>没有工厂的时候：</p>
-<pre><code>public class BMW320 {
-    public BMW320 {
-        System.out.println(&apos;生产320型号的宝马车&apos;);
-    }
-}
-
-public class BMW523 {
-    public BMW523 {
-        System.out.println(&apos;生产320型号的宝马车&apos;);
-    }
-}
-
-public class Customer {
-    public static void main(String[] args) {
-        BMW320 bmw320 = new BMW320();
-        BMW523 bmw523 = new BMW523();
-    }
-}
-</code></pre><p>这样客户也造出了汽车，似乎也没啥毛病。问题在于：客户需要知道怎么去创建一款车（具体new 哪个类） 这样客户和车是耦合在一起的。但车型有很多的时候，客户就需要知道每一个型号的车对应哪个类。为了解耦，我们引入简单那工厂模式  ：创建一个工厂，将创建具体那个型号的宝马车的操作细节放到工厂里，客户直接使用工厂的创建产品的方法，传入具体的型号就好了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BMW320</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> BMW320 &#123;</div><div class="line">        System.out.println(<span class="string">'生产320型号的宝马车'</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BMW523</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> BMW523 &#123;</div><div class="line">        System.out.println(<span class="string">'生产320型号的宝马车'</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        BMW320 bmw320 = <span class="keyword">new</span> BMW320();</div><div class="line">        BMW523 bmw523 = <span class="keyword">new</span> BMW523();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样客户也造出了汽车，似乎也没啥毛病。问题在于：客户需要知道怎么去创建一款车（具体new 哪个类） 这样客户和车是耦合在一起的。但车型有很多的时候，客户就需要知道每一个型号的车对应哪个类。为了解耦，我们引入简单那工厂模式  ：创建一个工厂，将创建具体那个型号的宝马车的操作细节放到工厂里，客户直接使用工厂的创建产品的方法，传入具体的型号就好了。</p>
 <p>  有了简单工厂：</p>
-<p>  产品类</p>
-<pre><code>abstract class BMW  {
-
-}
-
-public class BMW320 extends BMW { 
-    public BMW320() {  
-    System.out.println(&quot;制造--&gt;BMW320&quot;);  
-}
-
-
-public class BMW523 extends BMW {  
-    public BMW523(){  
-        System.out.println(&quot;制造--&gt;BMW523&quot;);  
-    }  
-}   
-</code></pre><p>工厂类 </p>
-<p>   public class BMWFactory {<br>       public BMW createBMW (int type) {<br>           switch (type) {</p>
-<pre><code>     case:  320 
-         return new BMW320();
-
-     case: 523
-         return new BMW523();
-
-     default:
-         break;  
-
-    }
-    return null;
-}
-</code></pre><p>   }</p>
+<p>  产品类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BMW</span>  </span>&#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BMW320</span> <span class="keyword">extends</span> <span class="title">BMW</span> </span>&#123; </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BMW320</span><span class="params">()</span> </span>&#123;  </div><div class="line">    System.out.println(<span class="string">"制造--&gt;BMW320"</span>);  </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BMW523</span> <span class="keyword">extends</span> <span class="title">BMW</span> </span>&#123;  </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BMW523</span><span class="params">()</span></span>&#123;  </div><div class="line">        System.out.println(<span class="string">"制造--&gt;BMW523"</span>);  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>工厂类 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BMWFactory</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> BMW <span class="title">createBMW</span> <span class="params">(<span class="keyword">int</span> type)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (type) &#123;</div><div class="line">        </div><div class="line">         <span class="keyword">case</span>:  <span class="number">320</span> </div><div class="line">             <span class="keyword">return</span> <span class="keyword">new</span> BMW320();</div><div class="line">             </div><div class="line">         <span class="keyword">case</span>: <span class="number">523</span></div><div class="line">             <span class="keyword">return</span> <span class="keyword">new</span> BMW523();</div><div class="line">             </div><div class="line">         <span class="keyword">default</span>:</div><div class="line">             <span class="keyword">break</span>;  </div><div class="line">                 </div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>客户类</p>
-<pre><code>public class Customer {
-    public static void main(Sting[] args) {
-        BMWFactory  factory = new BMWFactory();
-        BMW bmw320 = factory.createBMW(320);
-        BMW bmw523 = factory.createBMW(523); 
-    }   
-}
-</code></pre><p>可以看到 具体实例化某一个class 的操作放到了工厂类里，客户只需要调用工厂方法并传参就OK了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(Sting[] args)</span> </span>&#123;</div><div class="line">        BMWFactory  factory = <span class="keyword">new</span> BMWFactory();</div><div class="line">        BMW bmw320 = factory.createBMW(<span class="number">320</span>);</div><div class="line">        BMW bmw523 = factory.createBMW(<span class="number">523</span>); </div><div class="line">    &#125;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到 具体实例化某一个class 的操作放到了工厂类里，客户只需要调用工厂方法并传参就OK了。</p>
 <h4 id="模式分析"><a href="#模式分析" class="headerlink" title="模式分析"></a>模式分析</h4><h5 id="简单工厂的优点："><a href="#简单工厂的优点：" class="headerlink" title="简单工厂的优点："></a>简单工厂的优点：</h5><ul>
 <li>客户端更方便了：无需记忆众多复杂的类名，只需要知道具体产品类所对应的参数。</li>
 <li>责任分割： 创建产品的逻辑都放在工厂，客户端仅仅是消费产品，从而免去了直接创建产品对象的责任。</li>
@@ -487,54 +436,10 @@ public class BMW523 extends BMW {
 </li>
 </ul>
 <h4 id="实例分析-1"><a href="#实例分析-1" class="headerlink" title="实例分析"></a>实例分析</h4><p>还是接着上边简单工厂造宝马车的例子。</p>
-<p>产品类，和简单工厂里一样 </p>
-<pre><code>abstract class BMW {  
-    public BMW(){  
-
-    }  
-}  
-public class BMW320 extends BMW {  
-    public BMW320() {  
-        System.out.println(&quot;制造--&gt;BMW320&quot;);  
-    }  
-}  
-public class BMW523 extends BMW{  
-    public BMW523(){  
-        System.out.println(&quot;制造--&gt;BMW523&quot;);  
-    }  
-}  
-</code></pre><p>工厂类： 抽象工厂类定义工厂类接口，工厂类创建具体的一类产品。</p>
-<pre><code>interface FactoryBMW {  
-    BMW createBMW();  
-}  
-
-public class FactoryBMW320 implements FactoryBMW{  
-
-    @Override  
-    public BMW320 createBMW() {  
-
-        return new BMW320();  
-    }  
-
-}  
-public class FactoryBMW523 implements FactoryBMW {  
-    @Override  
-    public BMW523 createBMW() {  
-
-        return new BMW523();  
-    }  
-}       
-</code></pre><p>客户类：客户生产某类产品 直接实例化具体的工厂。</p>
-<pre><code>public class Customer {  
-    public static void main(String[] args) {  
-        FactoryBMW320 factoryBMW320 = new FactoryBMW320();  //可通过配置文件实现 
-        BMW320 bmw320 = factoryBMW320.createBMW();  
-
-        FactoryBMW523 factoryBMW523 = new FactoryBMW523();  
-        BMW523 bmw523 = factoryBMW523.createBMW();  
-    }  
-}
-</code></pre><h4 id="模式分析-1"><a href="#模式分析-1" class="headerlink" title="模式分析"></a>模式分析</h4><p>工厂方法模式是简单工厂模式的进一步抽象。由于使用了面向对象的多态性，工厂方法模式保持了简单工厂模式的优点，而且克服了它的缺点。核心的工厂类不再负责所有产品的创建，而是将具体创建工作交给子类去做。工厂方法模式可以允许在不修改工厂角色的情况下引进新产品。<br></p>
+<p>产品类，和简单工厂里一样<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BMW</span> </span>&#123;  </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">BMW</span><span class="params">()</span></span>&#123;  </div><div class="line">              </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BMW320</span> <span class="keyword">extends</span> <span class="title">BMW</span> </span>&#123;  </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">BMW320</span><span class="params">()</span> </span>&#123;  </div><div class="line">            System.out.println(<span class="string">"制造--&gt;BMW320"</span>);  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BMW523</span> <span class="keyword">extends</span> <span class="title">BMW</span></span>&#123;  </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">BMW523</span><span class="params">()</span></span>&#123;  </div><div class="line">            System.out.println(<span class="string">"制造--&gt;BMW523"</span>);  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">```        </div><div class="line"></div><div class="line">工厂类： 抽象工厂类定义工厂类接口，工厂类创建具体的一类产品。</div><div class="line"></div><div class="line">``` java</div><div class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">FactoryBMW</span> </span>&#123;  </div><div class="line">        <span class="function">BMW <span class="title">createBMW</span><span class="params">()</span></span>;  </div><div class="line">    &#125;  </div><div class="line">      </div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryBMW320</span> <span class="keyword">implements</span> <span class="title">FactoryBMW</span></span>&#123;  </div><div class="line">      </div><div class="line">        <span class="meta">@Override</span>  </div><div class="line">        <span class="function"><span class="keyword">public</span> BMW320 <span class="title">createBMW</span><span class="params">()</span> </span>&#123;  </div><div class="line">      </div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> BMW320();  </div><div class="line">        &#125;  </div><div class="line">      </div><div class="line">    &#125;  </div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryBMW523</span> <span class="keyword">implements</span> <span class="title">FactoryBMW</span> </span>&#123;  </div><div class="line">        <span class="meta">@Override</span>  </div><div class="line">        <span class="function"><span class="keyword">public</span> BMW523 <span class="title">createBMW</span><span class="params">()</span> </span>&#123;  </div><div class="line">      </div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> BMW523();  </div><div class="line">        &#125;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>客户类：客户生产某类产品 直接实例化具体的工厂。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123;  </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </div><div class="line">        FactoryBMW320 factoryBMW320 = <span class="keyword">new</span> FactoryBMW320();  <span class="comment">//可通过配置文件实现 </span></div><div class="line">        BMW320 bmw320 = factoryBMW320.createBMW();  </div><div class="line">  </div><div class="line">        FactoryBMW523 factoryBMW523 = <span class="keyword">new</span> FactoryBMW523();  </div><div class="line">        BMW523 bmw523 = factoryBMW523.createBMW();  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="模式分析-1"><a href="#模式分析-1" class="headerlink" title="模式分析"></a>模式分析</h4><p>工厂方法模式是简单工厂模式的进一步抽象。由于使用了面向对象的多态性，工厂方法模式保持了简单工厂模式的优点，而且克服了它的缺点。核心的工厂类不再负责所有产品的创建，而是将具体创建工作交给子类去做。工厂方法模式可以允许在不修改工厂角色的情况下引进新产品。<br></p>
 <p>基于工厂角色和产品角色的<code>多态性</code>设计是工厂方法模式的关键。它能够使工厂可以自主确定创建何种产品对象，而如何创建这个对象的细节则完全封装在具体工厂内部。工厂方法模式之所以又被称为多态工厂模式，是因为所有的具体工厂类都具有同一抽象父类。</p>
 <h5 id="工厂方法模式优点"><a href="#工厂方法模式优点" class="headerlink" title="工厂方法模式优点"></a>工厂方法模式优点</h5><ul>
 <li><code>符合开闭原则</code>（克服了简单工厂的缺点）。引入新产品时，无须修改抽象工厂和抽象产品提供的接口，无须修改客户端，也无须修改其他的具体工厂和具体产品，而只要添加一个具体工厂和具体产品就可以了。</li>
@@ -576,88 +481,10 @@ public class FactoryBMW523 implements FactoryBMW {
 </ul>
 <p>抽象工厂中声明了多个工厂方法，用于创建不同类型的产品。</p>
 <h4 id="实例分析-2"><a href="#实例分析-2" class="headerlink" title="实例分析"></a>实例分析</h4><p>这里改造一下上面生产宝马汽车的例子。现在我们不是生产汽车了而是生产汽车配件。现需要两种汽车配件：汽车发动机，汽车空调。还是有两个宝马型号的汽车 BMW320、BMW523。</p>
-<p>产品类</p>
-<pre><code>//发动机以及型号    
-public interface Engine {    
-
-}    
-public class EngineA extends Engine{    
-    public EngineA(){    
-        System.out.println(&quot;制造--&gt;EngineA&quot;);    
-    }    
-}    
-public class EngineBextends Engine{    
-    public EngineB(){    
-        System.out.println(&quot;制造--&gt;EngineB&quot;);    
-    }    
-}    
-
-//空调以及型号    
-public interface Aircondition {    
-
-}    
-public class AirconditionA extends Aircondition{    
-    public AirconditionA(){    
-        System.out.println(&quot;制造--&gt;AirconditionA&quot;);    
-    }    
-}    
-public class AirconditionB extends Aircondition{    
-    public AirconditionB(){    
-        System.out.println(&quot;制造--&gt;AirconditionB&quot;);    
-    }    
-}   
-</code></pre><p> 创建工厂类</p>
-<pre><code>//创建工厂的接口   
-public interface AbstractFactory {    
-    //制造发动机  
-    public Engine createEngine();  
-    //制造空调   
-    public Aircondition createAircondition();   
-} 
-
-//为宝马320系列生产配件 
-public class FactoryBMW320 implements AbstractFactory{    
-
-    @Override    
-    public Engine createEngine() {      
-        return new EngineA();    
-    }    
-    @Override    
-    public Aircondition createAircondition() {    
-        return new AirconditionA();    
-    }    
-}    
-
-//宝马523系列配件 
-public class FactoryBMW523 implements AbstractFactory {    
-
-     @Override    
-    public Engine createEngine() {      
-        return new EngineB();    
-    }    
-    @Override    
-    public Aircondition createAircondition() {    
-        return new AirconditionB();    
-    }    
-
-
-}
-
-//客户端   
-public class Customer {    
-    public static void main(String[] args){    
-        //生产宝马320系列配件  
-        FactoryBMW320 factoryBMW320 = new FactoryBMW320();    
-        factoryBMW320.createEngine();  
-        factoryBMW320.createAircondition();  
-
-        //生产宝马523系列配件    
-        FactoryBMW523 factoryBMW523 = new FactoryBMW523();    
-        factoryBMW320.createEngine();  
-        factoryBMW320.createAircondition();  
-    }    
-}     
-</code></pre><h4 id="模式分析-2"><a href="#模式分析-2" class="headerlink" title="模式分析"></a>模式分析</h4><h5 id="抽象工厂模式的优点"><a href="#抽象工厂模式的优点" class="headerlink" title="抽象工厂模式的优点"></a>抽象工厂模式的优点</h5><ul>
+<p>产品类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//发动机以及型号    </span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Engine</span> </span>&#123;    </div><div class="line">  </div><div class="line">&#125;    </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EngineA</span> <span class="keyword">extends</span> <span class="title">Engine</span></span>&#123;    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EngineA</span><span class="params">()</span></span>&#123;    </div><div class="line">        System.out.println(<span class="string">"制造--&gt;EngineA"</span>);    </div><div class="line">    &#125;    </div><div class="line">&#125;    </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EngineBextends</span> <span class="title">Engine</span></span>&#123;    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EngineB</span><span class="params">()</span></span>&#123;    </div><div class="line">        System.out.println(<span class="string">"制造--&gt;EngineB"</span>);    </div><div class="line">    &#125;    </div><div class="line">&#125;    </div><div class="line">  </div><div class="line"><span class="comment">//空调以及型号    </span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Aircondition</span> </span>&#123;    </div><div class="line">  </div><div class="line">&#125;    </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AirconditionA</span> <span class="keyword">extends</span> <span class="title">Aircondition</span></span>&#123;    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AirconditionA</span><span class="params">()</span></span>&#123;    </div><div class="line">        System.out.println(<span class="string">"制造--&gt;AirconditionA"</span>);    </div><div class="line">    &#125;    </div><div class="line">&#125;    </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AirconditionB</span> <span class="keyword">extends</span> <span class="title">Aircondition</span></span>&#123;    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AirconditionB</span><span class="params">()</span></span>&#123;    </div><div class="line">        System.out.println(<span class="string">"制造--&gt;AirconditionB"</span>);    </div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> 创建工厂类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建工厂的接口   </span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AbstractFactory</span> </span>&#123;    </div><div class="line">    <span class="comment">//制造发动机  </span></div><div class="line">    <span class="function"><span class="keyword">public</span> Engine <span class="title">createEngine</span><span class="params">()</span></span>;  </div><div class="line">    <span class="comment">//制造空调   </span></div><div class="line">    <span class="function"><span class="keyword">public</span> Aircondition <span class="title">createAircondition</span><span class="params">()</span></span>;   </div><div class="line">&#125; </div><div class="line"></div><div class="line"><span class="comment">//为宝马320系列生产配件 </span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryBMW320</span> <span class="keyword">implements</span> <span class="title">AbstractFactory</span></span>&#123;    </div><div class="line">        </div><div class="line">    <span class="meta">@Override</span>    </div><div class="line">    <span class="function"><span class="keyword">public</span> Engine <span class="title">createEngine</span><span class="params">()</span> </span>&#123;      </div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> EngineA();    </div><div class="line">    &#125;    </div><div class="line">    <span class="meta">@Override</span>    </div><div class="line">    <span class="function"><span class="keyword">public</span> Aircondition <span class="title">createAircondition</span><span class="params">()</span> </span>&#123;    </div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AirconditionA();    </div><div class="line">    &#125;    </div><div class="line">&#125;    </div><div class="line"></div><div class="line"><span class="comment">//宝马523系列配件 </span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FactoryBMW523</span> <span class="keyword">implements</span> <span class="title">AbstractFactory</span> </span>&#123;    </div><div class="line">    </div><div class="line">     <span class="meta">@Override</span>    </div><div class="line">    <span class="function"><span class="keyword">public</span> Engine <span class="title">createEngine</span><span class="params">()</span> </span>&#123;      </div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> EngineB();    </div><div class="line">    &#125;    </div><div class="line">    <span class="meta">@Override</span>    </div><div class="line">    <span class="function"><span class="keyword">public</span> Aircondition <span class="title">createAircondition</span><span class="params">()</span> </span>&#123;    </div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AirconditionB();    </div><div class="line">    &#125;    </div><div class="line">  </div><div class="line">  </div><div class="line">&#125;</div><div class="line">    </div><div class="line"><span class="comment">//客户端   </span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123;    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;    </div><div class="line">        <span class="comment">//生产宝马320系列配件  </span></div><div class="line">        FactoryBMW320 factoryBMW320 = <span class="keyword">new</span> FactoryBMW320();    </div><div class="line">        factoryBMW320.createEngine();  </div><div class="line">        factoryBMW320.createAircondition();  </div><div class="line">            </div><div class="line">        <span class="comment">//生产宝马523系列配件    </span></div><div class="line">        FactoryBMW523 factoryBMW523 = <span class="keyword">new</span> FactoryBMW523();    </div><div class="line">        factoryBMW320.createEngine();  </div><div class="line">        factoryBMW320.createAircondition();  </div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="模式分析-2"><a href="#模式分析-2" class="headerlink" title="模式分析"></a>模式分析</h4><h5 id="抽象工厂模式的优点"><a href="#抽象工厂模式的优点" class="headerlink" title="抽象工厂模式的优点"></a>抽象工厂模式的优点</h5><ul>
 <li>首先是该模式适应了某种业务场景</li>
 <li>符合“开闭原则”：增加新的具体工厂和产品族很方便，无须修改已有系统。</li>
 </ul>

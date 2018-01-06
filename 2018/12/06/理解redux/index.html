@@ -100,7 +100,7 @@ Redux is a predictable state container for JavaScript apps.
 
 翻译一下：redux 是javascript 应用状态容器，他提供可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单向数据流。
 我们先看一个redux">
-<meta property="og:updated_time" content="2018-01-06T16:20:47.000Z">
+<meta property="og:updated_time" content="2018-01-06T16:23:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解redux">
 <meta name="twitter:description" content="redux简单介绍前面理解了flux,本篇来理解redux。redux的官方介绍 
@@ -370,80 +370,8 @@ Redux is a predictable state container for JavaScript apps.
 <p>我们先看一个redux 最简单的原生使用实例；然后再胡乱解读一通redux概念；最后通过源码来看下其实现原理。</p>
 <a id="more"></a>
 <h3 id="redux如何使用-代码示例"><a href="#redux如何使用-代码示例" class="headerlink" title="redux如何使用-代码示例"></a>redux如何使用-代码示例</h3><p><a href="https://github.com/reactjs/redux/blob/master/examples/counter-vanilla/index.html" target="_blank" rel="external">Counter Vanilla</a> 这是redux 官方一个原生代码使用redux的实例，非常好懂。 例子是一个计数器，点击+号 完成加一操作，点击 -号，完成减一操作。</p>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;Redux basic example&lt;/title&gt;
-    &lt;script src=&quot;https://cdn.bootcss.com/redux/3.7.2/redux.js&quot;&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div&gt;
-      &lt;p&gt;
-        Clicked: &lt;span id=&quot;value&quot;&gt;0&lt;/span&gt; times
-        &lt;button id=&quot;increment&quot;&gt;+&lt;/button&gt;
-        &lt;button id=&quot;decrement&quot;&gt;-&lt;/button&gt;
-        &lt;button id=&quot;incrementIfOdd&quot;&gt;Increment if odd&lt;/button&gt;
-        &lt;button id=&quot;incrementAsync&quot;&gt;Increment async&lt;/button&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-    &lt;script&gt;
-      //counter函数是一个reducer，现在只需要知道reducer就是操作应用数据的方法
-      function counter(state, action) {
-        if (typeof state === &apos;undefined&apos;) {
-          return 0
-        }
-        switch (action.type) {
-          case &apos;INCREMENT&apos;:
-            return state + 1
-          case &apos;DECREMENT&apos;:
-            return state - 1
-          default:
-            return state
-        }
-      }
-      //实例化一个 store ，store里可以持久化存储应用的数据 state
-      //并且对外暴露几个方法
-      //其中 getState()用来获取应用的数据
-      //其中 subscribe()用来添加订阅者，供数据发生变化时通知
-      //其中 dispatch(action) 触发一个动作用来改变数据 
-      var store = Redux.createStore(counter)
-      var valueEl = document.getElementById(&apos;value&apos;)
-
-
-      //render函数 将数据（state）呈现到view
-      function render() {
-        valueEl.innerHTML = store.getState().toString()
-      }
-      render()
-
-      //将render 订阅store，数据变了的时候view重新渲染
-      store.subscribe(render)
-
-      //通过dispatch触发一个操作 来修改数据
-      document.getElementById(&apos;increment&apos;)
-        .addEventListener(&apos;click&apos;, function () {
-          store.dispatch({ type: &apos;INCREMENT&apos; })
-        })
-      document.getElementById(&apos;decrement&apos;)
-        .addEventListener(&apos;click&apos;, function () {
-          store.dispatch({ type: &apos;DECREMENT&apos; })
-        })
-      document.getElementById(&apos;incrementIfOdd&apos;)
-        .addEventListener(&apos;click&apos;, function () {
-          if (store.getState() % 2 !== 0) {
-            store.dispatch({ type: &apos;INCREMENT&apos; })
-          }
-        })
-      document.getElementById(&apos;incrementAsync&apos;)
-        .addEventListener(&apos;click&apos;, function () {
-          setTimeout(function () {
-            store.dispatch({ type: &apos;INCREMENT&apos; })
-          }, 1000)
-        })
-    &lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre><p>这个例子很简单。 </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Redux basic example<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.bootcss.com/redux/3.7.2/redux.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">p</span>&gt;</span></div><div class="line">        Clicked: <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"value"</span>&gt;</span>0<span class="tag">&lt;/<span class="name">span</span>&gt;</span> times</div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"increment"</span>&gt;</span>+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"decrement"</span>&gt;</span>-<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"incrementIfOdd"</span>&gt;</span>Increment if odd<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"incrementAsync"</span>&gt;</span>Increment async<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">      <span class="comment">//counter函数是一个reducer，现在只需要知道reducer就是操作应用数据的方法</span></div><div class="line">      <span class="function"><span class="keyword">function</span> <span class="title">counter</span>(<span class="params">state, action</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> state === <span class="string">'undefined'</span>) &#123;</div><div class="line">          <span class="keyword">return</span> <span class="number">0</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">switch</span> (action.type) &#123;</div><div class="line">          <span class="keyword">case</span> <span class="string">'INCREMENT'</span>:</div><div class="line">            <span class="keyword">return</span> state + <span class="number">1</span></div><div class="line">          <span class="keyword">case</span> <span class="string">'DECREMENT'</span>:</div><div class="line">            <span class="keyword">return</span> state - <span class="number">1</span></div><div class="line">          <span class="keyword">default</span>:</div><div class="line">            <span class="keyword">return</span> state</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="comment">//实例化一个 store ，store里可以持久化存储应用的数据 state</span></div><div class="line">      <span class="comment">//并且对外暴露几个方法</span></div><div class="line">      <span class="comment">//其中 getState()用来获取应用的数据</span></div><div class="line">      <span class="comment">//其中 subscribe()用来添加订阅者，供数据发生变化时通知</span></div><div class="line">      <span class="comment">//其中 dispatch(action) 触发一个动作用来改变数据 </span></div><div class="line">      <span class="keyword">var</span> store = Redux.createStore(counter)</div><div class="line">      <span class="keyword">var</span> valueEl = <span class="built_in">document</span>.getElementById(<span class="string">'value'</span>)</div><div class="line">      </div><div class="line">      </div><div class="line">      <span class="comment">//render函数 将数据（state）呈现到view</span></div><div class="line">      <span class="function"><span class="keyword">function</span> <span class="title">render</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        valueEl.innerHTML = store.getState().toString()</div><div class="line">      &#125;</div><div class="line">      render()</div><div class="line">      </div><div class="line">      <span class="comment">//将render 订阅store，数据变了的时候view重新渲染</span></div><div class="line">      store.subscribe(render)</div><div class="line">      </div><div class="line">      <span class="comment">//通过dispatch触发一个操作 来修改数据</span></div><div class="line">      <span class="built_in">document</span>.getElementById(<span class="string">'increment'</span>)</div><div class="line">        .addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">          store.dispatch(&#123; <span class="attr">type</span>: <span class="string">'INCREMENT'</span> &#125;)</div><div class="line">        &#125;)</div><div class="line">      <span class="built_in">document</span>.getElementById(<span class="string">'decrement'</span>)</div><div class="line">        .addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">          store.dispatch(&#123; <span class="attr">type</span>: <span class="string">'DECREMENT'</span> &#125;)</div><div class="line">        &#125;)</div><div class="line">      <span class="built_in">document</span>.getElementById(<span class="string">'incrementIfOdd'</span>)</div><div class="line">        .addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">          <span class="keyword">if</span> (store.getState() % <span class="number">2</span> !== <span class="number">0</span>) &#123;</div><div class="line">            store.dispatch(&#123; <span class="attr">type</span>: <span class="string">'INCREMENT'</span> &#125;)</div><div class="line">          &#125;</div><div class="line">        &#125;)</div><div class="line">      <span class="built_in">document</span>.getElementById(<span class="string">'incrementAsync'</span>)</div><div class="line">        .addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">          setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            store.dispatch(&#123; <span class="attr">type</span>: <span class="string">'INCREMENT'</span> &#125;)</div><div class="line">          &#125;, <span class="number">1000</span>)</div><div class="line">        &#125;)</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这个例子很简单。 </p>
 <ul>
 <li>数据存储在store；</li>
 <li>view（render函数）订阅store,store变化的时候会通知view 进行刷新；</li>

@@ -90,7 +90,7 @@
 <meta property="og:url" content="https://foreverwang.github.io/2017/05/07/javascript函数节流(throttle)和函数防抖(debounce)及其实现/index.html">
 <meta property="og:site_name" content="瞧，这个人">
 <meta property="og:description" content="throttle(节流)和debounce(防抖)说来很相似：作用是防止一个函数内的某些代码在一定的时间间隔内高频率调用。当然两者也是有细微差别的，下面分别看下这两个概念。">
-<meta property="og:updated_time" content="2017-06-03T16:51:45.000Z">
+<meta property="og:updated_time" content="2018-01-06T16:33:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="javascript函数节流（throttle）和函数防抖（debounce）及其实现">
 <meta name="twitter:description" content="throttle(节流)和debounce(防抖)说来很相似：作用是防止一个函数内的某些代码在一定的时间间隔内高频率调用。当然两者也是有细微差别的，下面分别看下这两个概念。">
@@ -399,87 +399,16 @@
 <pre><code>    &lt;div class=&quot;btn&quot;&gt;我是一个按钮&lt;/div&gt;
 
 下面是只考虑实现上述需求，没有任何封装性。  
-
-
-    var btn  = document.querySelector(&apos;.btn&apos;);
-    //方案一：时间间隔:标志变量 + setTimeout
-    var canRun = true; //标志变量
-    var immediate = true;//第一次响应时是否需要执行响应的代码
-    btn.onclick = function(){
-        if(!canRun){
-            console.log(&apos;点击太频繁&apos;);
-            return;
-        }
-        //只要函数被执行了就把标志变量的状态置反，直到约定的时间间隔到了再置回。
-        canRun = false;
-
-        function handler(){
-            console.log(&apos;click&apos;);
-            canRun = true;
-        }
-
-        if(immediate){
-            handler();//第一次调用
-            console.log(&apos;首次立即调用&apos;);
-            immediate = false;
-        }else{
-            setTimeout(handler,600);
-        }
-    }
-</code></pre><ul>
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> btn  = <span class="built_in">document</span>.querySelector(<span class="string">'.btn'</span>);</div><div class="line"><span class="comment">//方案一：时间间隔:标志变量 + setTimeout</span></div><div class="line"><span class="keyword">var</span> canRun = <span class="literal">true</span>; <span class="comment">//标志变量</span></div><div class="line"><span class="keyword">var</span> immediate = <span class="literal">true</span>;<span class="comment">//第一次响应时是否需要执行响应的代码</span></div><div class="line">btn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span>(!canRun)&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'点击太频繁'</span>);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//只要函数被执行了就把标志变量的状态置反，直到约定的时间间隔到了再置回。</span></div><div class="line">    canRun = <span class="literal">false</span>;</div><div class="line">   </div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">handler</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'click'</span>);</div><div class="line">        canRun = <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">if</span>(immediate)&#123;</div><div class="line">        handler();<span class="comment">//第一次调用</span></div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'首次立即调用'</span>);</div><div class="line">        immediate = <span class="literal">false</span>;</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        setTimeout(handler,<span class="number">600</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
 <li>标志变量canRun 初始值true;当click事件回调执行时先判断这个变量，如果为真则后面的代码会被执行。并且 标志变量canRun赋值为false;</li>
 <li>后边的代码包括 根据immediate标志位（初始值true）是否立即调用handler；immediate为假则开一个定时器600ms后调用handler，handler会把标志变量置位true;</li>
 <li>在上一次点击后的600ms内再次点击这时候canRun 为false，函数会直接返回，后边的代码不会被执行。</li>
 </ul>
 <p>功能很简单，上面就是实现了函数节流（throttle）的功能。加下来我们将throttle抽象一下封装成可供外部调用的throttle方法。</p>
-<h4 id="throttle实现"><a href="#throttle实现" class="headerlink" title="throttle实现"></a>throttle实现</h4><p>分析：我们要实现的throttle方法只负责 是否能执行某些代码的逻辑实现。时间间隔、要执行的函数、是否立即执行 这些都是使用方决定的，即这些作为throttle方法的参数传入。</p>
-<pre><code>function throlle(handler,delay,immediate){
-    var canRun = true;
-    return function(){
-        if(!canRun){
-           return;
-        }
-        canRun = false;
-        if(immediate){
-           handler();
-           immediate = false;
-           setTimeout(function(){
-           canRun = true;
-        }, delay);
-        }else{
-            setTimeout(function(){
-               handler();  //todo:参数传递
-               canRun = true;
-            }, delay);
-        }
-
-    }
-}
-</code></pre><h4 id="debounce实现"><a href="#debounce实现" class="headerlink" title="debounce实现"></a>debounce实现</h4><p>分析：让我们回一下debounce和throttle的区别：debounce事件间隔会被重新计时，及在非空闲期内触发了回调,回调内会把定时器clear掉，重新创建一个定时器，事件间隔也即随之重新计算了。</p>
-<pre><code>function debounce(handler,delay,immediate){
-    var canRun = true;
-    var timer = null;
-    return function(){
-        if(!canRun){
-           clearTimeout(timer); //唯一的区别就在这里
-        }
-        canRun = false;
-        if(immediate){
-           handler();
-           immediate = false;
-           setTimeout(function(){
-           canRun = true;
-        }, delay);
-        }else{
-            timer = setTimeout(function(){
-               handler();  //todo:参数传递
-               canRun = true;
-            }, delay);
-        }
-
-    }
-}
-</code></pre><p>以上也只是一个简单的实现，还有些可以优化的地方。<br>除了用setTimeout来控制时间间隔，亦可以通过时间戳来实现：即比较前后两次出发的时间出之差是否大于阈值。</p>
+<h4 id="throttle实现"><a href="#throttle实现" class="headerlink" title="throttle实现"></a>throttle实现</h4><p>分析：我们要实现的throttle方法只负责 是否能执行某些代码的逻辑实现。时间间隔、要执行的函数、是否立即执行 这些都是使用方决定的，即这些作为throttle方法的参数传入。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">throlle</span>(<span class="params">handler,delay,immediate</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> canRun = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">if</span>(!canRun)&#123;</div><div class="line">           <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        canRun = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">if</span>(immediate)&#123;</div><div class="line">           handler();</div><div class="line">           immediate = <span class="literal">false</span>;</div><div class="line">           setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">           canRun = <span class="literal">true</span>;</div><div class="line">        &#125;, delay);</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">               handler();  <span class="comment">//todo:参数传递</span></div><div class="line">               canRun = <span class="literal">true</span>;</div><div class="line">            &#125;, delay);</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="debounce实现"><a href="#debounce实现" class="headerlink" title="debounce实现"></a>debounce实现</h4><p>分析：让我们回一下debounce和throttle的区别：debounce事件间隔会被重新计时，及在非空闲期内触发了回调,回调内会把定时器clear掉，重新创建一个定时器，事件间隔也即随之重新计算了。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">handler,delay,immediate</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> canRun = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">var</span> timer = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">if</span>(!canRun)&#123;</div><div class="line">           clearTimeout(timer); <span class="comment">//唯一的区别就在这里</span></div><div class="line">        &#125;</div><div class="line">        canRun = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">if</span>(immediate)&#123;</div><div class="line">           handler();</div><div class="line">           immediate = <span class="literal">false</span>;</div><div class="line">           setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">           canRun = <span class="literal">true</span>;</div><div class="line">        &#125;, delay);</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            timer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">               handler();  <span class="comment">//todo:参数传递</span></div><div class="line">               canRun = <span class="literal">true</span>;</div><div class="line">            &#125;, delay);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以上也只是一个简单的实现，还有些可以优化的地方。<br>除了用setTimeout来控制时间间隔，亦可以通过时间戳来实现：即比较前后两次出发的时间出之差是否大于阈值。</p>
 
       
     </div>
