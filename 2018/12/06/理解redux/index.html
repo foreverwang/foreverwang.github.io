@@ -100,7 +100,7 @@ Redux is a predictable state container for JavaScript apps.
 
 翻译一下：redux 是javascript 应用状态容器，他提供可预测化的状态管理。师出flux,作用和flux一样，作为应用的状态管理层。其核心思想也是单向数据流。
 我们先看一个redux">
-<meta property="og:updated_time" content="2018-01-06T08:48:35.000Z">
+<meta property="og:updated_time" content="2018-01-06T16:20:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解redux">
 <meta name="twitter:description" content="redux简单介绍前面理解了flux,本篇来理解redux。redux的官方介绍 
@@ -500,246 +500,13 @@ compose.js //工具方法，将middleware中间件方法组合成一个调用链
 <li>observable</li>
 </ul>
 <p>以下源码为方便阅读，去掉了原注释，和异常抛错信息。注释信息为解读信息。</p>
-<pre><code>import $$observable from &apos;symbol-observable&apos;
-import ActionTypes from &apos;./utils/actionTypes&apos;
-import isPlainObject from &apos;./utils/isPlainObject&apos;
-/**
- * [createStore description]    通过createStore方法创建一个store,store来维护和持有应用的state
- * @param  {Function} reducer   函数 接收当前state和action为参数返回新的state
- * @param  {any} preloadedState 默认的初始化state，如果你的reducer是通过combineReducers生成的一个顶层reducer,
- *                              那初始state的key值和combineReducers的key是一一对应的
- * @param  {Function} enhancer  store增强器 通常添加中间件
- * @return {Store}              store，允许你读取state,dispatch actions以及注册订阅者
- */
-export default function createStore(reducer, preloadedState, enhancer) {
-  //允许使用方灵活传参：可以不传默认state 直接传 enhancer参数
-  if (typeof preloadedState === &apos;function&apos; &amp;&amp; typeof enhancer === &apos;undefined&apos;) {
-    enhancer = preloadedState
-    preloadedState = undefined
-  }
-
-  if (typeof enhancer !== &apos;undefined&apos;) {
-    if (typeof enhancer !== &apos;function&apos;) {
-      throw new Error(&apos;Expected the enhancer to be a function.&apos;)
-    }
-
-    return enhancer(createStore)(reducer, preloadedState)
-  }
-
-  if (typeof reducer !== &apos;function&apos;) {
-    throw new Error(&apos;Expected the reducer to be a function.&apos;)
-  }
-
-  //这里是一些函数内的变量，由于闭包特性，这些变量在调用createStore函数后不会被销毁（因为导出的对象方法里面有这些变量的引用）。
-  //这里指的注意的一点是有两个listeners队列：currentListeners 和 nextListeners；这一点有点厉害了，下面介绍
-  let currentReducer = reducer 
-  let currentState = preloadedState
-  let currentListeners = []
-  let nextListeners = currentListeners
-  let isDispatching = false
-
-  //nextListeners是currentListeners的拷贝，我们修改（subscribe）都是对nextListeners的修改
-  //在flush listeners 之前 nextListeners 同步 currentListeners
-  //这么做可以保证 每次dispatch listener 过程中 subscribe/unsubscribe listerens不会影响当前dispatch 队列，改变值发生在nextListeners，下一次dispatch时生效。 
-  //TODO：我只知道这里这么做有点屌，具体这么做有啥用，我还得研究下
-
-  function ensureCanMutateNextListeners() {
-  //nextListeners === currentListener 说明listeners已经被flush; 
-  //nextListeners !== currentListener 说明subscribe(listener)后 还未被dispatch
-    if (nextListeners === currentListeners) {
-      nextListeners = currentListeners.slice()
-    }
-  }
-    /**
-     * 读取state 
-     * @returns {any} 返回应用的当前state树
-     */
-  function getState() {
-    if (isDispatching) {
-      throw new Error(&apos;&apos;)
-    }
-
-    return currentState
-  }
-
-  function subscribe(listener) {
-    if (typeof listener !== &apos;function&apos;) {
-      throw new Error(&apos;Expected listener to be a function.&apos;)
-    }
-
-    if (isDispatching) {
-      throw new Error(&apos;&apos;)
-    }
-
-    let isSubscribed = true
-
-    ensureCanMutateNextListeners()
-    nextListeners.push(listener)
-
-    return function unsubscribe() {
-      if (!isSubscribed) {
-        return
-      }
-
-      if (isDispatching) {
-        throw new Error(&apos;&apos;)
-      }
-
-      isSubscribed = false
-
-      ensureCanMutateNextListeners()
-      const index = nextListeners.indexOf(listener)
-      nextListeners.splice(index, 1)
-    }
-  }
-
-  //唯一改变store里数据（state）的方式就是调用store.dispatch
-  //dispatch 做了两件事情：1调用 reducer 更改数据 2 flush 所有listeners
-  //这里和flux有点不同, flux里 观察数据的变化，以及数据变化后的通知，这些需要你自己去实现 这一环节的观察者模式。
-  //redux自身实现了这一环节的观察者模式，提供了 store.subscribe方法添加listeners，dispatch的时候会 flush这些listeners 
-
-  function dispatch(action) {
-    if (!isPlainObject(action)) {
-      throw new Error(&apos;&apos;)
-    }
-
-    if (typeof action.type === &apos;undefined&apos;) {
-      throw new Error(&apos;&apos;)
-    }
-
-     // reducer内部不允许再次调用dispatch，否则抛出异常 防止死循环？
-    if (isDispatching) {
-      throw new Error(&apos;Reducers may not dispatch actions.&apos;)
-    }
-
-    try {
-      isDispatching = true
-      currentState = currentReducer(currentState, action)
-    } finally {
-      isDispatching = false
-    }
-
-    //触发所有的状态监听回调函数
-    const listeners = currentListeners = nextListeners
-    for (let i = 0; i &lt; listeners.length; i++) {
-      const listener = listeners[i]
-      listener()
-    }
-
-    return action
-  }
-
-  // 顾名思义，就是替换当前store在用的reducer
-  // 有什么用呢？你想动态加载某些reducer时,加载后用该方法替换reducer; 如果你想为redux实现热更新机制，也需要该方法
-  function replaceReducer(nextReducer) {
-    if (typeof nextReducer !== &apos;function&apos;) {
-      throw new Error(&apos;Expected the nextReducer to be a function.&apos;)
-    }
-
-    currentReducer = nextReducer
-    dispatch({ type: ActionTypes.REPLACE })
-  }
-
-  //
-  function observable() {
-    const outerSubscribe = subscribe
-    return {
-      subscribe(observer) {
-        if (typeof observer !== &apos;object&apos;) {
-          throw new TypeError(&apos;Expected the observer to be an object.&apos;)
-        }
-
-        function observeState() {
-          if (observer.next) {
-            observer.next(getState())
-          }
-        }
-
-        observeState()
-        const unsubscribe = outerSubscribe(observeState)
-        return { unsubscribe }
-      },
-
-      [$$observable]() {
-        return this
-      }
-    }
-  }
-
-  dispatch({ type: ActionTypes.INIT })
-
-  return {
-    dispatch,
-    subscribe,
-    getState,
-    replaceReducer,
-    [$$observable]: observable
-  }
-}
-</code></pre><p>这里最值得关注的就是currentListeners 和nextListeners这两个listener队列及ensureCanMutateNextListeners方法。每次修改的是nextListeners。每次flush listeners时 将nextListeners和currentListeners同步。</p>
-<h4 id="bindActionCreators-js"><a href="#bindActionCreators-js" class="headerlink" title="bindActionCreators.js"></a>bindActionCreators.js</h4><pre><code>//bindActionCreators 用法
-bindActionCreators({ //第一个参数也可以是一个 actionCreator函数
-    addCreator, //属性值是actionCreator函数
-    anotherCreator,
-    ...
-},dispatch)
-
-//bindActionCreator
-function bindActionCreator(actionCreator, dispatch) {
-  return function() { 
-    return dispatch(actionCreator.apply(this, arguments)) 
-  }
-}
-
-//bindActionCreators返回值
-=&gt; boundActionCreators = {
-    addCreator: bindActionCreator(addCreator, dispatch),
-    anotherCreator: bindActionCreator(anotherCreator, dispatch),
-
-}
-or 
-=&gt; 
-
-bindActionCreator(actionCreators, dispatch) =&gt; function (...arg) {
-    return dispatch(actionCreator(...arg))) 
-}
-
-//actionCreator
-actionCreator() =&gt; action (对象)，用的时候dispatch(actionCreator())
-</code></pre><p>bindActionCreators 主要是把actionCreator 包了一层dispatch，使用时可以像普通函数一样调用actionCreator。使得对redux 无感知。</p>
-<h4 id="applyMiddleWare"><a href="#applyMiddleWare" class="headerlink" title="applyMiddleWare"></a>applyMiddleWare</h4><pre><code>import compose from &apos;./compose&apos;
-
-export default function applyMiddleware(...middlewares) {
-  return (createStore) =&gt; (...args) =&gt; {
-    const store = createStore(...args)
-    let dispatch = store.dispatch
-    let chain = []
-
-    const middlewareAPI = {
-      getState: store.getState,
-      dispatch: (...args) =&gt; dispatch(...args)
-    }
-    chain = middlewares.map(middleware =&gt; middleware(middlewareAPI))
-    dispatch = compose(...chain)(store.dispatch)
-
-    return {
-      ...store,
-      dispatch
-    }
-  }
-}
-</code></pre><h4 id="compose-js"><a href="#compose-js" class="headerlink" title="compose.js"></a>compose.js</h4><pre><code>export default function compose(...funcs) {
-  if (funcs.length === 0) {
-    return arg =&gt; arg
-  }
-
-  if (funcs.length === 1) {
-    return funcs[0]
-  }
-
-  return funcs.reduce((a, b) =&gt; (...args) =&gt; a(b(...args)))
-}
-</code></pre><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">import</span> $$observable <span class="keyword">from</span> <span class="string">'symbol-observable'</span></div><div class="line"><span class="keyword">import</span> ActionTypes <span class="keyword">from</span> <span class="string">'./utils/actionTypes'</span></div><div class="line"><span class="keyword">import</span> isPlainObject <span class="keyword">from</span> <span class="string">'./utils/isPlainObject'</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * [createStore description]    通过createStore方法创建一个store,store来维护和持有应用的state</div><div class="line"> * @param  &#123;Function&#125; reducer   函数 接收当前state和action为参数返回新的state</div><div class="line"> * @param  &#123;any&#125; preloadedState 默认的初始化state，如果你的reducer是通过combineReducers生成的一个顶层reducer,</div><div class="line"> *                              那初始state的key值和combineReducers的key是一一对应的</div><div class="line"> * @param  &#123;Function&#125; enhancer  store增强器 通常添加中间件</div><div class="line"> * @return &#123;Store&#125;              store，允许你读取state,dispatch actions以及注册订阅者</div><div class="line"> */</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">createStore</span>(<span class="params">reducer, preloadedState, enhancer</span>) </span>&#123;</div><div class="line">  <span class="comment">//允许使用方灵活传参：可以不传默认state 直接传 enhancer参数</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> preloadedState === <span class="string">'function'</span> &amp;&amp; <span class="keyword">typeof</span> enhancer === <span class="string">'undefined'</span>) &#123;</div><div class="line">    enhancer = preloadedState</div><div class="line">    preloadedState = <span class="literal">undefined</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'undefined'</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the enhancer to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//这行代码到 applyMiddleWare时说明</span></div><div class="line">    <span class="keyword">return</span> enhancer(createStore)(reducer, preloadedState)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> reducer !== <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the reducer to be a function.'</span>)</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">//这里是一些函数内的变量，由于闭包特性，这些变量在调用createStore函数后不会被销毁（因为导出的对象方法里面有这些变量的引用）。</span></div><div class="line">  <span class="comment">//这里指的注意的一点是有两个listeners队列：currentListeners 和 nextListeners；这一点有点厉害了，下面介绍</span></div><div class="line">  <span class="keyword">let</span> currentReducer = reducer </div><div class="line">  <span class="keyword">let</span> currentState = preloadedState</div><div class="line">  <span class="keyword">let</span> currentListeners = []</div><div class="line">  <span class="keyword">let</span> nextListeners = currentListeners</div><div class="line">  <span class="keyword">let</span> isDispatching = <span class="literal">false</span></div><div class="line">  </div><div class="line">  <span class="comment">//nextListeners是currentListeners的拷贝，我们修改（subscribe）都是对nextListeners的修改</span></div><div class="line">  <span class="comment">//在flush listeners 之前 nextListeners 同步 currentListeners</span></div><div class="line">  <span class="comment">//这么做可以保证 每次dispatch listener 过程中 subscribe/unsubscribe listerens不会影响当前dispatch 队列，改变值发生在nextListeners，下一次dispatch时生效。 </span></div><div class="line">  <span class="comment">//TODO：我只知道这里这么做有点屌，具体这么做有啥用，我还得研究下</span></div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">ensureCanMutateNextListeners</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">//nextListeners === currentListener 说明listeners已经被flush; </span></div><div class="line">  <span class="comment">//nextListeners !== currentListener 说明subscribe(listener)后 还未被dispatch</span></div><div class="line">    <span class="keyword">if</span> (nextListeners === currentListeners) &#123;</div><div class="line">      nextListeners = currentListeners.slice()</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 读取state </div><div class="line">     * @returns &#123;any&#125; 返回应用的当前state树</div><div class="line">     */</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getState</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (isDispatching) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">''</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> currentState</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">listener</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> listener !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected listener to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (isDispatching) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">''</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> isSubscribed = <span class="literal">true</span></div><div class="line"></div><div class="line">    ensureCanMutateNextListeners()</div><div class="line">    nextListeners.push(listener)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">unsubscribe</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">if</span> (!isSubscribed) &#123;</div><div class="line">        <span class="keyword">return</span></div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (isDispatching) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">''</span>)</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      isSubscribed = <span class="literal">false</span></div><div class="line"></div><div class="line">      ensureCanMutateNextListeners()</div><div class="line">      <span class="keyword">const</span> index = nextListeners.indexOf(listener)</div><div class="line">      nextListeners.splice(index, <span class="number">1</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">//唯一改变store里数据（state）的方式就是调用store.dispatch</span></div><div class="line">  <span class="comment">//dispatch 做了两件事情：1调用 reducer 更改数据 2 flush 所有listeners</span></div><div class="line">  <span class="comment">//这里和flux有点不同, flux里 观察数据的变化，以及数据变化后的通知，这些需要你自己去实现 这一环节的观察者模式。</span></div><div class="line">  <span class="comment">//redux自身实现了这一环节的观察者模式，提供了 store.subscribe方法添加listeners，dispatch的时候会 flush这些listeners </span></div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">action</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!isPlainObject(action)) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">''</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> action.type === <span class="string">'undefined'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">''</span>)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">     <span class="comment">// reducer内部不允许再次调用dispatch，否则抛出异常 防止死循环？</span></div><div class="line">    <span class="keyword">if</span> (isDispatching) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Reducers may not dispatch actions.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      isDispatching = <span class="literal">true</span></div><div class="line">      currentState = currentReducer(currentState, action)</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">      isDispatching = <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//触发所有的状态监听回调函数</span></div><div class="line">    <span class="keyword">const</span> listeners = currentListeners = nextListeners</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; listeners.length; i++) &#123;</div><div class="line">      <span class="keyword">const</span> listener = listeners[i]</div><div class="line">      listener()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> action</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// 顾名思义，就是替换当前store在用的reducer</span></div><div class="line">  <span class="comment">// 有什么用呢？你想动态加载某些reducer时,加载后用该方法替换reducer; 如果你想为redux实现热更新机制，也需要该方法</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">replaceReducer</span>(<span class="params">nextReducer</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> nextReducer !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the nextReducer to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    currentReducer = nextReducer</div><div class="line">    dispatch(&#123; <span class="attr">type</span>: ActionTypes.REPLACE &#125;)</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">//</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">observable</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">const</span> outerSubscribe = subscribe</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">      subscribe(observer) &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> observer !== <span class="string">'object'</span>) &#123;</div><div class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Expected the observer to be an object.'</span>)</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">observeState</span>(<span class="params"></span>) </span>&#123;</div><div class="line">          <span class="keyword">if</span> (observer.next) &#123;</div><div class="line">            observer.next(getState())</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        observeState()</div><div class="line">        <span class="keyword">const</span> unsubscribe = outerSubscribe(observeState)</div><div class="line">        <span class="keyword">return</span> &#123; unsubscribe &#125;</div><div class="line">      &#125;,</div><div class="line"></div><div class="line">      [$$observable]() &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  dispatch(&#123; <span class="attr">type</span>: ActionTypes.INIT &#125;)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    dispatch,</div><div class="line">    subscribe,</div><div class="line">    getState,</div><div class="line">    replaceReducer,</div><div class="line">    [$$observable]: observable</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里最值得关注的就是currentListeners 和nextListeners这两个listener队列及ensureCanMutateNextListeners方法。每次修改的是nextListeners。每次flush listeners时 将nextListeners和currentListeners同步。</p>
+<h4 id="bindActionCreators-js"><a href="#bindActionCreators-js" class="headerlink" title="bindActionCreators.js"></a>bindActionCreators.js</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bindActionCreators 用法</span></div><div class="line">bindActionCreators(&#123; <span class="comment">//第一个参数也可以是一个 actionCreator函数</span></div><div class="line">    addCreator, <span class="comment">//属性值是actionCreator函数</span></div><div class="line">    anotherCreator,</div><div class="line">    ...</div><div class="line">&#125;,dispatch)</div><div class="line"></div><div class="line"><span class="comment">//bindActionCreator</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bindActionCreator</span>(<span class="params">actionCreator, dispatch</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </div><div class="line">    <span class="keyword">return</span> dispatch(actionCreator.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)) </div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//bindActionCreators返回值</span></div><div class="line">=&gt; boundActionCreators = &#123;</div><div class="line">    <span class="attr">addCreator</span>: bindActionCreator(addCreator, dispatch),</div><div class="line">    <span class="attr">anotherCreator</span>: bindActionCreator(anotherCreator, dispatch),</div><div class="line">    </div><div class="line">&#125;</div><div class="line">or </div><div class="line">=&gt; </div><div class="line"></div><div class="line">bindActionCreator(actionCreators, dispatch) =&gt; <span class="function"><span class="keyword">function</span> (<span class="params">...arg</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> dispatch(actionCreator(...arg))) </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//actionCreator</span></div><div class="line">actionCreator() =&gt; action (对象)，用的时候dispatch(actionCreator())</div></pre></td></tr></table></figure>
+<p>bindActionCreators 主要是把actionCreator 包了一层dispatch，使用时可以像普通函数一样调用actionCreator。使得对redux 无感知。</p>
+<h4 id="applyMiddleWare"><a href="#applyMiddleWare" class="headerlink" title="applyMiddleWare"></a>applyMiddleWare</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">import</span> compose <span class="keyword">from</span> <span class="string">'./compose'</span></div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">applyMiddleware</span>(<span class="params">...middlewares</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">createStore</span>) =&gt;</span> (...args) =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> store = createStore(...args)</div><div class="line">    <span class="keyword">let</span> dispatch = store.dispatch</div><div class="line">    <span class="keyword">let</span> chain = []</div><div class="line"></div><div class="line">    <span class="keyword">const</span> middlewareAPI = &#123;</div><div class="line">      <span class="attr">getState</span>: store.getState,</div><div class="line">      <span class="attr">dispatch</span>: <span class="function">(<span class="params">...args</span>) =&gt;</span> dispatch(...args)</div><div class="line">    &#125;</div><div class="line">    chain = middlewares.map(<span class="function"><span class="params">middleware</span> =&gt;</span> middleware(middlewareAPI))</div><div class="line">    dispatch = compose(...chain)(store.dispatch)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">      ...store,</div><div class="line">      dispatch</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="compose-js"><a href="#compose-js" class="headerlink" title="compose.js"></a>compose.js</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...funcs</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (funcs.length === <span class="number">0</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="params">arg</span> =&gt;</span> arg</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (funcs.length === <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">return</span> funcs[<span class="number">0</span>]</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> funcs.reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> (...args) =&gt; a(b(...args)))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
 <li><a href="https://github.com/reactjs/redux" target="_blank" rel="external">github</a></li>
 <li><a href="http://cn.redux.js.org/index.html" target="_blank" rel="external">中文文档</a></li>
 <li><a href="http://www.jianshu.com/p/7ae531a8b299?from=timeline" target="_blank" rel="external">源码解读</a></li>
@@ -942,7 +709,7 @@ export default function applyMiddleware(...middlewares) {
 <!--
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
