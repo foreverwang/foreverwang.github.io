@@ -1,0 +1,821 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RSA,非对称加密,数字签名," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="什么是非对称加密维基百科已经解释的非常清楚了（只看对公开密钥加密的解释这部分就好，其他部分说的并不好，引用如下）。
+
+公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非对称加密及其应用">
+<meta property="og:url" content="https://foreverwang.github.io/2018/02/10/非对称加密及其应用/index.html">
+<meta property="og:site_name" content="瞧，这个人">
+<meta property="og:description" content="什么是非对称加密维基百科已经解释的非常清楚了（只看对公开密钥加密的解释这部分就好，其他部分说的并不好，引用如下）。
+
+公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/d16dcf79ly1fobiaii5v2j22fk12812h.jpg">
+<meta property="og:updated_time" content="2018-02-10T10:23:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="非对称加密及其应用">
+<meta name="twitter:description" content="什么是非对称加密维基百科已经解释的非常清楚了（只看对公开密钥加密的解释这部分就好，其他部分说的并不好，引用如下）。
+
+公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/d16dcf79ly1fobiaii5v2j22fk12812h.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://foreverwang.github.io/2018/02/10/非对称加密及其应用/"/>
+
+
+
+
+
+  <title> 非对称加密及其应用 | 瞧，这个人 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">瞧，这个人</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">等拖延症治好了就来写博客^_^</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://foreverwang.github.io/2018/02/10/非对称加密及其应用/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="foreverwang">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/img/s.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="瞧，这个人">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="瞧，这个人" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                非对称加密及其应用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-10T18:20:48+08:00">
+                2018-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/区块链/" itemprop="url" rel="index">
+                    <span itemprop="name">区块链</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="什么是非对称加密"><a href="#什么是非对称加密" class="headerlink" title="什么是非对称加密"></a>什么是非对称加密</h3><p><a href="https://zh.wikipedia.org/wiki/ %E5%85%AC%E5%BC%80%E5%AF%86%E9%92%A5%E5%8A%A0%E5%AF%86" target="_blank" rel="external">维基百科</a>已经解释的非常清楚了（只看对公开密钥加密的解释这部分就好，其他部分说的并不好，引用如下）。</p>
+<blockquote>
+<p>公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所得的密文，只能用相对应的另一个密钥才能解密得到原本的明文；甚至连最初用来加密的密钥也不能用作解密。由于加密和解密需要两个不同的密钥，故被称为非对称加密；不同于加密和解密都使用同一个密钥的对称加密。虽然两个密钥在数学上相关，但如果知道了其中一个，并不能凭此计算出另外一个；因此其中一个可以公开，称为公钥，任意向外发布；不公开的密钥为私钥，必须由用户自行严格秘密保管，绝不通过任何途径向任何人提供，也不会透露给要通信的另一方，即使他被信任。</p>
+</blockquote>
+<p>维基上说的说的有点啰嗦，精简一下就是：</p>
+<blockquote>
+<p>加密解密通过一个秘钥对即公有密钥和私有密钥完成的。<br><br>用公钥加密明文得到的密文，只能通过对应的私钥解密得到明文。<br>（类似私钥加密明文得到密的文，只能通过对应的公钥解密得到明文）<br><br> 密钥对是数学关系的。</p>
+</blockquote>
+<p>在现实世界上可作比拟的例子是，一个传统保管箱，开门和关门都是使用同一把钥匙，这是对称加密；而一个公开的邮箱，投递口是任何人都可以寄信进去的，这可视为公钥；而只有邮箱主人拥有钥匙可以打开邮箱，这就视为私钥。这就是非对称加密。</p>
+<h3 id="与对称加密的比较"><a href="#与对称加密的比较" class="headerlink" title="与对称加密的比较"></a>与对称加密的比较</h3><p>对称加密的问题在于通信双方要事先交换密钥。 非对称加密的问题在于交换（单向传递）事先传递密钥的过程 存在密钥泄露的风险。密钥一旦泄露，数据就不安全了。<br>而非对称加密，密钥对的私钥是保密的不需要事先传递公开的，所以安全性更高。</p>
+<p>注意，看网上的博文很多人对这里的理解是不太透彻的: 认为对称加密的问题在于加解密用同样的密钥，所以导致对称加密不安全的。 </p>
+<blockquote>
+<p>加解密使用同样的密钥-这是对称加密的概念也是其形式，不是导致他安全性差的原因（要强扯也┑(￣Д ￣)┍）。</p>
+</blockquote>
+<p> 对称加密的安全性低，问题在于两点： </p>
+<ul>
+<li>由于加密解密用同样的密钥，其密钥需要通信双方事先交换（或单向传递），密钥交换的过程存在泄漏的风险。</li>
+<li>由于密钥通信双方都知道，通信接收方可以泄漏发送方的密钥给其他人。 </li>
+</ul>
+<p>而以上两个问题非对称加密都解决了：</p>
+<ul>
+<li>加密解密需要一对密钥来完成，其中私钥是不公开也不需要事先传递的，所以泄漏的概率更小。 </li>
+<li><p>公钥加密的信息只能通过其对应的私钥来解密，私钥是属于通信双方中某一方的，而公钥是公开的，所以不存在泄漏对方密钥的风险。 </p>
+<p>所以，在保证密钥不被泄漏的前提下对称加密和非对称加密是一样安全的。 但是，对称加密中，通信双方在事后有泄漏对方密钥的可能。 如果再加一个条件通信双方的发送者对每一个接收者使用不同的密钥，这样就能保证对称加密和非对称加密一样安全了。 但是这两点都比较难保证：1.传递密钥过程的安全性依赖传递环境 2.需要每个人都要有很多很多密钥，不同的接收方用不同的密钥。</p>
+</li>
+</ul>
+<p>所以这个时候非对称加密华丽登场了。 下面我们来学习一下应用最广泛的非对称加密算法之一：RSA加密算法的数学原理。</p>
+<h3 id="RSA算法"><a href="#RSA算法" class="headerlink" title="RSA算法"></a>RSA算法</h3><p>RSA算法的数学基础是：欧拉定理，此处不做解释。</p>
+<p>下面直接介绍RSA算法的基础步骤；</p>
+<h4 id="1-生成公钥（PK）和私钥-SK"><a href="#1-生成公钥（PK）和私钥-SK" class="headerlink" title="1. 生成公钥（PK）和私钥(SK)"></a>1. 生成公钥（PK）和私钥(SK)</h4><ul>
+<li>(1) 随意选两个大的素数p和q，p不等于q</li>
+<li>(2) 将p、q两个素数相乘得到N，即n=pq</li>
+<li>(3) 计算n的欧拉函数φ(n):根据公式 φ(n)=(p-1)(q-1)</li>
+<li>(4) 选择一个整数e，作为密钥，使得E和T互质（即e和φ(n)的最大公约数是1），且e &lt; φ(n)</li>
+<li><p>(5) 计算e对于φ(n)的模反元素d: 根据公式 ed mod φ(n)  = 1 ,计算出d的值，作为两一个密钥。<br>所谓”模反元素”就是指有一个整数d，可以使得ed被φ(n)除的余数为1。</p>
+<pre><code>ed ≡ 1 (mod φ(n)) ==&gt; 
+ed - 1 = kφ(n)  //求解二元一次方程 k 从1带入试就行了 
+</code></pre><p>  思考： 一个整数A除以另一个整数B的余数是C， 已知B和C，A是唯一的吗？</p>
+</li>
+<li><p>(6) 通过以上步骤计算出 n 、e 、d 3个数据，其中（n、e）作为公钥，（n、d）作为私钥（也可以互换）</p>
+</li>
+<li>(7) 生成公钥和私钥后就可以公开公钥了。</li>
+</ul>
+<h4 id="2-用公钥加密信息"><a href="#2-用公钥加密信息" class="headerlink" title="2. 用公钥加密信息"></a>2. 用公钥加密信息</h4><p>信息发送方收到接收方公钥PK后，就可以用PK对数据加密。加密步骤如下。 其中明文为M，加密后的密文为C，公钥（n,e）</p>
+<blockquote>
+<p>加密： M^e  mod n = C</p>
+</blockquote>
+<h4 id="3-用私钥解密信息"><a href="#3-用私钥解密信息" class="headerlink" title="3. 用私钥解密信息"></a>3. 用私钥解密信息</h4><p>接收方持有私钥（N，D）,在接收到密文C后，通过私钥对其解密，得到明文M：</p>
+<blockquote>
+<p>解密： C^d mod n = M  </p>
+</blockquote>
+<h3 id="RSA-安全性分析"><a href="#RSA-安全性分析" class="headerlink" title="RSA 安全性分析"></a>RSA 安全性分析</h3><p>通常到这里我们会有个疑问？ 公钥和私钥存在一定的数学关系， 公钥公开，那么有没有可能通过公钥推导出私钥呢？ 如果能拿不就不安全了吗。 答案是：能，但是很难。<br>问题变成 能否在已知 n和e的前提下，推导出d ?</p>
+<pre><code>ed ≡ 1 (mod φ(n))   //等价于 ed mod φ(n)  = 1 
+φ(n)=(p-1)(q-1)
+n=pq
+</code></pre><p>结论：如果n可以被因数分解，d就可以算出。<br>但是，大整数的因式分解是很困难的，目前除了暴力破解，还没有更好的有效方式。</p>
+<p>所以整数n的因式分解难度决定了RSA算法的可靠度。 </p>
+<blockquote>
+<p> RSA可靠性就是建立在分解两个大素数乘积的十分困难上。</p>
+</blockquote>
+<p>那么最后我们来分析一下大整数n 因式分解为什么难？有多难？   </p>
+<h3 id="RSA-算法实例"><a href="#RSA-算法实例" class="headerlink" title="RSA 算法实例"></a>RSA 算法实例</h3><h4 id="生成公钥私钥"><a href="#生成公钥私钥" class="headerlink" title="生成公钥私钥"></a>生成公钥私钥</h4><ul>
+<li>随机取大质数p=11，q=13，那n=11*13=143，φ(N)=(p-1)(q-1) = 130 </li>
+<li><p>取一个e=7，由 ed mod φ(n)  = 1 计算出d=103。</p>
+<pre><code>公钥（n,e） 即 （143, 7）
+私钥 (n,d) 即 （143, 103）
+</code></pre></li>
+</ul>
+<h4 id="用公钥加密"><a href="#用公钥加密" class="headerlink" title="用公钥加密"></a>用公钥加密</h4><p>由于手工计算，为了使计算量小一点，我们将上面的公钥和私钥交换： 即公钥 （143, 103），私钥（143, 7）。取明文 m =2,加密过程如下：</p>
+<pre><code>密文 c =  m^e mod n
+      =  2^103 mod 143 
+      = 10141204801825835211973625643008 mod 143 
+      = 63 
+</code></pre><h4 id="用私钥解密"><a href="#用私钥解密" class="headerlink" title="用私钥解密"></a>用私钥解密</h4><p>收到密文c = 63,通过 私钥（143，7）进行解密，解密过程如下：</p>
+<pre><code>明文  m = c^d mod n 
+         = 63^7 mod 143
+         = 3938980639167 mod 143 
+         = 2 
+</code></pre><p>至此，我们用RSA算法进行了一次加密解密，其实很简单，只是计算量可能会比较大。  </p>
+<p>常见的公钥加密算法除了RSA。还有ElGamal、背包算法、椭圆曲线加密算法（英语：Elliptic Curve Cryptography, ECC）等。下面我们说下非对称加密的应用。</p>
+<h3 id="非对称加密的应用"><a href="#非对称加密的应用" class="headerlink" title="非对称加密的应用"></a>非对称加密的应用</h3><p> tmp</p>
+<pre><code>数字证书 
+https 
+
+数字签名不等于加密
+
+
+
+手写签名的作用？
+数字签名是手写签名在网络传输上的应用及的扩展。
+</code></pre><p>先插入一个概念： <code>信息系统安全的基本属性</code>。</p>
+<blockquote>
+<p>信息系统安全的基本属性: 保密性、完整性、可用性、不可抵赖性。</p>
+</blockquote>
+<ul>
+<li>保密性：是应用系统的信息不被泄露给非授权的用户。常用保密技术：最小授权原则，信息加密等。</li>
+<li>完整性：完整性是信息未经授权不能进行改变的特性。完整性是一种面向信息的安全性。</li>
+<li>可用性： 可用性是应用系统面向用户的安全性能，不做赘述。</li>
+<li>不可抵赖性：不可抵赖性也称作不可否认性，在应用系统的信息交互过程中，确信参与者的真实同一性。即所有参与者都不可能否认或抵赖曾经完成的操作和承诺。利用信息源证据可以防止发信方不真实地否认已发送信息，利用递交接收证据可以防止收信方事后否认已经接收的信息。</li>
+</ul>
+<p>加密技术也是用来加强信息安全的，接下来说的几个非对称加密实际应用也是如此。</p>
+<h4 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h4><blockquote>
+<p>数字签名在ISO7498—2标准中定义为：“附加在数据单元上的一些数据，或是对数据单元所作的密码变换，这种数据和变换允许数据单元的接收者用以确认数据单元来源和数据单元的完整性，并保护数据，防止被人（例如接收者）进行伪造”</p>
+</blockquote>
+<p>首先搞清楚数字签名解决的是什么问题？ 然后看看什么是数字签名？最后分析下数字签名为什么能解决这些问题？</p>
+<h5 id="数字签名解决什么问题？"><a href="#数字签名解决什么问题？" class="headerlink" title="数字签名解决什么问题？"></a>数字签名解决什么问题？</h5><p>纸质书信或文件根据亲笔签名或印章来证明其真实性，及防抵赖对应 上述信息安全的 完整性和不可抵赖性。 而数字签名则可以看做是对在网络中传输的报文的签名，作用自然也是为了保证信息的完整性及不可抵赖性。 </p>
+<p>那下面我们看下数字签名是如何做到证明信息的完整性及防抵赖的？</p>
+<h5 id="数字签名的实现方法？"><a href="#数字签名的实现方法？" class="headerlink" title="数字签名的实现方法？"></a>数字签名的实现方法？</h5><p>建立在公钥密码技术上的数字签名方法有很多，有RSA签名、DSA签名和椭圆曲线数字签名算法（ECDSA）等等。下面对RSA签名进行详细分析。</p>
+<p>直接看图：</p>
+<p><img src="https://ws1.sinaimg.cn/large/d16dcf79ly1fobiaii5v2j22fk12812h.jpg" alt="数字签名"></p>
+<p>   （1）发送方采用某种摘要算法从报文中生成一个128位的散列值（称为报文摘要）；</p>
+<p>　　（2）发送方用RSA算法和自己的私钥对这个散列值进行加密，产生一个摘要密文，这就是发送方的数字签名；</p>
+<p>　　（3）将这个加密后的数字签名作为报文的附件和报文一起发送给接收方：</p>
+<p>　　（4）接收方从接收到的原始报文中采用相同的摘要算法计算出128位的散列值；</p>
+<p>　　（5）报文的接收方用RSA算法和发送方的公钥对报文附加的数字签名进行解密；</p>
+<p>　　（6）如果两个散列值相同，那么接收方就能确认报文是由发送方签名的。</p>
+<p>最常用的摘要算法叫做MD5（Message Digest 5）。MD5采用单向Hash函数将任意长度的“字节串”变换成一个128位的散列值，并且它是一个不可逆的字符串变换算法。</p>
+<h5 id="数字为什么能保证信息完整性及不可抵赖性？"><a href="#数字为什么能保证信息完整性及不可抵赖性？" class="headerlink" title="数字为什么能保证信息完整性及不可抵赖性？"></a>数字为什么能保证信息完整性及不可抵赖性？</h5><h6 id="信息的完整性"><a href="#信息的完整性" class="headerlink" title="信息的完整性"></a>信息的完整性</h6><p>如果报文在网络传输过程中被修改，接收方收到此报文后，使用相同的摘要算法将计算出不同的报文摘要，这就保证了接收方可以判断报文自签名后到收到为止，是否被修改过。</p>
+<h6 id="信息的不可抵赖性"><a href="#信息的不可抵赖性" class="headerlink" title="信息的不可抵赖性"></a>信息的不可抵赖性</h6><p>如果发送方A想让接收方误认为此报文是由发送方B签名发送的，由于发送方A不知道发送方B的私钥，所以接收方用发送方B的公钥对发送方A加密的报文摘要进行解密时，也将得出不同的报文摘要，这就保证了接收方可以判断报文是否是由指定的签名者发送。同时也可以看出，当两个散列值相同时，发送方B无法否认这个报文是他签名发送的。</p>
+<h5 id="关于数字签名的一点问题"><a href="#关于数字签名的一点问题" class="headerlink" title="关于数字签名的一点问题"></a>关于数字签名的一点问题</h5><p>关于数字签名就说完了。 有没有注意，传输过程中原文没有被加密吗？是的。上面是无保密机制的数字签名。具有保密机制的RSA签名机制自己看<a href="http://www.elecfans.com/baike/tongxingjishu/chungshuwang/20110710205779.html" target="_blank" rel="external">这边文章吧</a> 。</p>
+<h4 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h4><p>说完数字签名，应趁热打铁说下数字证书，以及数字签名只是非对称加密的一个应用，还有很多其他应用比如 https等。 由于这篇写的够长了，先不写了。 以后再写。 那就以复习本篇说的内容为结束吧： </p>
+<ul>
+<li>什么是非对称加密</li>
+<li>RSA算法的原理和用法</li>
+<li>什么是数字签名</li>
+<li>（完）</li>
+</ul>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="http://www.elecfans.com/baike/tongxingjishu/chungshuwang/20110710205779.html" target="_blank" rel="external">数字签名技术原理介绍</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RSA/" rel="tag"># RSA</a>
+          
+            <a href="/tags/非对称加密/" rel="tag"># 非对称加密</a>
+          
+            <a href="/tags/数字签名/" rel="tag"># 数字签名</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/08/《深度工作》笔记/" rel="next" title="《深度工作》笔记">
+                <i class="fa fa-chevron-left"></i> 《深度工作》笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/06/理解redux/" rel="prev" title="理解redux">
+                理解redux <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/s.png"
+               alt="foreverwang" />
+          <p class="site-author-name" itemprop="name">foreverwang</p>
+          <p class="site-description motion-element" itemprop="description">世界你好</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是非对称加密"><span class="nav-number">1.</span> <span class="nav-text">什么是非对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与对称加密的比较"><span class="nav-number">2.</span> <span class="nav-text">与对称加密的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA算法"><span class="nav-number">3.</span> <span class="nav-text">RSA算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-生成公钥（PK）和私钥-SK"><span class="nav-number">3.1.</span> <span class="nav-text">1. 生成公钥（PK）和私钥(SK)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-用公钥加密信息"><span class="nav-number">3.2.</span> <span class="nav-text">2. 用公钥加密信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-用私钥解密信息"><span class="nav-number">3.3.</span> <span class="nav-text">3. 用私钥解密信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA-安全性分析"><span class="nav-number">4.</span> <span class="nav-text">RSA 安全性分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RSA-算法实例"><span class="nav-number">5.</span> <span class="nav-text">RSA 算法实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成公钥私钥"><span class="nav-number">5.1.</span> <span class="nav-text">生成公钥私钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用公钥加密"><span class="nav-number">5.2.</span> <span class="nav-text">用公钥加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用私钥解密"><span class="nav-number">5.3.</span> <span class="nav-text">用私钥解密</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非对称加密的应用"><span class="nav-number">6.</span> <span class="nav-text">非对称加密的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数字签名"><span class="nav-number">6.1.</span> <span class="nav-text">数字签名</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数字签名解决什么问题？"><span class="nav-number">6.1.1.</span> <span class="nav-text">数字签名解决什么问题？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数字签名的实现方法？"><span class="nav-number">6.1.2.</span> <span class="nav-text">数字签名的实现方法？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数字为什么能保证信息完整性及不可抵赖性？"><span class="nav-number">6.1.3.</span> <span class="nav-text">数字为什么能保证信息完整性及不可抵赖性？</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#信息的完整性"><span class="nav-number">6.1.3.1.</span> <span class="nav-text">信息的完整性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#信息的不可抵赖性"><span class="nav-number">6.1.3.2.</span> <span class="nav-text">信息的不可抵赖性</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于数字签名的一点问题"><span class="nav-number">6.1.4.</span> <span class="nav-text">关于数字签名的一点问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最后"><span class="nav-number">6.2.</span> <span class="nav-text">最后</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">foreverwang</span>
+</div>
+
+<!--
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+-->
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+      <!-- UY END -->
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
