@@ -95,7 +95,7 @@
 
 公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/d16dcf79ly1fobiaii5v2j22fk12812h.jpg">
-<meta property="og:updated_time" content="2018-02-23T05:18:23.000Z">
+<meta property="og:updated_time" content="2018-02-23T05:22:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="非对称加密(公钥加密)及其应用">
 <meta name="twitter:description" content="什么是非对称加密维基百科已经解释的非常清楚了（只看对公开密钥加密的解释这部分就好，其他部分说的并不好，引用如下）。
@@ -408,10 +408,8 @@ ed - 1 = kφ(n)  //求解二元一次方程 k 从1带入试就行了
 <p>解密： C^d mod n = M  </p>
 </blockquote>
 <h3 id="RSA-安全性分析"><a href="#RSA-安全性分析" class="headerlink" title="RSA 安全性分析"></a>RSA 安全性分析</h3><p>通常到这里我们会有个疑问？ 公钥和私钥存在一定的数学关系， 公钥公开，那么有没有可能通过公钥推导出私钥呢？ 如果能那不就不安全了吗。 答案是：能，但是很难。<br>问题变成 能否在已知 n和e的前提下，推导出d ?</p>
-<pre><code>ed ≡ 1 (mod φ(n))   //等价于 ed mod φ(n)  = 1 
-φ(n)=(p-1)(q-1)
-n=pq
-</code></pre><p>结论：如果n可以被因数分解，d就可以算出。<br>但是，大整数的因式分解是很困难的，目前除了暴力破解，还没有更好的有效方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ed ≡ 1 (mod φ(n))   //等价于 ed mod φ(n)  = 1 </div><div class="line">φ(n)=(p-1)(q-1)</div><div class="line">n=pq</div></pre></td></tr></table></figure>
+<p>结论：如果n可以被因数分解，d就可以算出。<br>但是，大整数的因式分解是很困难的，目前除了暴力破解，还没有更好的有效方式。</p>
 <p>所以整数n的因式分解难度决定了RSA算法的可靠度。</p>
 <blockquote>
 <p> RSA可靠性就是建立在分解两个大素数乘积的十分困难上。</p>
@@ -429,16 +427,10 @@ n=pq
 </code></pre></li>
 </ul>
 <h4 id="用公钥加密"><a href="#用公钥加密" class="headerlink" title="用公钥加密"></a>用公钥加密</h4><p>由于手工计算，为了使计算量小一点，我们将上面的公钥和私钥交换： 即公钥 （143, 103），私钥（143, 7）。取明文 m =2,加密过程如下：</p>
-<pre><code>密文 c =  m^e mod n
-      =  2^103 mod 143 
-      = 10141204801825835211973625643008 mod 143 
-      = 63 
-</code></pre><h4 id="用私钥解密"><a href="#用私钥解密" class="headerlink" title="用私钥解密"></a>用私钥解密</h4><p>收到密文c = 63,通过 私钥（143，7）进行解密，解密过程如下：</p>
-<pre><code>明文  m = c^d mod n 
-         = 63^7 mod 143
-         = 3938980639167 mod 143 
-         = 2 
-</code></pre><p>至此，我们用RSA算法进行了一次加密解密，其实很简单，只是计算量可能会比较大。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">密文 c =  m^e mod n</div><div class="line">      =  2^103 mod 143 </div><div class="line">      = 10141204801825835211973625643008 mod 143 </div><div class="line">      = 63</div></pre></td></tr></table></figure>
+<h4 id="用私钥解密"><a href="#用私钥解密" class="headerlink" title="用私钥解密"></a>用私钥解密</h4><p>收到密文c = 63,通过 私钥（143，7）进行解密，解密过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">明文  m = c^d mod n </div><div class="line">         = 63^7 mod 143</div><div class="line">         = 3938980639167 mod 143 </div><div class="line">         = 2</div></pre></td></tr></table></figure>
+<p>至此，我们用RSA算法进行了一次加密解密，其实很简单，只是计算量可能会比较大。  </p>
 <p>常见的公钥加密算法除了RSA。还有ElGamal、背包算法、椭圆曲线加密算法（英语：Elliptic Curve Cryptography, ECC）等。下面我们说下非对称加密的应用。</p>
 <h3 id="非对称加密的应用"><a href="#非对称加密的应用" class="headerlink" title="非对称加密的应用"></a>非对称加密的应用</h3><p>先插入一个概念： <code>信息系统安全的基本属性</code>。</p>
 <blockquote>
@@ -678,7 +670,7 @@ n=pq
 <!--
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
