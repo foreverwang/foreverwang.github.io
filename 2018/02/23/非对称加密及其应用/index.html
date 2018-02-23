@@ -95,7 +95,7 @@
 
 公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/d16dcf79ly1fobiaii5v2j22fk12812h.jpg">
-<meta property="og:updated_time" content="2018-02-23T05:22:14.000Z">
+<meta property="og:updated_time" content="2018-02-23T05:24:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="非对称加密(公钥加密)及其应用">
 <meta name="twitter:description" content="什么是非对称加密维基百科已经解释的非常清楚了（只看对公开密钥加密的解释这部分就好，其他部分说的并不好，引用如下）。
@@ -391,9 +391,7 @@
 <li>(3) 计算n的欧拉函数φ(n):根据公式 φ(n)=(p-1)(q-1)</li>
 <li>(4) 选择一个整数e，作为密钥，使得e和φ(n)互质，且e &lt; φ(n)</li>
 <li><p>(5) 计算e对于φ(n)的模反元素d: 根据公式 ed mod φ(n)  = 1 ,计算出d的值，作为另一个密钥。<br>所谓”模反元素”就是指有一个整数d，可以使得ed被φ(n)除的余数为1。</p>
-<pre><code>ed ≡ 1 (mod φ(n)) ==&gt; 
-ed - 1 = kφ(n)  //求解二元一次方程 k 从1带入试就行了 
-</code></pre><p>  思考： 一个整数A除以另一个整数B的余数是C， 已知B和C，A是唯一的吗？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">    ed ≡ 1 (mod φ(n)) ==&gt; </div><div class="line">    ed - 1 = kφ(n)  //求解二元一次方程 k 从1带入试就行了 </div><div class="line">思考： 一个整数A除以另一个整数B的余数是C， 已知B和C，A是唯一的吗？</div></pre></td></tr></table></figure>
 </li>
 <li><p>(6) 通过以上步骤计算出 n 、e 、d 3个数据，其中（n、e）作为公钥，（n、d）作为私钥（也可以互换）</p>
 </li>
@@ -421,10 +419,8 @@ ed - 1 = kφ(n)  //求解二元一次方程 k 从1带入试就行了
 <p>思考一下大整数n 因式分解为什么难？有多难？</p>
 <h3 id="RSA-算法实例"><a href="#RSA-算法实例" class="headerlink" title="RSA 算法实例"></a>RSA 算法实例</h3><h4 id="生成公钥私钥"><a href="#生成公钥私钥" class="headerlink" title="生成公钥私钥"></a>生成公钥私钥</h4><ul>
 <li>随机取大质数p=11，q=13，那n=11*13=143，φ(N)=(p-1)(q-1) = 130 </li>
-<li><p>取一个e=7，由 ed mod φ(n)  = 1 计算出d=103。</p>
-<pre><code>公钥（n,e） 即 （143, 7）
-私钥 (n,d) 即 （143, 103）
-</code></pre></li>
+<li>取一个e=7，由 ed mod φ(n)  = 1 计算出d=103。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">公钥（n,e） 即 （143, 7）</div><div class="line">私钥 (n,d) 即 （143, 103）</div></pre></td></tr></table></figure>
+</li>
 </ul>
 <h4 id="用公钥加密"><a href="#用公钥加密" class="headerlink" title="用公钥加密"></a>用公钥加密</h4><p>由于手工计算，为了使计算量小一点，我们将上面的公钥和私钥交换： 即公钥 （143, 103），私钥（143, 7）。取明文 m =2,加密过程如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">密文 c =  m^e mod n</div><div class="line">      =  2^103 mod 143 </div><div class="line">      = 10141204801825835211973625643008 mod 143 </div><div class="line">      = 63</div></pre></td></tr></table></figure>
@@ -670,7 +666,7 @@ ed - 1 = kφ(n)  //求解二元一次方程 k 从1带入试就行了
 <!--
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
