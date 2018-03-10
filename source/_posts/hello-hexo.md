@@ -120,7 +120,16 @@ photos:
 	hexo clean
 	``` 
 	
-	
+#### 使用技巧
+* git deploy 面用户名和密码提交github 
+在github 添加ssh key 公钥后 通过ssh 的方式提交代码
+
+	```bash
+	deploy:
+	  type: git
+	  repo: git@github.com:xxx
+	  branch: master
+	```
 
 
 
