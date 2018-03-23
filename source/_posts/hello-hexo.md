@@ -1,6 +1,7 @@
 ---
 layout: photo
 title:  hexo + github pages搭建个人博客
+date: 2017-02-23 12:20:48
 categories: 
 - Hexo 
 tags: 
