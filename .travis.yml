@@ -8,7 +8,7 @@ cache:
   - node_modules
 before_install:
 - openssl aes-256-cbc -K $encrypted_e9f030e8d827_key -iv $encrypted_e9f030e8d827_iv
-  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+  -in id_rsa_blog_hexo.enc -out id_rsa_blog_hexo -d
 - chmod 600 ~/.ssh/id_rsa
 - eval $(ssh-agent)
 - ssh-add ~/.ssh/id_rsa
