@@ -27,13 +27,13 @@ after_success:
 # - git config --global user.email "yongheng.abc@gmail.com"
 # - sed -i'' "/^ *repo/s~github\.com~${githubToken}@github.com~" _config.yml
 # - hexo deploy
- - cd ./public
-  - git init
-  - git config user.name "yongheng"
-  - git config user.email "yongheng.abc@gmail.com"
-  - git add .
-  - git commit -m "build blog with travis"
-  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
+- cd ./public
+- git init
+- git config user.name "yongheng"
+- git config user.email "yongheng.abc@gmail.com"
+- git add .
+- git commit -m "build blog with travis"
+- git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
 # E: Build LifeCycle
 
 branches:
