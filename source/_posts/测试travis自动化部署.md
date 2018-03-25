@@ -15,3 +15,4 @@ travis login报错 --> 升级ruby
 .travis.yml 里写的ssh加密私钥路径不对  --> ./.travis/
 hexo deploy 时github权限问题
 改用github token 方式连接了
+测试+1
