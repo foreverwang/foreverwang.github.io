@@ -1,5 +1,5 @@
 Host *
   User git
   StrictHostKeyChecking no
-  IdentityFile ~/.ssh/id_rsa_blog_hexo
+  IdentityFile ~/.ssh/id_rsa
   IdentitiesOnly yes
