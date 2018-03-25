@@ -6,21 +6,41 @@ branches:
 cache:
   directories:
   - node_modules
+# S: Build Lifecycle
 before_install:
-- openssl aes-256-cbc -K $encrypted_e9f030e8d827_key -iv $encrypted_e9f030e8d827_iv
-  -in ./.travis/id_rsa.enc -out ~/.ssh/id_rsa -d
-- chmod 600 ~/.ssh/id_rsa
-- eval $(ssh-agent)
-- ssh-add ~/.ssh/id_rsa
-- cp .travis/ssh_config ~/.ssh/config
+#路径不要写错
+# - openssl aes-256-cbc -K $encrypted_e9f030e8d827_key -iv $encrypted_e9f030e8d827_iv
+#   -in ./.travis/id_rsa.enc -out ~/.ssh/id_rsa -d
+# - chmod 600 ~/.ssh/id_rsa
+# - eval $(ssh-agent)
+# - ssh-add ~/.ssh/id_rsa
+# - cp .travis/ssh_config ~/.ssh/config
 - npm install -g hexo-cli
+# 克隆主题的仓库 到themes/ 目录
 - git clone https://github.com/theme-next/hexo-theme-next.git themes/next
 install:
 - npm install
 script:
 - hexo generate
 after_success:
-- git config --global user.name "yongheng"
-- git config --global user.email "yongheng.abc@gmail.com"
-- sed -i'' "/^ *repo/s~github\.com~${githubToken}@github.com~" _config.yml
-- hexo deploy
+# - git config --global user.name "yongheng"
+# - git config --global user.email "yongheng.abc@gmail.com"
+# - sed -i'' "/^ *repo/s~github\.com~${githubToken}@github.com~" _config.yml
+# - hexo deploy
+ - cd ./public
+  - git init
+  - git config user.name "yongheng"
+  - git config user.email "yongheng.abc@gmail.com"
+  - git add .
+  - git commit -m "build blog with travis"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
+# E: Build LifeCycle
+
+branches:
+  only:
+    - hexo
+
+env:
+ global:
+   - GH_REF: github.com/foreverwang/foreverwang.github.io
+
