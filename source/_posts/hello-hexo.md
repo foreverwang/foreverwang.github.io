@@ -63,8 +63,9 @@ photos:
 * 克隆主题到themes路径下
 
  ```bash 
- git clone https://github.com/iissnan/hexo-theme-next themes/next
+ git clone https://github.com/theme-next/hexo-theme-next.git themes/next
  ```
+
 
 
   注意：主题文件夹放到themes下 文件夹命名和配置文件里保持一致
