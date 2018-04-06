@@ -23,7 +23,7 @@ categories:
 
 代码示例：
 
-``` javascript
+```javascript
     function A() {}
     var instance = new A;	
 ```  
