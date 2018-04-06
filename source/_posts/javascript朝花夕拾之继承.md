@@ -19,13 +19,13 @@ categories:
 
 对象实例是无法直接通过实例属性来访问原型对象的，但是我们可以间接方式显式的访问其原型对象。 通过在实例上访问其constructor 属性可以引用到实例的构造函数，再访问构造函数的prototype属性访问原型对象。
 
+<!-- more -->
+
 ``` javascript
-	
 	function A() {}
 	var instance = new A;
 ```  
-  
-	
+  	
 通过instance访问原型对象： instance.constructor.prototype 
 
 对象实例内部属性[[prototype]]对程序而言是不可见的，即在代码里不能直接访问，供引擎来访问。 但在浏览器实现中每个对象都有一个` __proto__` 属性，可以在代码层面直接访问原型对象。
