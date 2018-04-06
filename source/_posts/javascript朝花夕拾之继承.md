@@ -21,13 +21,14 @@ categories:
 
 <!-- more -->
 
-``` javascript
-	function A() {}
-	var instance = new A;
-```  
-  	
-通过instance访问原型对象： instance.constructor.prototype 
+代码示例：
 
+``` javascript
+    function A() {}
+    var instance = new A;	
+```  
+
+通过instance访问原型对象： instance.constructor.prototype 。
 对象实例内部属性[[prototype]]对程序而言是不可见的，即在代码里不能直接访问，供引擎来访问。 但在浏览器实现中每个对象都有一个` __proto__` 属性，可以在代码层面直接访问原型对象。
 
 
@@ -38,8 +39,7 @@ categories:
 代码如下：
 
 ``` javascript
-
-	 function SuperType() {
+    function SuperType() {
         this.property = true;
     }
     
@@ -60,6 +60,7 @@ categories:
     var instance = new SubType();
 	 console.log(instance.getSuperValue()); //true
  ```   
+
 引用关系图如下:
     
 ![继承关系图](https://ws1.sinaimg.cn/large/d16dcf79gy1fpxkbh9blaj20ve0eqmz9.jpg)
@@ -77,11 +78,11 @@ categories:
 	}
 	function SubType() {}
 	SubType.prototype = new SuperType();
-	
+
 	var instance1 = new SubType();
-	
+
 	instance1.colors.push("black");
-	
+
 	var instance2 = new SubType();
 	console.log(instance2.colors); //"red,blue,green,black"
 ```
