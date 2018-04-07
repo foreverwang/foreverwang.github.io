@@ -16,6 +16,8 @@ hexo 是一套基于nodejs的静态博客生成系统，这往往需要有一套
 
 具体细节不赘述，原理就是利用了 travis 和 github 的webhook。 github 上提交时出发travis 的自动构建部署。 之所以选travis 是因为他免费。
 
+<!-- more / -->
+
 ## 问题记录
 ### travis login 报错
 
