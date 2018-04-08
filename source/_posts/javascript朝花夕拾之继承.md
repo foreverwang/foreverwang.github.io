@@ -36,9 +36,10 @@ categories:
 上面我们理解了原型对象和构造函数及实例对象的关系。 如果我们让原型对象等于另一个类型的实例。 此时原型对象就包含一个指向另一个原型对象的指针，相应的另一个原型对象也包含一个指向两一个构造函数的指针。假如另一个原型对象又是另一个类型的对象的实例，那么上述关系依然存在，如此层层递进,就构成了实例和原型的链条，这就是`原型链`的概念。
 
 > 实现原型链的基本模式，让一个原型对象等于一个对象的实例。
+
 代码如下：
 
-``` javascript
+ ``` javascript
 
     function SuperType() {
         this.property = true;
@@ -59,9 +60,10 @@ categories:
     }
     
     var instance = new SubType();
-	 console.log(instance.getSuperValue()); //true
-	 
- ```   
+    console.log(instance.getSuperValue()); //true
+
+
+  ```   
 
 
 引用关系图如下:
@@ -74,7 +76,7 @@ categories:
 
 * 1.但当原型对象中包含引用类型值时，会有问题。 由于原型对象的属性被所有实例共享，当一个实例去修改一个共享自原型上的引用类型的属性时，会影响到所有其他实例。示例代码如下：
 
-``` javascript
+ ``` javascript
 	
 	function SuperType() {
 	    this.colors = ["red", "blue", "green"];
@@ -87,8 +89,8 @@ categories:
 	instance1.colors.push("black");
 
 	var instance2 = new SubType();
-    console.log(instance2.colors); //"red,blue,green,black"
-```
+        console.log(instance2.colors); //"red,blue,green,black"
+ ```
 
 由于color属性是继承自SubType的原型，是引用类型值，当instance1修改其color属性时，实际上是修改的SubType原型里的color属性，由与instance2也继承了原型的color属性（其没有实例属性color）,所以instance2.color指向的color属性已经是被instance 修改过的了。
 
