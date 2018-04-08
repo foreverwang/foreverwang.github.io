@@ -39,6 +39,7 @@ categories:
 代码如下：
 
 ``` javascript
+
     function SuperType() {
         this.property = true;
     }
@@ -59,7 +60,9 @@ categories:
     
     var instance = new SubType();
 	 console.log(instance.getSuperValue()); //true
+	 
  ```   
+
 
 引用关系图如下:
     
@@ -74,7 +77,7 @@ categories:
 ``` javascript
 	
 	function SuperType() {
-		this.colors = ["red", "blue", "green"];
+	    this.colors = ["red", "blue", "green"];
 	}
 	function SubType() {}
 	SubType.prototype = new SuperType();
@@ -84,7 +87,7 @@ categories:
 	instance1.colors.push("black");
 
 	var instance2 = new SubType();
-	console.log(instance2.colors); //"red,blue,green,black"
+    console.log(instance2.colors); //"red,blue,green,black"
 ```
 
 由于color属性是继承自SubType的原型，是引用类型值，当instance1修改其color属性时，实际上是修改的SubType原型里的color属性，由与instance2也继承了原型的color属性（其没有实例属性color）,所以instance2.color指向的color属性已经是被instance 修改过的了。
