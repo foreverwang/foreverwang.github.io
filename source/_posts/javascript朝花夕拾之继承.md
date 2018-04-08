@@ -39,8 +39,8 @@ categories:
 
 代码如下：
 
- ``` javascript
-
+	
+``` javascript
     function SuperType() {
         this.property = true;
     }
@@ -61,9 +61,7 @@ categories:
     
     var instance = new SubType();
     console.log(instance.getSuperValue()); //true
-
-
-  ```   
+```	
 
 
 引用关系图如下:
@@ -75,9 +73,9 @@ categories:
 原型链虽然很强大，可以用它实现继承有两个明显的问题。
 
 * 1.但当原型对象中包含引用类型值时，会有问题。 由于原型对象的属性被所有实例共享，当一个实例去修改一个共享自原型上的引用类型的属性时，会影响到所有其他实例。示例代码如下：
-
- ``` javascript
+ 
 	
+``` javascript
 	function SuperType() {
 	    this.colors = ["red", "blue", "green"];
 	}
@@ -90,7 +88,7 @@ categories:
 
 	var instance2 = new SubType();
         console.log(instance2.colors); //"red,blue,green,black"
- ```
+```	
 
 由于color属性是继承自SubType的原型，是引用类型值，当instance1修改其color属性时，实际上是修改的SubType原型里的color属性，由与instance2也继承了原型的color属性（其没有实例属性color）,所以instance2.color指向的color属性已经是被instance 修改过的了。
 
