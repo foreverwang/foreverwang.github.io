@@ -168,6 +168,19 @@ Foo.prototype.__ proto __ === Objtct.prototype。
 我们发现原型对象的源头是Object.prototype,那么Object.prototype 有自己的原型对象吗？有： Object.prototype.__ proto __ === null。
 
 
+### 新世界 - ES6
+
+在es6 之前，生成实例对象的方法是通过构造函数。而在es6不一样了，ES6 提供了更接近传统语言的class写法，引入了 Class（类）这个概念，作为对象的模板。通过class关键字，可以定义类。通过extends关键字来实现继承。 这使得定义对象模板语法上更简洁了。然而它只不过是ES5的语法糖而已，javascript基于原型（prototype-based）继承的对象系统的实质是没有变的。 
+
+ES6非语法糖层面的改变,那应该是其静态方法可以被子类继承。其他还有吗？有的话告诉我。
+
+关于es6 class 详情看[这里]()。
+
+### 参考资料
+
+* javascript 高级程序设计
+* javascript语言精髓与编程实践
+* ECMAScript 6 入门
 
 
 
