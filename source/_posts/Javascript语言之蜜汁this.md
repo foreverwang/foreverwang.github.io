@@ -363,7 +363,7 @@ new 绑定 > 显示绑定 > 隐士绑定
 
 #### 被忽略的this
 
-当把 null或者undefined作为this的绑定对象传入 call,apply,bind,这些值在调用时会被忽略，实际应用的是默认绑定规则。
+当把 null或者undefined作为this的绑定对象传入 call,apply,bind,这些值在调用时会被忽略，通常实际应用的是默认绑定规则。
 ``` javascript
     function foo(){
       console.log(this.a);
