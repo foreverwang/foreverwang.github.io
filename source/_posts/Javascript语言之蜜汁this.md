@@ -408,7 +408,7 @@ new 绑定 > 显示绑定 > 隐士绑定
 		}
 		
 		var obj1 = {a:2};
-		var obj3 = {a:3};
+		var obj2 = {a:3};
 		var bar = foo.call(obj1);
 	   bar.call(obj2);//2
 ```
