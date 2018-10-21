@@ -12,7 +12,7 @@ tags:
 ### flex 笔记
 
 - flex布局中基本概念
-    - 两种元素类型：flex容器(flex container)、flex项目（flex item）-容器成员。
+    - 两种元素类型：flex容器(flex container)、flex项目（flex item 容器成员)。
     - 两个轴：主轴（main axis）、交叉轴（cross axis）。
     - 占据的空间：项目占据的主轴空间（main size）、项目占据的交叉轴空间（cross size）
 - 注意：设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效。
