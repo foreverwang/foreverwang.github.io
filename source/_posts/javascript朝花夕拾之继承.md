@@ -176,7 +176,7 @@ Foo.prototype.__ proto __ === Objtct.prototype。
 
 ES6非语法糖层面的改变,那应该是其静态方法可以被子类继承。其他还有吗？有的话告诉我。
 
-关于es6 class 详情看[这里]()。
+关于es6 class 详情看[这里](http://es6.ruanyifeng.com/#docs/class-extends)。
 
 ### 参考资料
 
