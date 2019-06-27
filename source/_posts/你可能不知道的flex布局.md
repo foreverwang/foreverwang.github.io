@@ -9,7 +9,7 @@ tags:
 ---
 
 
-### flex 笔记
+### flex
 
 - flex布局中基本概念
     - 两种元素类型：flex容器(flex container)、flex项目（flex item 容器成员)。
