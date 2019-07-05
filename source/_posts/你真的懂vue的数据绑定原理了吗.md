@@ -25,7 +25,7 @@ tags:
 ### 数据绑定的实现
 #### 先上一个张原理图
 
-![image](https://user-images.githubusercontent.com/25282685/60658801-8246e000-9e86-11e9-89aa-ebb5ede00830.png)
+![image](https://github-production-user-asset-6210df.s3.amazonaws.com/25282685/60658801-8246e000-9e86-11e9-89aa-ebb5ede00830.png)
 
 
 #### 知识储备（如果已经熟练掌握可跳过）：
