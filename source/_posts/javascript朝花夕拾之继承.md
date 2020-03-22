@@ -90,9 +90,9 @@ categories:
         console.log(instance2.colors); //"red,blue,green,black"
 ```	
 
-由于color属性是继承自SubType的原型，是引用类型值，当instance1修改其color属性时，实际上是修改的SubType原型里的color属性，由与instance2也继承了原型的color属性（其没有实例属性color）,所以instance2.color指向的color属性已经是被instance 修改过的了。
+由于color属性是继承自SubType的原型，是引用类型值，当instance1修改其color属性时，实际上是修改的SubType原型里的color属性，由于instance2也继承了原型的color属性（其没有实例属性color）,所以instance2.color指向的color属性已经是被instance 修改过的了。
 
-本来我们将属性放到构造函数里是为了其私有性考虑，可见这里的问题实质是属性的私有行被破坏了。
+本来我们将属性放到构造函数里是为了其私有性考虑，可见这里的问题实质是属性的私有性被破坏了。
 
 
 2. 创建子类实例时，不能向父类构造函数中传参。
@@ -103,7 +103,7 @@ categories:
 
 ### 借用构造函数（类抄写）
 
-这种方法具体做法是：在子类构造函数内部通过call或apply方法调用父类构造函数。这样就可以在实现属性继承的时，既能传参，又能保证实例属性的私有行。
+这种方法具体做法是：在子类构造函数内部通过call或apply方法调用父类构造函数。这样就可以在实现属性继承的同时，既能传参，又能保证实例属性的私有行。
  
 	
 ``` javascript
@@ -125,9 +125,9 @@ categories:
 	alert(instance2.colors);    //"red,blue,green"
 ```	
 
-在SubType子类里通过SuperType.call(this) 调用父类，当实例化子类时，就将父配实例上的实例方法都赋值给了子类实例。
+在SubType子类里通过SuperType.call(this) 调用父类，当实例化子类时，就将父类实例上的实例方法都赋值给了子类实例。
 
-类抄写也有其问题，方法都在构造函数中定义，无法函数复用，浪费内存。
+类抄写也有其问题，方法都在构造函数中定义，函数无法复用，浪费内存。
 同时，在父类原型的属性对子类而言也是不可见的。所以实际应用中也很少单独使用借用构造函数的技术。而更常见的是将原型链和借用构造函数结合到一块，从而发挥两者之长的一种继承模式，及所谓的`组合继承`。这里就不展开细说了。
                   
 
