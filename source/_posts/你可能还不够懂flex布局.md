@@ -69,3 +69,4 @@ tags:
     - flex-basis:auto; 如果项目设置了width属性值，则flex-basis实际值等于width值。
     - flex-basis: length 优先级大于width/ height值
 
+- flex-shrink 和 flex-grow的计算规则稍有不同，主要是避免被挤压没了
