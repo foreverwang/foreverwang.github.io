@@ -21,21 +21,22 @@ tags:
  <!-- more -->
  
 #### 属性
-    - 容器属性6个
-        - display: flex
-        - flex-direction
-        - justify-content
-        - flex-wrap (wrap-reverse)
-        - align-items (定义了项目在交叉轴上如何对齐，baseline | stretch)
-        - align-content (定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。stretch（默认值）：轴线占满整个交叉轴。)
-        - flex-flow (flex-direction和flex-wrap的简写，默认值： row nowrap)
-    - 项目属性6个
-        - align-self（可覆盖align-items属性）
-        - flex-grow (默认值0)
-        - flex-shrink （默认值1）
-        - flex-basis（默认值为auto，即项目的本来大小）
-        - order
-        - flex (flex-grow、flex-shrink、flex-basis的简写，默认值：0 1 auto, 后两个属性可选。用两个快捷属性：auto(1 1 auto)、 none(0 0 auto),建议优先使用这两个属性，因为浏览器会推算相关值)
+
+  - 容器属性6个
+      - display: flex
+      - flex-direction
+      - justify-content
+      - flex-wrap (wrap-reverse)
+      - align-items (定义了项目在交叉轴上如何对齐，baseline | stretch)
+      - align-content (定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。stretch（默认值）：轴线占满整个交叉轴。)
+      - flex-flow (flex-direction和flex-wrap的简写，默认值： row nowrap)
+  - 项目属性6个
+      - align-self（可覆盖align-items属性）
+      - flex-grow (默认值0)
+      - flex-shrink （默认值1）
+      - flex-basis（默认值为auto，即项目的本来大小）
+      - order
+      - flex (flex-grow、flex-shrink、flex-basis的简写，默认值：0 1 auto, 后两个属性可选。用两个快捷属性：auto(1 1 auto)、 none(0 0 auto),建议优先使用这两个属性，因为浏览器会推算相关值)
 
 #### flex 布局核心属性
    - flex-basis
