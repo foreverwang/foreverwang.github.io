@@ -58,6 +58,8 @@ tags:
 #### 伸缩项收缩计算公式（注意了，这里很多人搞错了）
 > （伸缩项flex-shrink权重值 * 该伸缩项flex-basis）/ （各伸缩项flex-shrink * 各伸缩项flex-basis 总和)  * 超出空间
 
+注意，与flex-grow在扩展时简单地按比例分配不同，除考虑flex-shrink本身，也要考虑flex-basis。假设每一项flex-shrink都是默认值1，那其实就是按照每一项flex-basis的占比进行收缩。
+
 #### 易忘点
 - align-self比align-items属性多了一个auto,其余一样。 align-self:auto(默认值)，继承父元素的align-items。
 - flex属性是三个属性的简写：flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto； 
