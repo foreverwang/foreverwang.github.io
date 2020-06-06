@@ -54,4 +54,7 @@ hexo 是一套基于nodejs的静态博客生成系统，这往往需要有一套
 * http://kchen.cc/2016/11/12/hexo-instructions/
 * https://blog.csdn.net/woblog/article/details/51319364
 
+## 后记
+是时候改用github actions了： https://hexo.fluid-dev.com/posts/actions-deploy/
+
 
