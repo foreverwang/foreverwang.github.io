@@ -17,7 +17,8 @@ before_install:
 # - cp .travis/ssh_config ~/.ssh/config
 - npm install -g hexo-cli
 # 克隆主题的仓库 到themes/ 目录
-- git clone https://github.com/theme-next/hexo-theme-next.git themes/next
+# - git clone https://github.com/theme-next/hexo-theme-next.git themes/next
+- git clone https://github.com/cofess/hexo-theme-pure.git themes/pure
 install:
 - npm install
 script:
