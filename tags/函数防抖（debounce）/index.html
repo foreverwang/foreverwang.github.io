@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Tag: 函数防抖（debounce） | Hexo</title>
+  <meta name="description" content="世界你好">
+<meta property="og:type" content="website">
+<meta property="og:title" content="瞧，这个人">
+<meta property="og:url" content="https://foreverwang.github.io/tags/函数防抖（debounce）/index.html">
+<meta property="og:site_name" content="瞧，这个人">
+<meta property="og:description" content="世界你好">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="瞧，这个人">
+<meta name="twitter:description" content="世界你好">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://foreverwang.github.io/tags/函数防抖（debounce）/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="瞧，这个人" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="undefined" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">瞧，这个人</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">那些年很冒险的梦 不要忘记</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/React/">React</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/vue/">vue</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端状态管理/">前端状态管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/布局/">布局</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/">架构模式</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSX/">JSX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVC/">MVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/">MVP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/">RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es6/">es6</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/">flex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flux/">flux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript核心/">javascript核心</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/事件循环/">事件循环</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作用域链/">作用域链</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数节流（throttle）/">函数节流（throttle）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数防抖（debounce）/">函数防抖（debounce）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创建型模式/">创建型模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客/">博客</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心智成熟之路/">心智成熟之路</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/执行期上下文/">执行期上下文</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据流/">数据流</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据绑定原理/">数据绑定原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深度工作/">深度工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/游戏/">游戏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/继承/">继承</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自律/">自律</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/非对称加密/">非对称加密</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/JSX/" style="font-size: 13px;">JSX</a> <a href="/tags/MVC/" style="font-size: 13px;">MVC</a> <a href="/tags/MVP/" style="font-size: 13px;">MVP</a> <a href="/tags/RSA/" style="font-size: 13px;">RSA</a> <a href="/tags/React/" style="font-size: 13px;">React</a> <a href="/tags/es6/" style="font-size: 13px;">es6</a> <a href="/tags/flex/" style="font-size: 13px;">flex</a> <a href="/tags/flux/" style="font-size: 13px;">flux</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/javascript/" style="font-size: 13.5px;">javascript</a> <a href="/tags/javascript核心/" style="font-size: 14px;">javascript核心</a> <a href="/tags/redux/" style="font-size: 13px;">redux</a> <a href="/tags/this/" style="font-size: 13px;">this</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/事件循环/" style="font-size: 13px;">事件循环</a> <a href="/tags/作用域链/" style="font-size: 13px;">作用域链</a> <a href="/tags/函数节流（throttle）/" style="font-size: 13px;">函数节流（throttle）</a> <a href="/tags/函数防抖（debounce）/" style="font-size: 13px;">函数防抖（debounce）</a> <a href="/tags/创建型模式/" style="font-size: 13px;">创建型模式</a> <a href="/tags/博客/" style="font-size: 13px;">博客</a> <a href="/tags/工厂模式/" style="font-size: 13px;">工厂模式</a> <a href="/tags/异步/" style="font-size: 13px;">异步</a> <a href="/tags/心智成熟之路/" style="font-size: 13px;">心智成熟之路</a> <a href="/tags/执行期上下文/" style="font-size: 13px;">执行期上下文</a> <a href="/tags/数字签名/" style="font-size: 13px;">数字签名</a> <a href="/tags/数据流/" style="font-size: 13.5px;">数据流</a> <a href="/tags/数据绑定原理/" style="font-size: 13px;">数据绑定原理</a> <a href="/tags/深度工作/" style="font-size: 13px;">深度工作</a> <a href="/tags/游戏/" style="font-size: 13px;">游戏</a> <a href="/tags/继承/" style="font-size: 13px;">继承</a> <a href="/tags/自律/" style="font-size: 13px;">自律</a> <a href="/tags/设计模式/" style="font-size: 13px;">设计模式</a> <a href="/tags/随笔/" style="font-size: 13px;">随笔</a> <a href="/tags/非对称加密/" style="font-size: 13px;">非对称加密</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/01/事件循环/" class="title">事件循环</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-01T04:20:48.000Z" itemprop="datePublished">2019-09-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/javascript/vue/">vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/05/你真的懂vue的数据绑定原理了吗/" class="title">你真的懂vue的数据绑定原理了吗</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-05T08:21:50.000Z" itemprop="datePublished">2019-07-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/读书/">读书</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/30/少有人走的路/" class="title">少有人走的路</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-30T16:00:00.000Z" itemprop="datePublished">2019-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/布局/">布局</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/10/22/你可能还不够懂flex布局/" class="title">flex</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-10-22T08:21:50.000Z" itemprop="datePublished">2018-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/21/当我们学习es6的时候我们在学什么/" class="title">当我们学习es6的时候我们在学什么</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-21T08:21:50.000Z" itemprop="datePublished">2018-04-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  <main class="main" role="main">
+  <article class="content article article-tags post-type-list" itemscope="">
+    <header class="article-header">
+      <h1 itemprop="name" class="hidden-xs">Tag: 函数防抖（debounce）</h1>
+      <p class="text-muted hidden-xs">Total 1 articles</p>
+      <nav role="navigation" id="nav-main" class="okayNav">
+        <ul>
+          <li><a href="/tags">All</a></li>
+          
+          <li><a href="/tags/作用域链/">作用域链</a></li>
+          
+          <li><a href="/tags/执行期上下文/">执行期上下文</a></li>
+          
+          <li><a href="/tags/javascript核心/">javascript核心</a></li>
+          
+          <li><a href="/tags/this/">this</a></li>
+          
+          <li><a href="/tags/函数节流（throttle）/">函数节流（throttle）</a></li>
+          
+          <li><a href="/tags/函数防抖（debounce）/">函数防抖（debounce）</a></li>
+          
+          <li><a href="/tags/javascript/">javascript</a></li>
+          
+          <li><a href="/tags/继承/">继承</a></li>
+          
+          <li><a href="/tags/博客/">博客</a></li>
+          
+          <li><a href="/tags/hexo/">hexo</a></li>
+          
+          <li><a href="/tags/深度工作/">深度工作</a></li>
+          
+          <li><a href="/tags/事件循环/">事件循环</a></li>
+          
+          <li><a href="/tags/异步/">异步</a></li>
+          
+          <li><a href="/tags/MVC/">MVC</a></li>
+          
+          <li><a href="/tags/MVP/">MVP</a></li>
+          
+          <li><a href="/tags/flex/">flex</a></li>
+          
+          <li><a href="/tags/es6/">es6</a></li>
+          
+          <li><a href="/tags/vue/">vue</a></li>
+          
+          <li><a href="/tags/数据绑定原理/">数据绑定原理</a></li>
+          
+          <li><a href="/tags/心智成熟之路/">心智成熟之路</a></li>
+          
+          <li><a href="/tags/自律/">自律</a></li>
+          
+          <li><a href="/tags/JSX/">JSX</a></li>
+          
+          <li><a href="/tags/React/">React</a></li>
+          
+          <li><a href="/tags/flux/">flux</a></li>
+          
+          <li><a href="/tags/数据流/">数据流</a></li>
+          
+          <li><a href="/tags/设计模式/">设计模式</a></li>
+          
+          <li><a href="/tags/工厂模式/">工厂模式</a></li>
+          
+          <li><a href="/tags/创建型模式/">创建型模式</a></li>
+          
+          <li><a href="/tags/redux/">redux</a></li>
+          
+          <li><a href="/tags/RSA/">RSA</a></li>
+          
+          <li><a href="/tags/非对称加密/">非对称加密</a></li>
+          
+          <li><a href="/tags/数字签名/">数字签名</a></li>
+          
+          <li><a href="/tags/随笔/">随笔</a></li>
+          
+          <li><a href="/tags/游戏/">游戏</a></li>
+          
+        </ul>
+      </nav>
+    </header>
+    <!-- /header -->
+    <div class="article-body">
+      <div class="row">
+        
+<div class="col-md-6">
+    
+<article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="panel-body">
+     <div class="article-meta">
+       <time datetime="2017-05-07T15:37:39.000Z" itemprop="datePublished">2017-05-07</time>
+     </div>
+     <h3 class="article-title" itemprop="name">
+       <a class="article-link" href="/2017/05/07/javascript函数节流(throttle)和函数防抖(debounce)及其实现/">javascript函数节流（throttle）和函数防抖（debounce）及其实现</a>
+     </h3>
+   </div>
+   
+   <div class="panel-footer">
+     
+      <a href="/tags/函数节流（throttle）/" class="label label-default mb">函数节流（throttle）</a>
+     
+      <a href="/tags/函数防抖（debounce）/" class="label label-default mb">函数防抖（debounce）</a>
+     
+     
+   </div>
+   
+</article>
+
+
+</div>
+
+      </div>
+    </div>
+  </article>
+   
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

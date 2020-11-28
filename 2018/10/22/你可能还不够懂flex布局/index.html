@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>flex | Hexo</title>
+  <meta name="description" content="flexflex布局中基本概念 两种元素类型：flex容器(flex container)、flex项目（flex item 容器成员)。 两个轴：主轴（main axis）、交叉轴（cross axis）。 占据的空间：项目占据的主轴空间（main size）、项目占据的交叉轴空间（cross size） 注意：设为 Flex 布局以后，子元素的float、clear和vertical-alig">
+<meta name="keywords" content="flex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flex">
+<meta property="og:url" content="https://foreverwang.github.io/2018/10/22/你可能还不够懂flex布局/index.html">
+<meta property="og:site_name" content="瞧，这个人">
+<meta property="og:description" content="flexflex布局中基本概念 两种元素类型：flex容器(flex container)、flex项目（flex item 容器成员)。 两个轴：主轴（main axis）、交叉轴（cross axis）。 占据的空间：项目占据的主轴空间（main size）、项目占据的交叉轴空间（cross size） 注意：设为 Flex 布局以后，子元素的float、clear和vertical-alig">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-06-21T11:08:05.116Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flex">
+<meta name="twitter:description" content="flexflex布局中基本概念 两种元素类型：flex容器(flex container)、flex项目（flex item 容器成员)。 两个轴：主轴（main axis）、交叉轴（cross axis）。 占据的空间：项目占据的主轴空间（main size）、项目占据的交叉轴空间（cross size） 注意：设为 Flex 布局以后，子元素的float、clear和vertical-alig">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://foreverwang.github.io/2018/10/22/你可能还不够懂flex布局/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="瞧，这个人" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="undefined" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">瞧，这个人</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">那些年很冒险的梦 不要忘记</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/React/">React</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/vue/">vue</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端状态管理/">前端状态管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/布局/">布局</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/">架构模式</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSX/">JSX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVC/">MVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/">MVP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/">RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es6/">es6</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/">flex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flux/">flux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript核心/">javascript核心</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/事件循环/">事件循环</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作用域链/">作用域链</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数节流（throttle）/">函数节流（throttle）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数防抖（debounce）/">函数防抖（debounce）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创建型模式/">创建型模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客/">博客</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心智成熟之路/">心智成熟之路</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/执行期上下文/">执行期上下文</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据流/">数据流</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据绑定原理/">数据绑定原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深度工作/">深度工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/游戏/">游戏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/继承/">继承</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自律/">自律</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/非对称加密/">非对称加密</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/JSX/" style="font-size: 13px;">JSX</a> <a href="/tags/MVC/" style="font-size: 13px;">MVC</a> <a href="/tags/MVP/" style="font-size: 13px;">MVP</a> <a href="/tags/RSA/" style="font-size: 13px;">RSA</a> <a href="/tags/React/" style="font-size: 13px;">React</a> <a href="/tags/es6/" style="font-size: 13px;">es6</a> <a href="/tags/flex/" style="font-size: 13px;">flex</a> <a href="/tags/flux/" style="font-size: 13px;">flux</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/javascript/" style="font-size: 13.5px;">javascript</a> <a href="/tags/javascript核心/" style="font-size: 14px;">javascript核心</a> <a href="/tags/redux/" style="font-size: 13px;">redux</a> <a href="/tags/this/" style="font-size: 13px;">this</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/事件循环/" style="font-size: 13px;">事件循环</a> <a href="/tags/作用域链/" style="font-size: 13px;">作用域链</a> <a href="/tags/函数节流（throttle）/" style="font-size: 13px;">函数节流（throttle）</a> <a href="/tags/函数防抖（debounce）/" style="font-size: 13px;">函数防抖（debounce）</a> <a href="/tags/创建型模式/" style="font-size: 13px;">创建型模式</a> <a href="/tags/博客/" style="font-size: 13px;">博客</a> <a href="/tags/工厂模式/" style="font-size: 13px;">工厂模式</a> <a href="/tags/异步/" style="font-size: 13px;">异步</a> <a href="/tags/心智成熟之路/" style="font-size: 13px;">心智成熟之路</a> <a href="/tags/执行期上下文/" style="font-size: 13px;">执行期上下文</a> <a href="/tags/数字签名/" style="font-size: 13px;">数字签名</a> <a href="/tags/数据流/" style="font-size: 13.5px;">数据流</a> <a href="/tags/数据绑定原理/" style="font-size: 13px;">数据绑定原理</a> <a href="/tags/深度工作/" style="font-size: 13px;">深度工作</a> <a href="/tags/游戏/" style="font-size: 13px;">游戏</a> <a href="/tags/继承/" style="font-size: 13px;">继承</a> <a href="/tags/自律/" style="font-size: 13px;">自律</a> <a href="/tags/设计模式/" style="font-size: 13px;">设计模式</a> <a href="/tags/随笔/" style="font-size: 13px;">随笔</a> <a href="/tags/非对称加密/" style="font-size: 13px;">非对称加密</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/01/事件循环/" class="title">事件循环</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-01T04:20:48.000Z" itemprop="datePublished">2019-09-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/javascript/vue/">vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/05/你真的懂vue的数据绑定原理了吗/" class="title">你真的懂vue的数据绑定原理了吗</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-05T08:21:50.000Z" itemprop="datePublished">2019-07-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/读书/">读书</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/30/少有人走的路/" class="title">少有人走的路</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-30T16:00:00.000Z" itemprop="datePublished">2019-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/布局/">布局</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/10/22/你可能还不够懂flex布局/" class="title">flex</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-10-22T08:21:50.000Z" itemprop="datePublished">2018-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/21/当我们学习es6的时候我们在学什么/" class="title">当我们学习es6的时候我们在学什么</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-21T08:21:50.000Z" itemprop="datePublished">2018-04-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-你可能还不够懂flex布局" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      flex
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/10/22/你可能还不够懂flex布局/" class="article-date">
+	  <time datetime="2018-10-22T08:21:50.000Z" itemprop="datePublished">2018-10-22</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/布局/">布局</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/flex/">flex</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/10/22/你可能还不够懂flex布局/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><h4 id="flex布局中基本概念"><a href="#flex布局中基本概念" class="headerlink" title="flex布局中基本概念"></a>flex布局中基本概念</h4><ul>
+<li>两种元素类型：flex容器(flex container)、flex项目（flex item 容器成员)。</li>
+<li>两个轴：主轴（main axis）、交叉轴（cross axis）。</li>
+<li>占据的空间：项目占据的主轴空间（main size）、项目占据的交叉轴空间（cross size）</li>
+<li><p>注意：设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效。</p>
+<a id="more"></a>
+</li>
+</ul>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><ul>
+<li>容器属性6个<ul>
+<li>display: flex</li>
+<li>flex-direction</li>
+<li>justify-content</li>
+<li>flex-wrap (wrap-reverse)</li>
+<li>align-items (定义了项目在交叉轴上如何对齐，baseline | stretch)</li>
+<li>align-content (定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。stretch（默认值）：轴线占满整个交叉轴。)</li>
+<li>flex-flow (flex-direction和flex-wrap的简写，默认值： row nowrap)</li>
+</ul>
+</li>
+<li>项目属性6个<ul>
+<li>align-self（可覆盖align-items属性）</li>
+<li>flex-grow (默认值0)</li>
+<li>flex-shrink （默认值1）</li>
+<li>flex-basis（默认值为auto，即项目的本来大小）</li>
+<li>order</li>
+<li>flex (flex-grow、flex-shrink、flex-basis的简写，默认值：0 1 auto, 后两个属性可选。用两个快捷属性：auto(1 1 auto)、 none(0 0 auto),建议优先使用这两个属性，因为浏览器会推算相关值)</li>
+</ul>
+</li>
+</ul>
+<h4 id="flex-布局核心属性"><a href="#flex-布局核心属性" class="headerlink" title="flex 布局核心属性"></a>flex 布局核心属性</h4><ul>
+<li>flex-basis<ul>
+<li>auto ： 优先设置的宽度，没设置则内容宽度</li>
+<li>content： 一律内容宽度，不管有没有设置宽度</li>
+<li>长度或百分比：没啥好说的</li>
+</ul>
+</li>
+<li>flex-grow：剩余空间按比例分配，与项目自身所占空间无关</li>
+<li>flex-shrink：超出空间按比例挤压项目，项目自身所占空间参与权重计算</li>
+</ul>
+<h4 id="计算剩余空间"><a href="#计算剩余空间" class="headerlink" title="计算剩余空间"></a>计算剩余空间</h4><blockquote>
+<p>剩余空间 = 容器所占主轴空间 - 所有项所占主轴空间总和</p>
+</blockquote>
+<p>剩余空间 &gt; 0,说明有剩余空间可分配,即可伸缩项<code>有条件扩展</code>,如何扩展看每一项的 <code>flex-grow</code>属性；<br>剩余空间 &lt; 0 我们叫<code>超出空间</code>更方便理解,说明可伸缩项占主轴空间总和大于容器占主轴的空间，即可伸缩项目<code>需要收缩才内适应</code>容器空间，如何收缩看每一项的<code>flex-shrink</code>属性。</p>
+<h4 id="伸缩项扩展计算公式"><a href="#伸缩项扩展计算公式" class="headerlink" title="伸缩项扩展计算公式"></a>伸缩项扩展计算公式</h4><blockquote>
+<p>伸缩项flex-grow权重值/各伸缩项flex-grow值总和 * 剩余空间</p>
+</blockquote>
+<h4 id="伸缩项收缩计算公式（注意了，这里很多人搞错了）"><a href="#伸缩项收缩计算公式（注意了，这里很多人搞错了）" class="headerlink" title="伸缩项收缩计算公式（注意了，这里很多人搞错了）"></a>伸缩项收缩计算公式（注意了，这里很多人搞错了）</h4><blockquote>
+<p>（伸缩项flex-shrink权重值 <em> 该伸缩项flex-basis）/ （各伸缩项flex-shrink </em> 各伸缩项flex-basis 总和)  * 超出空间</p>
+</blockquote>
+<p>注意，与flex-grow在扩展时简单地按比例分配不同，除考虑flex-shrink本身，也要考虑flex-basis。假设每一项flex-shrink都是默认值1，那其实就是按照每一项flex-basis的占比进行收缩。</p>
+<h4 id="易忘点"><a href="#易忘点" class="headerlink" title="易忘点"></a>易忘点</h4><ul>
+<li>align-self比align-items属性多了一个auto,其余一样。 align-self:auto(默认值)，继承父元素的align-items。</li>
+<li>flex属性是三个属性的简写：flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto； <ul>
+<li>flex: 1 即 flex-grow:1; flex-shrink: 0; flex-basis: auto</li>
+<li>该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)</li>
+</ul>
+</li>
+<li><p>flex-basis: 计算剩余空间是根据该属性值计算的。默认值：auto,项目的本来大小。</p>
+<ul>
+<li>flex-basis:auto; 如果项目设置了width属性值，则flex-basis实际值等于width值。</li>
+<li>flex-basis: length 优先级大于width/ height值</li>
+</ul>
+</li>
+<li><p>flex-shrink 和 flex-grow的计算规则稍有不同，主要是避免被挤压没了</p>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://foreverwang.github.io/2018/10/22/你可能还不够懂flex布局/" title="flex" target="_blank" rel="external">https://foreverwang.github.io/2018/10/22/你可能还不够懂flex布局/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="undefined" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="undefined" target="_blank"><span class="text-dark">瞧，这个人</span><small class="ml-1x">那些年很冒险的梦 不要忘记</small></a></h3>
+        <div>忙忙碌碌 碌碌无为</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/03/30/少有人走的路/" title="少有人走的路"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/04/21/当我们学习es6的时候我们在学什么/" title="当我们学习es6的时候我们在学什么"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'null',
+    appKey: 'null',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

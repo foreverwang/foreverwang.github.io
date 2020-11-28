@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>理解Flux | Hexo</title>
+  <meta name="description" content="什么是fluxflux是一种架构模式，用来指导（或约束）我们的软件结构。其核心是“单向数据流模式”。同MVC架构是同样的存在。(举例 ：React 说自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分) 单向数据流Flux 的核心“单向数据流“的结构和流程：    Action –&amp;gt; Dispatcher –&amp;gt; Store –&amp;gt; View">
+<meta name="keywords" content="flux,数据流">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解Flux">
+<meta property="og:url" content="https://foreverwang.github.io/2017/09/16/理解Flux/index.html">
+<meta property="og:site_name" content="瞧，这个人">
+<meta property="og:description" content="什么是fluxflux是一种架构模式，用来指导（或约束）我们的软件结构。其核心是“单向数据流模式”。同MVC架构是同样的存在。(举例 ：React 说自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分) 单向数据流Flux 的核心“单向数据流“的结构和流程：    Action –&amp;gt; Dispatcher –&amp;gt; Store –&amp;gt; View">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-06-21T11:08:05.117Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解Flux">
+<meta name="twitter:description" content="什么是fluxflux是一种架构模式，用来指导（或约束）我们的软件结构。其核心是“单向数据流模式”。同MVC架构是同样的存在。(举例 ：React 说自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分) 单向数据流Flux 的核心“单向数据流“的结构和流程：    Action –&amp;gt; Dispatcher –&amp;gt; Store –&amp;gt; View">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://foreverwang.github.io/2017/09/16/理解Flux/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="瞧，这个人" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="undefined" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">瞧，这个人</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">那些年很冒险的梦 不要忘记</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/React/">React</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/vue/">vue</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端状态管理/">前端状态管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/布局/">布局</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/">架构模式</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSX/">JSX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVC/">MVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/">MVP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/">RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es6/">es6</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/">flex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flux/">flux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript核心/">javascript核心</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/事件循环/">事件循环</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作用域链/">作用域链</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数节流（throttle）/">函数节流（throttle）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数防抖（debounce）/">函数防抖（debounce）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创建型模式/">创建型模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客/">博客</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心智成熟之路/">心智成熟之路</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/执行期上下文/">执行期上下文</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据流/">数据流</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据绑定原理/">数据绑定原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深度工作/">深度工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/游戏/">游戏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/继承/">继承</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自律/">自律</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/非对称加密/">非对称加密</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/JSX/" style="font-size: 13px;">JSX</a> <a href="/tags/MVC/" style="font-size: 13px;">MVC</a> <a href="/tags/MVP/" style="font-size: 13px;">MVP</a> <a href="/tags/RSA/" style="font-size: 13px;">RSA</a> <a href="/tags/React/" style="font-size: 13px;">React</a> <a href="/tags/es6/" style="font-size: 13px;">es6</a> <a href="/tags/flex/" style="font-size: 13px;">flex</a> <a href="/tags/flux/" style="font-size: 13px;">flux</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/javascript/" style="font-size: 13.5px;">javascript</a> <a href="/tags/javascript核心/" style="font-size: 14px;">javascript核心</a> <a href="/tags/redux/" style="font-size: 13px;">redux</a> <a href="/tags/this/" style="font-size: 13px;">this</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/事件循环/" style="font-size: 13px;">事件循环</a> <a href="/tags/作用域链/" style="font-size: 13px;">作用域链</a> <a href="/tags/函数节流（throttle）/" style="font-size: 13px;">函数节流（throttle）</a> <a href="/tags/函数防抖（debounce）/" style="font-size: 13px;">函数防抖（debounce）</a> <a href="/tags/创建型模式/" style="font-size: 13px;">创建型模式</a> <a href="/tags/博客/" style="font-size: 13px;">博客</a> <a href="/tags/工厂模式/" style="font-size: 13px;">工厂模式</a> <a href="/tags/异步/" style="font-size: 13px;">异步</a> <a href="/tags/心智成熟之路/" style="font-size: 13px;">心智成熟之路</a> <a href="/tags/执行期上下文/" style="font-size: 13px;">执行期上下文</a> <a href="/tags/数字签名/" style="font-size: 13px;">数字签名</a> <a href="/tags/数据流/" style="font-size: 13.5px;">数据流</a> <a href="/tags/数据绑定原理/" style="font-size: 13px;">数据绑定原理</a> <a href="/tags/深度工作/" style="font-size: 13px;">深度工作</a> <a href="/tags/游戏/" style="font-size: 13px;">游戏</a> <a href="/tags/继承/" style="font-size: 13px;">继承</a> <a href="/tags/自律/" style="font-size: 13px;">自律</a> <a href="/tags/设计模式/" style="font-size: 13px;">设计模式</a> <a href="/tags/随笔/" style="font-size: 13px;">随笔</a> <a href="/tags/非对称加密/" style="font-size: 13px;">非对称加密</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/01/事件循环/" class="title">事件循环</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-01T04:20:48.000Z" itemprop="datePublished">2019-09-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/javascript/vue/">vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/05/你真的懂vue的数据绑定原理了吗/" class="title">你真的懂vue的数据绑定原理了吗</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-05T08:21:50.000Z" itemprop="datePublished">2019-07-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/读书/">读书</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/30/少有人走的路/" class="title">少有人走的路</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-30T16:00:00.000Z" itemprop="datePublished">2019-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/布局/">布局</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/10/22/你可能还不够懂flex布局/" class="title">flex</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-10-22T08:21:50.000Z" itemprop="datePublished">2018-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/21/当我们学习es6的时候我们在学什么/" class="title">当我们学习es6的时候我们在学什么</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-21T08:21:50.000Z" itemprop="datePublished">2018-04-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-理解Flux" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      理解Flux
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2017/09/16/理解Flux/" class="article-date">
+	  <time datetime="2017-09-16T13:16:08.000Z" itemprop="datePublished">2017-09-16</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/前端状态管理/">前端状态管理</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/flux/">flux</a>, <a class="article-tag-link" href="/tags/数据流/">数据流</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/09/16/理解Flux/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="什么是flux"><a href="#什么是flux" class="headerlink" title="什么是flux"></a>什么是flux</h3><p>flux是一种架构模式，用来指导（或约束）我们的软件结构。其核心是“单向数据流模式”。同MVC架构是同样的存在。<br>(举例 ：React 说自己是 MVC 里面 V 的部分，那么 Flux 就相当于添加 M 和 C 的部分)</p>
+<h3 id="单向数据流"><a href="#单向数据流" class="headerlink" title="单向数据流"></a>单向数据流</h3><p>Flux 的核心“单向数据流“的结构和流程：</p>
+<blockquote>
+<p>  Action –&gt; Dispatcher –&gt; Store –&gt; View</p>
+</blockquote>
+<a id="more"></a>
+<ul>
+<li>首先要有 action，通过定义一些 action creator方法 根据需要创建 Action。</li>
+<li>View 层通过用户交互（比如 onClick）会触发 Action</li>
+<li>Dispatcher 会分发 所触发的 Action 到所有注册的 Store 的回调函数。</li>
+<li>Store 回调函数根据接收的 Action 更新自身数据之后会触发一个 change 事件通知 View 数据更改了</li>
+<li>View 会监听这个 change 事件，拿到对应的新数据并 更新组件 UI(如调用 setState)</li>
+</ul>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>View： 视图层 （视图组件）</li>
+<li>Action（动作）：视图层发出的消息 ：包括消息类型和消息的数据。</li>
+<li>Dispatcher（派发器）：用来接收Actions、执行回调函数。</li>
+<li>Store：包含应用状态和逻辑。</li>
+</ul>
+<h4 id="Action-（每个Store有一堆）"><a href="#Action-（每个Store有一堆）" class="headerlink" title="Action （每个Store有一堆）"></a>Action （每个Store有一堆）</h4><p>每个Action都是一个对象，包含一个actionType属性（说明动作的类型）和一些其他属性（用来传递数据）。</p>
+<h4 id="Dispatcher-全局一个"><a href="#Dispatcher-全局一个" class="headerlink" title="Dispatcher (全局一个)"></a>Dispatcher (全局一个)</h4><p>Dispatcher 是中心枢纽，其<code>作用</code>是将 Action 派发到 Store，管理所有数据流向。Dispatcher <code>本质</code>上就是一个事件系统。<br>你可以把它看作一个路由器，负责在 View 和 Store 之间，建立 Action 的正确传递路线。<br>以Facebook 的 Dispatcher 库为例，Dispatcher有两个核心方法：</p>
+<ul>
+<li>dispatch：派发action到store 注册的回调。</li>
+<li>register： store 会调用该方法注册其回调，回调里对不同的action做处理。</li>
+</ul>
+<p>Dispatcher 只用来派发 Action，不应该有其他逻辑。且Dispatcher 只能有一个，而且是全局的。<br>各Store在dispatcher上注册自己的回调，这样dispatcher上就有一张回调注册表，与各Store建立联系。</p>
+<h4 id="Store（多个）-响应action-事件"><a href="#Store（多个）-响应action-事件" class="headerlink" title="Store（多个） 响应action(事件)"></a>Store（多个） 响应action(事件)</h4><p>Stores 包含应用的状态和逻辑，不同的 Store 管理应用中不同部分的状态。<br>Store响应 Dispatched Actions （被分发的事件）。<br>重点：应用中唯一知道如何更新数据的就是 Store。<br>store在dispatcher上注册的回调接受一个action参数，回调里面是一个switch语句，根据action的type分发给具体state更新方法，store更新完毕后，通过广播事件来告诉view某些状态变了，对应的view取新的状态更新自己。</p>
+<h4 id="view-（多个）"><a href="#view-（多个）" class="headerlink" title="view （多个）"></a>view （多个）</h4><p>接收用户操作触发action。 action通过dispatcher派发到store里处理更新数据状态，并发出改变的通知，view获取新的状态更新自己。</p>
+<h3 id="有什么好处？"><a href="#有什么好处？" class="headerlink" title="有什么好处？"></a>有什么好处？</h3><p>这里引用尤雨溪知乎的一个回答：</p>
+<blockquote>
+<ol>
+<li>视图组件变得很薄，只包含了渲染逻辑和触发 action 这两个职责，即所谓 “dumb components”。（<code>个人理解：数据层和view层分离</code>）</li>
+<li>要理解一个 store 可能发生的状态变化，只需要看它所注册的 actions 回调就可以。（<code>个人理解：和1说的一回事，关注点分离后，是的结构更清晰，代码可读性和可维护性提高</code>）</li>
+<li>任何状态的变化都必须通过 action 触发，而 action 又必须通过 dispatcher 走，所以整个应用的每一次状态变化都会从同一个地方流过。其实 Flux 和传统 MVC 最不一样的就在这里了。React 在宣传的时候一直强调的一点就是 “理解你的应用的状态变化是很困难的 (managing state changing over time is hard)”，Flux 的意义就在于强制让所有的状态变化都必须留下一笔记录，这样就可以利用这个来做各种 debug 工具、历史回滚等等。（<code>个人理解：使数据可预测</code>）</li>
+</ol>
+</blockquote>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>具体实例可以参考阮老师的这边文章 ：<a href="http://www.ruanyifeng.com/blog/2016/01/flux.html" target="_blank" rel="noopener">Flux 架构入门教程</a></p>
+<p>这篇总结的非常到位，但是前提是得你先大概理解了flux：<a href="http://www.ayqy.net/blog/flux/" target="_blank" rel="noopener">flux总结</a></p>
+<p>facebook 官方提供的 <a href="https://github.com/facebook/flux/blob/master/src/Dispatcher.js" target="_blank" rel="noopener">dispatcher</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://foreverwang.github.io/2017/09/16/理解Flux/" title="理解Flux" target="_blank" rel="external">https://foreverwang.github.io/2017/09/16/理解Flux/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="undefined" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="undefined" target="_blank"><span class="text-dark">瞧，这个人</span><small class="ml-1x">那些年很冒险的梦 不要忘记</small></a></h3>
+        <div>忙忙碌碌 碌碌无为</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2017/10/05/前端MVC/" title="前端MVC"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2017/08/27/设计模式之工厂模式/" title="设计模式之工厂模式"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'null',
+    appKey: 'null',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

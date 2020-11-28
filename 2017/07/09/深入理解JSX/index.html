@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>深入理解JSX | Hexo</title>
+  <meta name="description" content="JSX 是啥?  JSX = JS + XML   JSX提供了一种可以在JS里写XML的语法。 JSX的运行环境 没有环境可以直接直接执行JSX代码">
+<meta name="keywords" content="JSX,React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JSX">
+<meta property="og:url" content="https://foreverwang.github.io/2017/07/09/深入理解JSX/index.html">
+<meta property="og:site_name" content="瞧，这个人">
+<meta property="og:description" content="JSX 是啥?  JSX = JS + XML   JSX提供了一种可以在JS里写XML的语法。 JSX的运行环境 没有环境可以直接直接执行JSX代码">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-06-21T11:08:05.117Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解JSX">
+<meta name="twitter:description" content="JSX 是啥?  JSX = JS + XML   JSX提供了一种可以在JS里写XML的语法。 JSX的运行环境 没有环境可以直接直接执行JSX代码">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://foreverwang.github.io/2017/07/09/深入理解JSX/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="瞧，这个人" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="undefined" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">瞧，这个人</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">那些年很冒险的梦 不要忘记</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/React/">React</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/vue/">vue</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端状态管理/">前端状态管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/布局/">布局</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/">架构模式</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSX/">JSX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVC/">MVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/">MVP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/">RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es6/">es6</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/">flex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flux/">flux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript核心/">javascript核心</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/事件循环/">事件循环</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作用域链/">作用域链</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数节流（throttle）/">函数节流（throttle）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数防抖（debounce）/">函数防抖（debounce）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创建型模式/">创建型模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客/">博客</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心智成熟之路/">心智成熟之路</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/执行期上下文/">执行期上下文</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据流/">数据流</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据绑定原理/">数据绑定原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深度工作/">深度工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/游戏/">游戏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/继承/">继承</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自律/">自律</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/非对称加密/">非对称加密</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/JSX/" style="font-size: 13px;">JSX</a> <a href="/tags/MVC/" style="font-size: 13px;">MVC</a> <a href="/tags/MVP/" style="font-size: 13px;">MVP</a> <a href="/tags/RSA/" style="font-size: 13px;">RSA</a> <a href="/tags/React/" style="font-size: 13px;">React</a> <a href="/tags/es6/" style="font-size: 13px;">es6</a> <a href="/tags/flex/" style="font-size: 13px;">flex</a> <a href="/tags/flux/" style="font-size: 13px;">flux</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/javascript/" style="font-size: 13.5px;">javascript</a> <a href="/tags/javascript核心/" style="font-size: 14px;">javascript核心</a> <a href="/tags/redux/" style="font-size: 13px;">redux</a> <a href="/tags/this/" style="font-size: 13px;">this</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/事件循环/" style="font-size: 13px;">事件循环</a> <a href="/tags/作用域链/" style="font-size: 13px;">作用域链</a> <a href="/tags/函数节流（throttle）/" style="font-size: 13px;">函数节流（throttle）</a> <a href="/tags/函数防抖（debounce）/" style="font-size: 13px;">函数防抖（debounce）</a> <a href="/tags/创建型模式/" style="font-size: 13px;">创建型模式</a> <a href="/tags/博客/" style="font-size: 13px;">博客</a> <a href="/tags/工厂模式/" style="font-size: 13px;">工厂模式</a> <a href="/tags/异步/" style="font-size: 13px;">异步</a> <a href="/tags/心智成熟之路/" style="font-size: 13px;">心智成熟之路</a> <a href="/tags/执行期上下文/" style="font-size: 13px;">执行期上下文</a> <a href="/tags/数字签名/" style="font-size: 13px;">数字签名</a> <a href="/tags/数据流/" style="font-size: 13.5px;">数据流</a> <a href="/tags/数据绑定原理/" style="font-size: 13px;">数据绑定原理</a> <a href="/tags/深度工作/" style="font-size: 13px;">深度工作</a> <a href="/tags/游戏/" style="font-size: 13px;">游戏</a> <a href="/tags/继承/" style="font-size: 13px;">继承</a> <a href="/tags/自律/" style="font-size: 13px;">自律</a> <a href="/tags/设计模式/" style="font-size: 13px;">设计模式</a> <a href="/tags/随笔/" style="font-size: 13px;">随笔</a> <a href="/tags/非对称加密/" style="font-size: 13px;">非对称加密</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/01/事件循环/" class="title">事件循环</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-01T04:20:48.000Z" itemprop="datePublished">2019-09-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/javascript/vue/">vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/05/你真的懂vue的数据绑定原理了吗/" class="title">你真的懂vue的数据绑定原理了吗</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-05T08:21:50.000Z" itemprop="datePublished">2019-07-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/读书/">读书</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/30/少有人走的路/" class="title">少有人走的路</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-30T16:00:00.000Z" itemprop="datePublished">2019-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/布局/">布局</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/10/22/你可能还不够懂flex布局/" class="title">flex</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-10-22T08:21:50.000Z" itemprop="datePublished">2018-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/21/当我们学习es6的时候我们在学什么/" class="title">当我们学习es6的时候我们在学什么</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-21T08:21:50.000Z" itemprop="datePublished">2018-04-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-深入理解JSX" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解JSX
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2017/07/09/深入理解JSX/" class="article-date">
+	  <time datetime="2017-07-09T16:06:54.000Z" itemprop="datePublished">2017-07-09</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/javascript/">javascript</a>►<a class="article-category-link" href="/categories/javascript/React/">React</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/JSX/">JSX</a>, <a class="article-tag-link" href="/tags/React/">React</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/07/09/深入理解JSX/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="JSX-是啥"><a href="#JSX-是啥" class="headerlink" title="JSX 是啥?"></a>JSX 是啥?</h3><blockquote>
+<p> JSX = JS + XML </p>
+</blockquote>
+<p>JSX提供了一种可以在JS里写XML的语法。</p>
+<h3 id="JSX的运行环境"><a href="#JSX的运行环境" class="headerlink" title="JSX的运行环境"></a>JSX的运行环境</h3><blockquote>
+<p>没有环境可以直接直接执行JSX代码 </p>
+</blockquote>
+<a id="more"></a>
+<p>最终JSX代码在运行前都被转换成了JS。转换方式：</p>
+<ul>
+<li>静态编译器编译（工具babel）</li>
+<li>运行期通过jsxtransform.js 进行转换。（已被facebook废弃，性能问题）</li>
+</ul>
+<p>思考：浏览器或者js引擎为什么不直接支持jsx? –&gt;继续看下边</p>
+<h3 id="JSX的由来"><a href="#JSX的由来" class="headerlink" title="JSX的由来"></a>JSX的由来</h3><p>JSX是伴随着facebook的javascript类库 react 的出现被发明的。jsx 的出现和虚拟DOM有直接关系的。</p>
+<h5 id="一句话介绍虚拟DOM："><a href="#一句话介绍虚拟DOM：" class="headerlink" title="一句话介绍虚拟DOM："></a>一句话介绍虚拟DOM：</h5><blockquote>
+<p>在内存中创建的描述DOM节点的js对象。为了减少对实际DOM的操作从而提升性能。（这里可以先不管什么是虚拟DOM）</p>
+</blockquote>
+<h5 id="如何创建虚拟DOM："><a href="#如何创建虚拟DOM：" class="headerlink" title="如何创建虚拟DOM："></a>如何创建虚拟DOM：</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> child1 = React.createElement(<span class="string">'li'</span>, <span class="literal">null</span>, <span class="string">'First Text Content'</span>);</span><br><span class="line"><span class="keyword">var</span> child2 = React.createElement(<span class="string">'li'</span>, <span class="literal">null</span>, <span class="string">'Second Text Content'</span>);</span><br><span class="line"><span class="keyword">var</span> root = React.createElement(<span class="string">'ul'</span>, &#123; <span class="attr">className</span>: <span class="string">'my-list'</span> &#125;, child1, child2);</span><br></pre></td></tr></table></figure>
+<p>==&gt;   ‘虚拟Dom对象 ‘ ==&gt;  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"my-list"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span> 'First Text Content' <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span> 'Second Text Content' <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用这样的机制，我们完全可以用JavaScript构建完整的界面DOM树，但是代码编写麻烦，可读性差（<code>IOS类似，ios是否可以借鉴jsx?</code>）。于是React发明了JSX，利用更友好的HTML语法来创建虚拟DOM：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  var root =(</span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span> <span class="attr">className</span>=<span class="string">"my-list"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>First Text Content<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>Second Text Content<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h5 id="一句话总结jsx存在的意义"><a href="#一句话总结jsx存在的意义" class="headerlink" title="一句话总结jsx存在的意义"></a>一句话总结jsx存在的意义</h5><blockquote>
+<p>让我们更直观的愉快的写代码。</p>
+</blockquote>
+<p>前端界面的最基本功能在于展现数据，为此大多数框架都使用了模板引擎，就对应了自己的模板语法：如angular.js</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-if</span>=<span class="string">"person != null"</span>&gt;</span></span><br><span class="line">    Welcome back, <span class="tag">&lt;<span class="name">b</span>&gt;</span>&#123;&#123;person.firstName&#125;&#125; &#123;&#123;person.lastName&#125;&#125;<span class="tag">&lt;/<span class="name">b</span>&gt;</span>!</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">ng-if</span>=<span class="string">"person == null"</span>&gt;</span></span><br><span class="line">    Please log in.</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>jsx的优势之一就是不需要掌握一门模板语法。如果说掌握一种模板语言并不是很大的问题，那么其实由模板带来的架构复杂性则是让框架也变得复杂的重要原因：<br><a href="http://www.infoq.com/cn/articles/react-jsx-and-component" target="_blank" rel="noopener">http://www.infoq.com/cn/articles/react-jsx-and-component</a></p>
+<p>React直接放弃了模板而发明了JSX。</p>
+<h3 id="JSX的语法"><a href="#JSX的语法" class="headerlink" title="JSX的语法"></a>JSX的语法</h3><p>这里不会对jsx语法详细介绍，只介绍一些注意点。<a href="https://facebook.github.io/react/docs/jsx-in-depth.html" target="_blank" rel="noopener">详情</a></p>
+<h4 id="一、通过-插入js表达式"><a href="#一、通过-插入js表达式" class="headerlink" title="一、通过{}插入js表达式"></a>一、通过{}插入js表达式</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var person = <span class="tag">&lt;<span class="name">Person</span> <span class="attr">name</span>=<span class="string">&#123;window.isLoggedIn</span> ? <span class="attr">window.name</span> <span class="attr">:</span> ''&#125; /&gt;</span>;</span><br></pre></td></tr></table></figure>
+<pre><code>这个功能就很强大了，你可以尽情的使用js的功能： 
+</code></pre><h4 id="二、组件tag-大小写敏感"><a href="#二、组件tag-大小写敏感" class="headerlink" title="二、组件tag 大小写敏感"></a>二、组件tag 大小写敏感</h4><p>这里还不是一般的敏感，大小写是有限制的。所有对应证实节点的tag 要小写开头，所有组件节点tag 要大写开头。大小写是告诉转换工具（babel）要如何转换。我们看个例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">React.render(<span class="tag">&lt;<span class="name">div</span>&gt;</span>xxx<span class="tag">&lt;/<span class="name">div</span>&gt;</span>)</span><br><span class="line"></span><br><span class="line">React.render(<span class="tag">&lt;<span class="name">App</span>/&gt;</span>)</span><br></pre></td></tr></table></figure>
+<p> 转换后==&gt;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">React.render(React.createElement(</span><br><span class="line">  <span class="string">"div"</span>, <span class="comment">//小写tag会编成字符串</span></span><br><span class="line">  <span class="literal">null</span>,</span><br><span class="line">  <span class="string">"xxx"</span></span><br><span class="line">));</span><br><span class="line"></span><br><span class="line">React.render(React.createElement(App, <span class="literal">null</span>));<span class="comment">//大写编成变量</span></span><br></pre></td></tr></table></figure>
+<p>一句话总结标签大小写注意点：  </p>
+<blockquote>
+<p>可以不用关心这些细节，这些都是给框架用的，只需要知道何时大写何时小写就好。</p>
+</blockquote>
+<h4 id="三、绑定事件"><a href="#三、绑定事件" class="headerlink" title="三、绑定事件"></a>三、绑定事件</h4><h5 id="绑定方式："><a href="#绑定方式：" class="headerlink" title="绑定方式："></a>绑定方式：</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">onClick</span>=<span class="string">&#123;this.handler.bind(this)&#125;</span>&gt;</span>Submit<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="无需手动解绑事件"><a href="#无需手动解绑事件" class="headerlink" title="无需手动解绑事件"></a>无需手动解绑事件</h5><p>在JSX中你不需要关心什么时机去移除事件绑定，因为React会在对应的真实DOM节点移除时就自动解除了事件绑定。</p>
+<h5 id="事件代理"><a href="#事件代理" class="headerlink" title="事件代理"></a>事件代理</h5><p>React并不会真正的绑定事件到每一个具体的元素上，而是采用事件代理的模式：在根节点document上为每种事件添加唯一的Listener，然后通过事件的target找到真实的触发元素。这样从触发元素到顶层节点之间的所有节点如果有绑定这个事件，React都会触发对应的事件处理函数。这就是所谓的React模拟事件系统。</p>
+<h4 id="四、在JSX中使用样式"><a href="#四、在JSX中使用样式" class="headerlink" title="四、在JSX中使用样式"></a>四、在JSX中使用样式</h4><p>通常情况下我们应该把样式写到css文件里，当有时对于特定组件而言其样式比较简单且或固定，那么可将其直接写在jsx中。在jsx中通过style属性来定义，但和真实DOM不同的是，属性值不能是字符串而必须为对象。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&#123;&#123;color:</span> '#<span class="attr">ff0000</span>', <span class="attr">fontSize:</span> '<span class="attr">14px</span>'&#125;&#125;&gt;</span>Hello World.<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里有两层大括号，外面的大括号是JSX的语法，变的大括号是js对象。</p>
+<h5 id="属性名转驼峰"><a href="#属性名转驼峰" class="headerlink" title="属性名转驼峰"></a>属性名转驼峰</h5><p>在JSX中可以使用所有的的样式，基本上属性名的转换规范就是将其写成驼峰写法，如background-color –&gt; backgroundColor。</p>
+<h3 id="JSX-与babel"><a href="#JSX-与babel" class="headerlink" title="JSX 与babel"></a>JSX 与babel</h3><p>如何让babel将JSX传换成js时指定自定义方法名而不是React.createElement()。<br>这个babel支持配置：.babelrc文件 <a href="https://babeljs.io/docs/plugins/transform-react-jsx/" target="_blank" rel="noopener">详情</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">      <span class="attr">"plugins"</span>: [</span><br><span class="line">        [<span class="string">"transform-react-jsx"</span>, &#123;</span><br><span class="line">          <span class="attr">"pragma"</span>: <span class="string">"dom"</span> <span class="comment">// default pragma is React.createElement</span></span><br><span class="line">        &#125;]</span><br><span class="line">      ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://foreverwang.github.io/2017/07/09/深入理解JSX/" title="深入理解JSX" target="_blank" rel="external">https://foreverwang.github.io/2017/07/09/深入理解JSX/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="undefined" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="undefined" target="_blank"><span class="text-dark">瞧，这个人</span><small class="ml-1x">那些年很冒险的梦 不要忘记</small></a></h3>
+        <div>忙忙碌碌 碌碌无为</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2017/07/16/随笔：《王者荣耀》-论网游成瘾/" title="随笔：《王者荣耀》-论网游成瘾"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2017/05/07/javascript函数节流(throttle)和函数防抖(debounce)及其实现/" title="javascript函数节流（throttle）和函数防抖（debounce）及其实现"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'null',
+    appKey: 'null',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

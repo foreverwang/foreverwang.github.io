@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>非对称加密(公钥加密)及其应用 | Hexo</title>
+  <meta name="description" content="什么是非对称加密维基百科已经解释的非常清楚了（只看对公开密钥加密的解释这部分，引用如下）。  公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所得的密文，只能用相对应的">
+<meta name="keywords" content="RSA,非对称加密,数字签名">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非对称加密(公钥加密)及其应用">
+<meta property="og:url" content="https://foreverwang.github.io/2018/02/23/非对称加密及其应用/index.html">
+<meta property="og:site_name" content="瞧，这个人">
+<meta property="og:description" content="什么是非对称加密维基百科已经解释的非常清楚了（只看对公开密钥加密的解释这部分，引用如下）。  公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所得的密文，只能用相对应的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/d16dcf79ly1fobiaii5v2j22fk12812h.jpg">
+<meta property="og:updated_time" content="2020-06-21T11:08:05.119Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="非对称加密(公钥加密)及其应用">
+<meta name="twitter:description" content="什么是非对称加密维基百科已经解释的非常清楚了（只看对公开密钥加密的解释这部分，引用如下）。  公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所得的密文，只能用相对应的">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/d16dcf79ly1fobiaii5v2j22fk12812h.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://foreverwang.github.io/2018/02/23/非对称加密及其应用/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="瞧，这个人" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="undefined" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">瞧，这个人</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">那些年很冒险的梦 不要忘记</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/React/">React</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/vue/">vue</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端状态管理/">前端状态管理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/布局/">布局</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/">架构模式</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/架构模式/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书笔记/">读书笔记</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSX/">JSX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVC/">MVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/">MVP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RSA/">RSA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es6/">es6</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flex/">flex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flux/">flux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript核心/">javascript核心</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/事件循环/">事件循环</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作用域链/">作用域链</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数节流（throttle）/">函数节流（throttle）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数防抖（debounce）/">函数防抖（debounce）</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创建型模式/">创建型模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客/">博客</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步/">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心智成熟之路/">心智成熟之路</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/执行期上下文/">执行期上下文</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字签名/">数字签名</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据流/">数据流</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据绑定原理/">数据绑定原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深度工作/">深度工作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/游戏/">游戏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/继承/">继承</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自律/">自律</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/非对称加密/">非对称加密</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/JSX/" style="font-size: 13px;">JSX</a> <a href="/tags/MVC/" style="font-size: 13px;">MVC</a> <a href="/tags/MVP/" style="font-size: 13px;">MVP</a> <a href="/tags/RSA/" style="font-size: 13px;">RSA</a> <a href="/tags/React/" style="font-size: 13px;">React</a> <a href="/tags/es6/" style="font-size: 13px;">es6</a> <a href="/tags/flex/" style="font-size: 13px;">flex</a> <a href="/tags/flux/" style="font-size: 13px;">flux</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/javascript/" style="font-size: 13.5px;">javascript</a> <a href="/tags/javascript核心/" style="font-size: 14px;">javascript核心</a> <a href="/tags/redux/" style="font-size: 13px;">redux</a> <a href="/tags/this/" style="font-size: 13px;">this</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/事件循环/" style="font-size: 13px;">事件循环</a> <a href="/tags/作用域链/" style="font-size: 13px;">作用域链</a> <a href="/tags/函数节流（throttle）/" style="font-size: 13px;">函数节流（throttle）</a> <a href="/tags/函数防抖（debounce）/" style="font-size: 13px;">函数防抖（debounce）</a> <a href="/tags/创建型模式/" style="font-size: 13px;">创建型模式</a> <a href="/tags/博客/" style="font-size: 13px;">博客</a> <a href="/tags/工厂模式/" style="font-size: 13px;">工厂模式</a> <a href="/tags/异步/" style="font-size: 13px;">异步</a> <a href="/tags/心智成熟之路/" style="font-size: 13px;">心智成熟之路</a> <a href="/tags/执行期上下文/" style="font-size: 13px;">执行期上下文</a> <a href="/tags/数字签名/" style="font-size: 13px;">数字签名</a> <a href="/tags/数据流/" style="font-size: 13.5px;">数据流</a> <a href="/tags/数据绑定原理/" style="font-size: 13px;">数据绑定原理</a> <a href="/tags/深度工作/" style="font-size: 13px;">深度工作</a> <a href="/tags/游戏/" style="font-size: 13px;">游戏</a> <a href="/tags/继承/" style="font-size: 13px;">继承</a> <a href="/tags/自律/" style="font-size: 13px;">自律</a> <a href="/tags/设计模式/" style="font-size: 13px;">设计模式</a> <a href="/tags/随笔/" style="font-size: 13px;">随笔</a> <a href="/tags/非对称加密/" style="font-size: 13px;">非对称加密</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/09/01/事件循环/" class="title">事件循环</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-09-01T04:20:48.000Z" itemprop="datePublished">2019-09-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/javascript/vue/">vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/07/05/你真的懂vue的数据绑定原理了吗/" class="title">你真的懂vue的数据绑定原理了吗</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-07-05T08:21:50.000Z" itemprop="datePublished">2019-07-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/读书/">读书</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/03/30/少有人走的路/" class="title">少有人走的路</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-03-30T16:00:00.000Z" itemprop="datePublished">2019-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/布局/">布局</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/10/22/你可能还不够懂flex布局/" class="title">flex</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-10-22T08:21:50.000Z" itemprop="datePublished">2018-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/21/当我们学习es6的时候我们在学什么/" class="title">当我们学习es6的时候我们在学什么</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-21T08:21:50.000Z" itemprop="datePublished">2018-04-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-非对称加密及其应用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      非对称加密(公钥加密)及其应用
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/02/23/非对称加密及其应用/" class="article-date">
+	  <time datetime="2018-02-23T04:20:48.000Z" itemprop="datePublished">2018-02-23</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/RSA/">RSA</a>, <a class="article-tag-link" href="/tags/数字签名/">数字签名</a>, <a class="article-tag-link" href="/tags/非对称加密/">非对称加密</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/02/23/非对称加密及其应用/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="什么是非对称加密"><a href="#什么是非对称加密" class="headerlink" title="什么是非对称加密"></a>什么是非对称加密</h3><p><a href="https://zh.wikipedia.org/wiki/ %E5%85%AC%E5%BC%80%E5%AF%86%E9%92%A5%E5%8A%A0%E5%AF%86" target="_blank" rel="noopener">维基百科</a>已经解释的非常清楚了（只看对公开密钥加密的解释这部分，引用如下）。</p>
+<blockquote>
+<p>公开密钥加密（英语：Public-key cryptography），也称为非对称加密（英语：asymmetric cryptography），是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；一个用作加密的时候，另一个则用作解密。使用其中一个密钥把明文加密后所得的密文，只能用相对应的另一个密钥才能解密得到原本的明文；甚至连最初用来加密的密钥也不能用作解密。由于加密和解密需要两个不同的密钥，故被称为非对称加密；不同于加密和解密都使用同一个密钥的对称加密。虽然两个密钥在数学上相关，但如果知道了其中一个，并不能凭此计算出另外一个；因此其中一个可以公开，称为公钥，任意向外发布；不公开的密钥为私钥，必须由用户自行严格秘密保管，绝不通过任何途径向任何人提供，也不会透露给要通信的另一方，即使他被信任。</p>
+</blockquote>
+<p>维基上说的说的有点啰嗦，精简一下就是：</p>
+<a id="more"></a>
+<blockquote>
+<p>加密解密通过一个秘钥对即公开密钥和私有密钥完成的。<br><br>用公钥加密明文得到的密文，只能通过对应的私钥解密得到明文。<br>（类似私钥加密明文得到密的文，只能通过对应的公钥解密得到明文）<br><br> 密钥对是数学相关的。</p>
+</blockquote>
+<p>在现实世界上可作比拟的例子是，一个传统保管箱，开门和关门都是使用同一把钥匙，这是对称加密；而一个公开的邮箱，投递口是任何人都可以寄信进去的，这可视为公钥；而只有邮箱主人拥有钥匙可以打开邮箱，这就视为私钥。这就是非对称加密。（以下说的公钥加密和对对称加密是一回事）</p>
+<h3 id="与对称加密的比较"><a href="#与对称加密的比较" class="headerlink" title="与对称加密的比较"></a>与对称加密的比较</h3><p>对称加密的问题在于通信双方要事先交换密钥，而事先传递密钥的过程 存在密钥泄露的风险。密钥一旦泄露，数据就不安全了。<br>而非对称加密，密钥对的私钥是保密的不需要事先传递或公开的，所以安全性更高。</p>
+<p>注意，看网上的博文很多人对这里的理解是不太透彻的: 认为对称加密的问题在于加解密用同样的密钥，所以导致对称加密不安全的。 </p>
+<blockquote>
+<p>加解密使用同样的密钥-这是对称加密的概念也是其形式，把对称加密安全性差归咎于此不太妥（要强扯也┑(￣Д ￣)┍）。</p>
+</blockquote>
+<p> 对称加密的安全性低，问题在于两点： </p>
+<ul>
+<li>由于加密解密用同样的密钥，其密钥需要通信双方事先交换（或单向传递），密钥交换的过程存在泄漏的风险。</li>
+<li>由于密钥通信双方都知道，通信接收方可以泄漏发送方的密钥给其他人。 </li>
+</ul>
+<p>而以上两个问题非对称加密都解决了：</p>
+<ul>
+<li>加密解密需要一对密钥来完成，其中私钥是不公开也不需要事先传递的，所以泄漏的概率更小。 </li>
+<li><p>公钥加密的信息只能通过其对应的私钥来解密，私钥是属于通信双方中某一方且保密的，而公钥是公开的，所以不存在泄漏对方密钥的风险。 </p>
+<p>所以，在保证密钥不被泄漏的前提下对称加密和非对称加密是一样安全的。 但是，对称加密中，通信双方在事后有泄漏对方密钥的可能。 如果再加一个条件通信双方的发送者对每一个接收者使用不同的密钥，这样就能保证对称加密和非对称加密一样安全了。 但是这两点都比较难保证：1.传递密钥过程的安全性依赖传递环境。2.需要每个人都要有很多很多密钥，不同的接收方用不同的密钥，密钥难以保管。</p>
+</li>
+</ul>
+<p>所以这个时候非对称加密华丽登场了。<br>下面我们通过对具体的某一种非对称加密算法的学习来理解非对称加密的数学原理。这里我们选用应用最广泛的非对称加密算法之一：RSA加密算法。</p>
+<h3 id="RSA算法"><a href="#RSA算法" class="headerlink" title="RSA算法"></a>RSA算法</h3><p>RSA算法的数学基础是：欧拉定理，此处不做解释。公钥加密算法根据其所依据的数学难题一般分为三类：大整数因式分解问题类、离散对数问题类，椭圆曲线类。RSA属于大数分解类，也是最好理解的。</p>
+<p>下面直接介绍RSA算法的基础步骤；</p>
+<h4 id="1-生成公钥（PK）和私钥-SK"><a href="#1-生成公钥（PK）和私钥-SK" class="headerlink" title="1. 生成公钥（PK）和私钥(SK)"></a>1. 生成公钥（PK）和私钥(SK)</h4><ul>
+<li>(1) 随意选两个大的素数p和q，p不等于q</li>
+<li>(2) 将p、q两个素数相乘得到n，即n=pq</li>
+<li>(3) 计算n的欧拉函数φ(n):根据公式 φ(n)=(p-1)(q-1)</li>
+<li>(4) 选择一个整数e，作为密钥，使得e和φ(n)互质，且e &lt; φ(n)</li>
+<li><p>(5) 计算e对于φ(n)的模反元素d: 根据公式 ed mod φ(n)  = 1 ,计算出d的值，作为另一个密钥。<br>所谓”模反元素”就是指有一个整数d，可以使得ed被φ(n)除的余数为1。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ed ≡ 1 (mod φ(n)) ==&gt; </span><br><span class="line">ed - 1 = kφ(n)  //求解二元一次方程 k 从1带入试就行了</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>(6) 通过以上步骤计算出 n 、e 、d 3个数据，其中（n、e）作为公钥，（n、d）作为私钥（也可以互换）</p>
+</li>
+<li>(7) 生成公钥和私钥后就可以公开公钥了。</li>
+</ul>
+<h4 id="2-用公钥加密信息"><a href="#2-用公钥加密信息" class="headerlink" title="2. 用公钥加密信息"></a>2. 用公钥加密信息</h4><p>信息发送方收到接收方公钥PK后，就可以用PK对数据加密。加密步骤如下。 其中明文为M，加密后的密文为C，公钥（n,e）</p>
+<blockquote>
+<p>加密： M^e  mod n = C</p>
+</blockquote>
+<h4 id="3-用私钥解密信息"><a href="#3-用私钥解密信息" class="headerlink" title="3. 用私钥解密信息"></a>3. 用私钥解密信息</h4><p>接收方持有私钥（N，D）,在接收到密文C后，通过私钥对其解密，得到明文M：</p>
+<blockquote>
+<p>解密： C^d mod n = M  </p>
+</blockquote>
+<h3 id="RSA-安全性分析"><a href="#RSA-安全性分析" class="headerlink" title="RSA 安全性分析"></a>RSA 安全性分析</h3><p>通常到这里我们会有个疑问？ 公钥和私钥存在一定的数学关系， 公钥公开，那么有没有可能通过公钥推导出私钥呢？ 如果能那不就不安全了吗。 答案是：能，但是很难。<br>问题变成 能否在已知 n和e的前提下，推导出d ?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ed ≡ 1 (mod φ(n))   //等价于 ed mod φ(n)  = 1 </span><br><span class="line">φ(n)=(p-1)(q-1)</span><br><span class="line">n=pq</span><br></pre></td></tr></table></figure>
+<p>结论：如果n可以被因数分解，d就可以算出。<br>但是，大整数的因式分解是很困难的，目前除了暴力破解，还没有更好的有效方式。</p>
+<p>所以整数n的因式分解难度决定了RSA算法的可靠度。</p>
+<blockquote>
+<p> RSA可靠性就是建立在分解两个大素数乘积的十分困难上。</p>
+</blockquote>
+<p>这个难度是个什么概念呢？<a href="http://blog.csdn.net/woyaokaoyan/article/details/5169098" target="_blank" rel="noopener">引用</a></p>
+<blockquote>
+<p>RSA算法的破解与密钥的长度有关，最常见的破解方法是因式分解，如果密钥的长度小于等于256位，一台较快的电脑可以在几个小时内成功分解其因子。位数越高因式分解所需时间也越长。1999年，一台Cray超级电脑用了5个月时间分解了512位长的密钥。而目前典型密钥长度是1028位。在512位RSA算法破解10年之后，一群研究人员报告(PDF)他们因式分解了768位RSA算法。他们是在2009年12月9日分解了768位、232数位数字的RSA-768密钥。分解一个768位RSA密钥所需时间是512位的数千倍，而1024位所需时间则是768位的一千多倍，因此在短时间内1024位仍然是安全的。研究人员表示1024位密钥预计也将会在10年内攻破，因此在未来三到四年内应逐步淘汰1024位RSA密钥。</p>
+</blockquote>
+<p>思考一下大整数n 因式分解为什么难？有多难？</p>
+<h3 id="RSA-算法实例"><a href="#RSA-算法实例" class="headerlink" title="RSA 算法实例"></a>RSA 算法实例</h3><h4 id="生成公钥私钥"><a href="#生成公钥私钥" class="headerlink" title="生成公钥私钥"></a>生成公钥私钥</h4><ul>
+<li>随机取大质数p=11，q=13，那n=11*13=143，φ(N)=(p-1)(q-1) = 120 </li>
+<li>取一个e=7，由 ed mod φ(n)  = 1 计算出d=103。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">公钥（n,e） 即 （143, 7）</span><br><span class="line">私钥 (n,d) 即 （143, 103）</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="用公钥加密"><a href="#用公钥加密" class="headerlink" title="用公钥加密"></a>用公钥加密</h4><p>由于手工计算，为了使计算量小一点，我们将上面的公钥和私钥交换： 即公钥 （143, 103），私钥（143, 7）。取明文 m =2,加密过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">密文 c =  m^e mod n</span><br><span class="line">      =  2^103 mod 143 </span><br><span class="line">      = 10141204801825835211973625643008 mod 143 </span><br><span class="line">      = 63</span><br></pre></td></tr></table></figure>
+<h4 id="用私钥解密"><a href="#用私钥解密" class="headerlink" title="用私钥解密"></a>用私钥解密</h4><p>收到密文c = 63,通过 私钥（143，7）进行解密，解密过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">明文  m = c^d mod n </span><br><span class="line">         = 63^7 mod 143</span><br><span class="line">         = 3938980639167 mod 143 </span><br><span class="line">         = 2</span><br></pre></td></tr></table></figure>
+<p>至此，我们用RSA算法进行了一次加密解密，其实很简单，只是计算量可能会比较大。  </p>
+<p>常见的公钥加密算法除了RSA。还有ElGamal、背包算法、椭圆曲线加密算法（英语：Elliptic Curve Cryptography, ECC）等。下面我们说下非对称加密的应用。</p>
+<h3 id="非对称加密的应用"><a href="#非对称加密的应用" class="headerlink" title="非对称加密的应用"></a>非对称加密的应用</h3><p>先插入一个概念： <code>信息系统安全的基本属性</code>。</p>
+<blockquote>
+<p>信息系统安全的基本属性: 保密性、完整性、可用性、不可抵赖性。</p>
+</blockquote>
+<ul>
+<li>保密性：是应用系统的信息不被泄露给非授权的用户。常用保密技术：最小授权原则，信息加密等。</li>
+<li>完整性：完整性是信息未经授权不能进行改变的特性。完整性是一种面向信息的安全性。</li>
+<li>可用性： 可用性是应用系统面向用户的安全性能，不做赘述。</li>
+<li>不可抵赖性：不可抵赖性也称作不可否认性，在应用系统的信息交互过程中，确信参与者的真实同一性。即所有参与者都不可能否认或抵赖曾经完成的操作和承诺。利用信息源证据可以防止发信方不真实地否认已发送信息，利用递交接收证据可以防止收信方事后否认已经接收的信息。</li>
+</ul>
+<p>加密技术也是用来加强信息安全的，接下来说的几个非对称加密实际应用也是如此。<br>回归正题，接下来说非对称加密最广泛的应用之一：数字签名。</p>
+<h4 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h4><blockquote>
+<p>数字签名在ISO7498—2标准中定义为：“附加在数据单元上的一些数据，或是对数据单元所作的密码变换，这种数据和变换允许数据单元的接收者用以确认数据单元来源和数据单元的完整性，并保护数据，防止被人（例如接收者）进行伪造”</p>
+</blockquote>
+<p>首先搞清楚数字签名解决的是什么问题？ 然后看看什么是数字签名？最后分析下数字签名为什么能解决这些问题？</p>
+<h5 id="数字签名解决什么问题？"><a href="#数字签名解决什么问题？" class="headerlink" title="数字签名解决什么问题？"></a>数字签名解决什么问题？</h5><p>纸质书信或文件根据亲笔签名或印章来证明其真实性，及防抵赖。对应上述信息安全的 完整性和不可抵赖性。 而数字签名则可以看做是对在网络中传输的报文的签名，作用自然也是为了保证信息的完整性及不可抵赖性。 </p>
+<p>那下面我们看下数字签名是如何做到证明信息的完整性及防抵赖的？</p>
+<h5 id="数字签名的实现方法？"><a href="#数字签名的实现方法？" class="headerlink" title="数字签名的实现方法？"></a>数字签名的实现方法？</h5><p>建立在公钥密码技术上的数字签名方法有很多，有RSA签名、DSA签名和椭圆曲线数字签名算法（ECDSA）等等。下面对RSA签名进行详细分析。</p>
+<p>这里需要理解<a href="https://baike.baidu.com/item/%E5%93%88%E5%B8%8C%E5%80%BC" target="_blank" rel="noopener">哈希-hash</a>的概念。简单说hash 就是计算机可以对任意内容计算出一个固定长度的值，且不会重复。</p>
+<p>直接看图：</p>
+<p><img src="https://ws1.sinaimg.cn/large/d16dcf79ly1fobiaii5v2j22fk12812h.jpg" alt="数字签名"></p>
+<p>   （1）发送方采用某种摘要算法从报文中生成一个128位的散列值（称为报文摘要）；</p>
+<p>　　（2）发送方用RSA算法和自己的私钥对这个散列值进行加密，产生一个摘要密文，这就是发送方的数字签名；</p>
+<p>　　（3）将这个加密后的数字签名作为报文的附件和报文一起发送给接收方：</p>
+<p>　　（4）接收方从接收到的原始报文中采用相同的摘要算法计算出128位的散列值；</p>
+<p>　　（5）报文的接收方用RSA算法和发送方的公钥对报文附加的数字签名进行解密；</p>
+<p>　　（6）如果两个散列值相同，那么接收方就能确认报文是由发送方签名的。</p>
+<p>最常用的摘要算法叫做MD5（Message Digest 5）。MD5采用单向Hash函数将任意长度的“字节串”变换成一个128位的散列值，并且它是一个不可逆的字符串变换算法。</p>
+<h5 id="数字签名为什么能保证信息完整性及不可抵赖性？"><a href="#数字签名为什么能保证信息完整性及不可抵赖性？" class="headerlink" title="数字签名为什么能保证信息完整性及不可抵赖性？"></a>数字签名为什么能保证信息完整性及不可抵赖性？</h5><h6 id="信息的完整性"><a href="#信息的完整性" class="headerlink" title="信息的完整性"></a>信息的完整性</h6><p>如果报文在网络传输过程中被修改，接收方收到此报文后，使用相同的摘要算法将计算出不同的报文摘要，这就保证了接收方可以判断报文自签名后到收到为止，是否被修改过。</p>
+<h6 id="信息的不可抵赖性"><a href="#信息的不可抵赖性" class="headerlink" title="信息的不可抵赖性"></a>信息的不可抵赖性</h6><p>如果发送方A想让接收方误认为此报文是由发送方B签名发送的，由于发送方A不知道发送方B的私钥，所以接收方用发送方B的公钥对发送方A加密的报文摘要进行解密时，也将得出不同的报文摘要，这就保证了接收方可以判断报文是否是由指定的签名者发送。同时也可以看出，当两个散列值相同时，发送方B无法否认这个报文是他签名发送的。</p>
+<h5 id="关于数字签名的一点问题"><a href="#关于数字签名的一点问题" class="headerlink" title="关于数字签名的一点问题"></a>关于数字签名的一点问题</h5><p>关于数字签名就说完了。但有个疑问：传输过程中原文没有被加密吗？是的。上面是无保密机制的数字签名。具有保密机制的RSA签名机制自己看<a href="http://www.elecfans.com/baike/tongxingjishu/chungshuwang/20110710205779.html" target="_blank" rel="noopener">这边文章</a>吧 。</p>
+<h4 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h4><p>关于上面数字签名有一个问题：信息接收方如何确认拿到的公钥就是期望的发送方的公钥？ </p>
+<p>举个例子：</p>
+<p>小红与小绿写信。 小绿写完信后 用自己的私钥对信件摘要生成 ‘数字签名’ 连同信件一块发给小红。 小红收到信件后用小绿的公钥解密信件里的数字签名得到信件摘要。 这个过程没有问题。</p>
+<p>但是有一天，第三者-小强出现了。小强偷偷将小红电脑里的小绿的公钥换成他自己的了，但此时小红还以为那是小绿的公钥。 因此，小强就可以冒充小绿，用自己的私钥对信件摘要进行 ‘数字签名’，发给小红。小红用小强掉包后的公钥对数字签名解密，还以为对方是小绿。</p>
+<p>后来小红感觉不对劲，他发现自己无法确定公钥是否真的是小绿的。于是她想了一个办法，让小绿找“证书中心”（certificate authority，简称CA） 为自己的公钥做认证。认证机构用自己的私钥对小绿的公钥和一些相关信息一起加密，生成‘数字证书’。</p>
+<p>小绿拿到‘数字证书’后，再给苏珊写信，只要在签名的同时，再附上数字证书就行了。<br>小红收信后，用CA的公钥解开数字证书，就可以拿到小绿的公钥了<br>，然后就能验证数字签名是否是小绿的。</p>
+<p>这里我们先大概知道CA是一个第三方机构，用来对个人身份认证的，而认证的形式就是‘数字证书’。<br>这个例子中忽略了一个关键细节，如何确定证书的真实性呢？ 接下来我们细细介绍。</p>
+<h4 id="https-实例分析"><a href="#https-实例分析" class="headerlink" title="https 实例分析"></a>https 实例分析</h4><p>https 是数字证书的应用之一。我们通过对https的从简介绍来理解数字证书。 </p>
+<h5 id="CA"><a href="#CA" class="headerlink" title="CA"></a>CA</h5><p>CA（certificate authority）证书授权中心。 受信任的第三方机构。 CA为每个使用公开密钥的用户发放一个数字证书。证书生成的过程可以认为就是CA用自己的私钥对公钥持有方的公钥及一些相关信息进行数字签名。</p>
+<blockquote>
+<p>数字证书是一个经证书授权中心（CA）数字签名的包含公钥拥有者信息以及公钥的文件。</p>
+</blockquote>
+<p>数字证书的作用是证明证书中列出的用户合法拥有证书中列出的公钥。</p>
+<h5 id="根证书"><a href="#根证书" class="headerlink" title="根证书"></a>根证书</h5><p>而CA的公钥叫做根证书。 这些根证书是预先被安装在浏览器里的,用来解密服务器的证书的。</p>
+<h5 id="https-访问"><a href="#https-访问" class="headerlink" title="https 访问"></a>https 访问</h5><p>通过https建立了一个安全 Web 事务之后，现代的浏览器都会自动获取所连接服务器的数字证书。如果服务器没有证书，安全连接就会失败。<br>浏览器预先安装了一些CA的根证书。浏览器用对应的根证书去解密网站服务器的数字证书获取到网站服务器的公钥。然后浏览器发送一个随机字符串给服务器，服务器用自己的私钥加密这个随机字符串后返回给浏览器，浏览器通过获得的公钥解密后比较这个随机字符串是否和发出去的一样。 如果一样，则说明服务器的公钥和证书里的公钥一致，则证明服务器就是服务器。</p>
+<p>当然真实的https过程 比这个复杂很多，这里只是为了方便理解证书在非对称加密应用中的作用，忽略了很多技术细节。</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>静静的学习完了，我们再来说下时下最热的加密币。加密币里的交易安全基础就是非对称加密算法。就以币王BTC（比特币）来说。</p>
+<blockquote>
+<p>比特币钱包: 是用来存放私钥和公钥的，而不是存放币的。<br> <br>比特币地址: 钱包公钥的哈希值（更短，方便保存和传播），用来收币的。<br> <br>比特币使用了基于secp256k1椭圆曲线加密算法（非对称加密算法的一种）。<br> <br>一笔交易实质就是一个地址的一定数量的比特币转移到另一个地址。而交易过程安全则是由其非对称加密算法保障。</p>
+</blockquote>
+<p>最最后总结下本文：</p>
+<ul>
+<li>什么是非对称加密</li>
+<li>RSA算法的原理和用法</li>
+<li>什么是数字签名</li>
+<li>什么是数字证书及数字证书的作用</li>
+<li>又要上班了。</li>
+</ul>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="http://www.elecfans.com/baike/tongxingjishu/chungshuwang/20110710205779.html" target="_blank" rel="noopener">数字签名技术原理介绍</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://foreverwang.github.io/2018/02/23/非对称加密及其应用/" title="非对称加密(公钥加密)及其应用" target="_blank" rel="external">https://foreverwang.github.io/2018/02/23/非对称加密及其应用/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="undefined" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="undefined" target="_blank"><span class="text-dark">瞧，这个人</span><small class="ml-1x">那些年很冒险的梦 不要忘记</small></a></h3>
+        <div>忙忙碌碌 碌碌无为</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/03/25/测试travis自动化部署/" title="测试travis 自动部署"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2017/12/06/理解redux/" title="理解redux"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'null',
+    appKey: 'null',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
